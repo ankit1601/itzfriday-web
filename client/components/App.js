@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ChatBox from './chats/ChatBox';
 
 class App extends Component {
 	
