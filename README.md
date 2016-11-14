@@ -31,3 +31,4 @@ npm run serve
 
 * *Gobinda Thakur*
 * *Suganya G*
+* *Ankit Aggarwal*
