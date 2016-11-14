@@ -69,13 +69,13 @@ export default class LoggedInLayout extends React.Component
 
 	handleChannel = (e) => 
 	{
-		this.setState({appBarTitle: e.target.innerHTML});
+		//this.setState({appBarTitle: e.target.innerHTML});
 		this.closeMainMenu();
 	};
 
 	handleMessages = (e) => 
 	{
-		this.setState({appBarTitle: e.target.innerText});
+		//this.setState({appBarTitle: e.target.innerText});
 		this.closeMainMenu();
 	};
 
@@ -91,7 +91,7 @@ export default class LoggedInLayout extends React.Component
 			zDepth={2}
 			iconElementLeft={
 				<IconButton>
-				<img src="./../../resources/images/pandaBot.png" alt="qwerty" height="30"/>
+				<img src="./../../resources/images/buddy.png" alt="qwerty" height="30"/>
 				</IconButton>}
 				iconElementRight={
 					<span>
@@ -118,23 +118,23 @@ export default class LoggedInLayout extends React.Component
 				<Divider />
 				<MenuItem id="channels" style={menuItem} 
 				menuItems={[
-                <MenuItem ><Link to={"channel/"+"General"} style={linkItem} onTouchTap={this.handleChannel}>General</Link></MenuItem>,
-                <MenuItem ><Link to={"channel/"+"Acolyte"} style={linkItem} onTouchTap={this.handleChannel}>Acolyte</Link></MenuItem>,
-                <MenuItem ><Link to={"channel/"+"Buddy"} style={linkItem} onTouchTap={this.handleChannel}>Buddy</Link></MenuItem>,
-                <MenuItem ><Link to={"channel/"+"Rule"} style={linkItem} onTouchTap={this.handleChannel}>Rule</Link></MenuItem>,
+                <MenuItem ><Link to={"channel/"+"General?name=General&key=channel"} style={linkItem} onTouchTap={this.handleChannel}>General</Link></MenuItem>,
+                <MenuItem ><Link to={"channel/"+"Acolyte?name=Acolyte&key=channel"} style={linkItem} onTouchTap={this.handleChannel}>Acolyte</Link></MenuItem>,
+                <MenuItem ><Link to={"channel/"+"Buddy?name=Buddy&key=channel"} style={linkItem} onTouchTap={this.handleChannel}>Buddy</Link></MenuItem>,
+                <MenuItem ><Link to={"channel/"+"Rule?name=Rule&key=channel"} style={linkItem} onTouchTap={this.handleChannel}>Rule</Link></MenuItem>,
               ]}
         >
 					<strong>Channels</strong>
 				</MenuItem>
 				<MenuItem id="messages" style={menuItem}
 				menuItems={[
-                <MenuItem ><Link to={"message/"+"Buddy"} style={linkItem} onTouchTap={this.handleMessages}>Buddy</Link></MenuItem>,
-                <MenuItem ><Link to={"message/"+"Gobinda"} style={linkItem} onTouchTap={this.handleMessages}>Gobinda</Link></MenuItem>,
-                <MenuItem ><Link to={"message/"+"Ruchika"} style={linkItem} onTouchTap={this.handleMessages}>Ruchika</Link></MenuItem>,
-                <MenuItem ><Link to={"message/"+"Apurv"} style={linkItem} onTouchTap={this.handleMessages}>Apurv</Link></MenuItem>,
-                <MenuItem ><Link to={"message/"+"Suganya"} style={linkItem} onTouchTap={this.handleMessages}>Suganya</Link></MenuItem>,
-                <MenuItem ><Link to={"message/"+"Ankit"} style={linkItem} onTouchTap={this.handleMessages}>Ankit</Link></MenuItem>,
-                <MenuItem ><Link to={"message/"+"Vikram"} style={linkItem} onTouchTap={this.handleMessages}>Vikram</Link></MenuItem>,
+                <MenuItem ><Link to={"message/"+"Buddy?name=Buddy&key=message"} style={linkItem} onTouchTap={this.handleMessages}>Buddy</Link></MenuItem>,
+                <MenuItem ><Link to={"message/"+"Gobinda?name=Gobinda&key=message"} style={linkItem} onTouchTap={this.handleMessages}>Gobinda</Link></MenuItem>,
+                <MenuItem ><Link to={"message/"+"Ruchika?name=Ruchika&key=message"} style={linkItem} onTouchTap={this.handleMessages}>Ruchika</Link></MenuItem>,
+                <MenuItem ><Link to={"message/"+"Apurv?name=Apurv&key=message"} style={linkItem} onTouchTap={this.handleMessages}>Apurv</Link></MenuItem>,
+                <MenuItem ><Link to={"message/"+"Suganya?name=Suganya&key=message"} style={linkItem} onTouchTap={this.handleMessages}>Suganya</Link></MenuItem>,
+                <MenuItem ><Link to={"message/"+"Ankit?name=Ankit&key=message"} style={linkItem} onTouchTap={this.handleMessages}>Ankit</Link></MenuItem>,
+                <MenuItem ><Link to={"message/"+"Vikram?name=Vikram&key=message"} style={linkItem} onTouchTap={this.handleMessages}>Vikram</Link></MenuItem>,
               ]}
         >
 					<strong>Messages</strong>
