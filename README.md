@@ -30,3 +30,5 @@ npm run serve
 ## Authors
 
 * *Gobinda Thakur*
+* *Suganya G*
+* *Ankit Aggarwal*
