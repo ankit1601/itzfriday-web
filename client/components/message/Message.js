@@ -16,7 +16,7 @@ export default class Message extends React.Component
 	{
 		return(
 			<div>
-				You can now chat with {this.props.params.name=='undefined'?Buddy:this.props.params.name}.
+				You can now chat with {this.props.location.query.name=='undefined'?'Buddy':this.props.location.query.name}.
 			</div>
 			);
 	}

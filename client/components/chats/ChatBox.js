@@ -5,18 +5,13 @@ import ChatToolBar from './ChatToolBar';
 class ChatBox extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props.location.query.key+'::'+this.props.location.query.name);
-    this.state = {
-      key: this.props.location.query.key,
-      name: this.props.location.query.name
-    }
   }
 	render() {
 		return (
 				<Grid>
         			<Row>
           				<Col xs={12} sm={12} md={12} lg={12}>
-                        <ChatToolBar /> 
+                        <ChatToolBar name={this.props.location.query.name} identifier={this.props.location.query.key}/> 
                   </Col>
         			</Row>
         			<Row>

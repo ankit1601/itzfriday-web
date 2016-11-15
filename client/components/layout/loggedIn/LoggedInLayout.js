@@ -8,19 +8,24 @@ import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
 import FlatButton from 'material-ui/FlatButton';
 
-import SocialNotifications from 'material-ui/svg-icons/social/notifications';
-import ImageDehaze from 'material-ui/svg-icons/image/dehaze';
 import {List, ListItem} from 'material-ui/List';
-import {Menu, MenuItem} from 'material-ui/Menu';
 import Paper from 'material-ui/Paper';
 import Drawer from 'material-ui/Drawer';
 import Divider from 'material-ui/Divider';
 
+import SocialNotifications from 'material-ui/svg-icons/social/notifications';
+import SocialPerson from 'material-ui/svg-icons/social/person';
+import ImageDehaze from 'material-ui/svg-icons/image/dehaze';
+import ContentAddCircle from 'material-ui/svg-icons/content/add-circle';
+import HardwareTv from 'material-ui/svg-icons/hardware/tv';
+import NavigationExpandMore from 'material-ui/svg-icons/navigation/expand-more';
+import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less';
+
 //styling
 
-const header = {backgroundColor: '#E0F2F1',
-	marginBottom: '10px',
-	marginRight: '10px'
+const rootContainer = {
+	margin: '0px 0px 0px 0px',
+	padding: '0px 0px 0px 0px',
 };
 
 const iconButton = {
@@ -30,32 +35,28 @@ const iconButton = {
 const container = {
 	margin: '10px 0px 10px 0px',
 	padding: '10px',
-	height: window.innerHeight
 };
 
 const appBar = {
 	color: 'white',
-	backgroundColor: '#26A69A',
+	backgroundColor: '#004D40',
 };
 
-const mainMenu = {
-};
-
-const menuItem = {
-	marginLeft: '10px',
-	marginRight: '10px',
+const listItem = {
 	color: '#607D8B'
 };
 
 const linkItem = {
 	textDecoration: 'none',
-	color: '#212121'
+	color: '#424242'
 };
 
-const projectMenuItem = {
-	paddingLeft: '10px',
+const projectListItem = {
 	color: '#607D8B'
 };
+
+var messages=[];
+var channels=[];
 
 export default class LoggedInLayout extends React.Component
 {
@@ -63,20 +64,44 @@ export default class LoggedInLayout extends React.Component
 	{
 		super(props);
 
-		this.state = {mainMenuOpen: false}
-		this.state = {appBarTitle: 'Buddy'};
+		this.state = {mainMenuOpen: false, appBarTitle: 'Buddy'};
+
+		messages.push(<ListItem key={0} leftIcon={<SocialPerson />}><Link to={"chat/"+"?name=Buddy&key=message"} style={linkItem} onTouchTap={this.handleMessages}>Buddy</Link></ListItem>);
+		messages.push(<ListItem key={1} leftIcon={<SocialPerson />}><Link to={"chat/"+"?name=Gobinda&key=message"} style={linkItem} onTouchTap={this.handleMessages}>Gobinda</Link></ListItem>);
+		messages.push(<ListItem key={2} leftIcon={<SocialPerson />}><Link to={"chat/"+"?name=Ruchika&key=message"} style={linkItem} onTouchTap={this.handleMessages}>Ruchika</Link></ListItem>);
+		messages.push(<ListItem key={3} leftIcon={<SocialPerson />}><Link to={"chat/"+"?name=Apurv&key=message"} style={linkItem} onTouchTap={this.handleMessages}>Apurv</Link></ListItem>);
+		messages.push(<ListItem key={4} leftIcon={<SocialPerson />}><Link to={"chat/"+"?name=Suganya&key=message"} style={linkItem} onTouchTap={this.handleMessages}>Suganya</Link></ListItem>);
+		messages.push(<ListItem key={5} leftIcon={<SocialPerson />}><Link to={"chat/"+"?name=Ankit&key=message"} style={linkItem} onTouchTap={this.handleMessages}>Ankit</Link></ListItem>);
+		messages.push(<ListItem key={6} leftIcon={<SocialPerson />}><Link to={"chat/"+"?name=Vikram&key=message"} style={linkItem} onTouchTap={this.handleMessages}>Vikram</Link></ListItem>);
+		
+		channels.push(<ListItem key={0} leftIcon={<HardwareTv />}><Link to={"chat/"+"?name=General&key=channel"} style={linkItem} onTouchTap={this.handleChannel}>General</Link></ListItem>);
+		channels.push(<ListItem leftIcon={<HardwareTv />}><Link to={"chat/"+"?name=Acolyte&key=channel"} style={linkItem} onTouchTap={this.handleChannel}>Acolyte</Link></ListItem>);
+        channels.push(<ListItem leftIcon={<HardwareTv />}><Link to={"chat/"+"?name=Buddy&key=channel"} style={linkItem} onTouchTap={this.handleChannel}>Buddy</Link></ListItem>);
+        channels.push(<ListItem leftIcon={<HardwareTv />}><Link to={"chat/"+"?name=Rule&key=channel"} style={linkItem} onTouchTap={this.handleChannel}>Rule</Link></ListItem>);
+        channels.push(<Divider />);
+        channels.push(<ListItem leftIcon={<ContentAddCircle />}><Link to={"channel/"} style={linkItem} onTouchTap={this.handleChannel}>Create channel</Link></ListItem>);
+        channels.push(<Divider />);
 	}
 
 	handleChannel = (e) => 
 	{
-		//this.setState({appBarTitle: e.target.innerHTML});
+		this.closeMainMenu();
+	};
+
+	handleAccount = (e) => 
+	{
 		this.closeMainMenu();
 	};
 
 	handleMessages = (e) => 
 	{
-		//this.setState({appBarTitle: e.target.innerText});
 		this.closeMainMenu();
+	};
+
+	handleExpandIcon = (e) =>
+	{
+	
+		
 	};
 
 	toggleMainMenu = () => this.setState({mainMenuOpen: !this.state.mainMenuOpen});
@@ -84,9 +109,11 @@ export default class LoggedInLayout extends React.Component
 	closeMainMenu = () => this.setState({mainMenuOpen: false});
 
 	render() {
+		
+        
 		return (
 			<MuiThemeProvider>
-			<div>
+			<div style={rootContainer}>
 			<AppBar title={this.state.appBarTitle} style={appBar}
 			zDepth={2}
 			iconElementLeft={
@@ -98,60 +125,48 @@ export default class LoggedInLayout extends React.Component
 					<IconButton>
 					<SocialNotifications color={grey50} />
 					</IconButton>
-					<FlatButton onTouchTap={this.toggleMainMenu}>
+					<IconButton onTouchTap={this.toggleMainMenu}>
 					<ImageDehaze color={grey50} />
-					</FlatButton>
+					</IconButton>
 					</span>		
-				} 
-				/>
+				}/>
 
 				<Drawer
 				docked={false}
-
 				open={this.state.mainMenuOpen}
 				onRequestChange={(mainMenuOpen) => this.setState({mainMenuOpen})}
 				>
-				<Menu>
-				<MenuItem id="project" style={projectMenuItem}>
+				<List>
+				<ListItem id="project" style={projectListItem}>
 				<h3><u>Project name</u></h3>
-				</MenuItem>
+				</ListItem>
 				<Divider />
-				<MenuItem id="channels" style={menuItem} 
-				menuItems={[
-                <MenuItem ><Link to={"chat/"+"General?name=General&key=channel"} style={linkItem} onTouchTap={this.handleChannel}>General</Link></MenuItem>,
-                <MenuItem ><Link to={"chat/"+"Acolyte?name=Acolyte&key=channel"} style={linkItem} onTouchTap={this.handleChannel}>Acolyte</Link></MenuItem>,
-                <MenuItem ><Link to={"chat/"+"Buddy?name=Buddy&key=channel"} style={linkItem} onTouchTap={this.handleChannel}>Buddy</Link></MenuItem>,
-                <MenuItem ><Link to={"chat/"+"Rule?name=Rule&key=channel"} style={linkItem} onTouchTap={this.handleChannel}>Rule</Link></MenuItem>,
-              ]}
-        >
+				<ListItem id="channels" style={listItem} initiallyOpen={true} primaryTogglesNestedList={true}
+				nestedItems={channels}>
 					<strong>Channels</strong>
-				</MenuItem>
-				<MenuItem id="messages" style={menuItem}
-				menuItems={[
-                <MenuItem ><Link to={"chat/"+"Buddy?name=Buddy&key=directChat"} style={linkItem} onTouchTap={this.handleMessages}>Buddy</Link></MenuItem>,
-                <MenuItem ><Link to={"chat/"+"Gobinda?name=Gobinda&key=directChat"} style={linkItem} onTouchTap={this.handleMessages}>Gobinda</Link></MenuItem>,
-                <MenuItem ><Link to={"chat/"+"Ruchika?name=Ruchika&key=directChat"} style={linkItem} onTouchTap={this.handleMessages}>Ruchika</Link></MenuItem>,
-                <MenuItem ><Link to={"chat/"+"Apurv?name=Apurv&key=directChat"} style={linkItem} onTouchTap={this.handleMessages}>Apurv</Link></MenuItem>,
-                <MenuItem ><Link to={"chat/"+"Suganya?name=Suganya&key=directChat"} style={linkItem} onTouchTap={this.handleMessages}>Suganya</Link></MenuItem>,
-                <MenuItem ><Link to={"chat/"+"Ankit?name=Ankit&key=directChat"} style={linkItem} onTouchTap={this.handleMessages}>Ankit</Link></MenuItem>,
-                <MenuItem ><Link to={"chat/"+"Vikram?name=Vikram&key=directChat"} style={linkItem} onTouchTap={this.handleMessages}>Vikram</Link></MenuItem>,
-              ]}
-        >
+				</ListItem>
+				<ListItem id="messages" style={listItem} initiallyOpen={false} primaryTogglesNestedList={true}
+				nestedItems={messages}>
 					<strong>Messages</strong>
-				</MenuItem>
+				</ListItem>
 				<Divider />
-				<MenuItem id="accountSettings" style={menuItem} onTouchTap={this.closeMainMenu}>
+				<ListItem id="accountSettings" style={listItem} initiallyOpen={false} primaryTogglesNestedList={true}
+				nestedItems={[
+					<ListItem ><Link to={"profile/"} style={linkItem} onTouchTap={this.handleAccount}>Profile</Link></ListItem>,
+					<ListItem ><Link to={"buddy/"} style={linkItem} onTouchTap={this.handleAccount}>Buddy</Link></ListItem>,
+					<Divider />
+				]}>
 					<strong>Account settings</strong>
-				</MenuItem>
-				<MenuItem id="notificationSettings" style={menuItem} onTouchTap={this.closeMainMenu}>
+				</ListItem>
+				<ListItem id="notificationSettings" style={listItem} onTouchTap={this.closeMainMenu}>
 					<strong>Notification settings</strong>
-				</MenuItem>
+				</ListItem>
 				<Divider />
-				<MenuItem id="signOut" style={menuItem} onTouchTap={this.closeMainMenu}>
+				<ListItem id="signOut" style={listItem} onTouchTap={this.closeMainMenu}>
 					<strong>Sign out</strong>
-				</MenuItem>
+				</ListItem>
 				<Divider/>
-				</Menu>
+				</List>
 				</Drawer>
 				<div id="content">
 

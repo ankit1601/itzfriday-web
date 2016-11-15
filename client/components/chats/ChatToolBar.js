@@ -9,23 +9,28 @@ import IconMenu from 'material-ui/IconMenu';
 import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
+const styles = {
+	toolbarStyle: {
+		backgroundColor: "white"
+	},
+	toolbarText: {
+		color: "#004d40"
+	}
+}
 
 class ChatToolBar extends Component {
 	constructor(props) {
 		super(props);
-		console.log(props);
-		this.state = {
-			name: this.props.name,
-			key: this.props.key
-		}
 	}
 	render() {
-		const muteText = "Mute "+this.state.name;
-		const leaveText = "Leave "+this.state.name;
+		const name = this.props.name;
+		const identifier = this.props.identifier;
+		const muteText = "Mute "+name;
+		const leaveText = "Leave "+name;
 		return (
-				<Toolbar>
+				<Toolbar style={styles.toolbarStyle}>
 					<ToolbarGroup firstChild={true}>
-						<ToolbarTitle text="test" />
+						<ToolbarTitle text={name} style={styles.toolbarText}/>
 					</ToolbarGroup>
 					<ToolbarGroup>
 						<IconMenu
