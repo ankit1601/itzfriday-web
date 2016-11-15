@@ -13,14 +13,19 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 class ChatToolBar extends Component {
 	constructor(props) {
 		super(props);
+		console.log(props);
+		this.state = {
+			name: this.props.name,
+			key: this.props.key
+		}
 	}
 	render() {
-		const muteText = "Mute "+{this.props.params.name=='undefined'?Buddy:this.props.params.name};
-		const leaveText = "Leave "+this.state.channel.name;
+		const muteText = "Mute "+this.state.name;
+		const leaveText = "Leave "+this.state.name;
 		return (
 				<Toolbar>
 					<ToolbarGroup firstChild={true}>
-						<ToolbarTitle text={this.state.channel.name} />
+						<ToolbarTitle text="test" />
 					</ToolbarGroup>
 					<ToolbarGroup>
 						<IconMenu
