@@ -11,7 +11,7 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
 const styles = {
 	toolbarStyle: {
-		backgroundColor: "white"
+		background: "#e0f2f1"
 	},
 	toolbarText: {
 		color: "#004d40"
@@ -27,38 +27,56 @@ class ChatToolBar extends Component {
 		const identifier = this.props.identifier;
 		const muteText = "Mute "+name;
 		const leaveText = "Leave "+name;
+		const viewName = "View "+name+ "'s profile";
+		const viewChanel = "View "+name+ "'s channels";
 		return (
 				<Toolbar style={styles.toolbarStyle}>
 					<ToolbarGroup firstChild={true}>
 						<ToolbarTitle text={name} style={styles.toolbarText}/>
 					</ToolbarGroup>
 					<ToolbarGroup>
-						<IconMenu
-    						iconButtonElement={<IconButton><SettingsIcon /></IconButton>}
-    						anchorOrigin={{horizontal: 'left', vertical: 'top'}}
-    						targetOrigin={{horizontal: 'left', vertical: 'top'}}
-  						>
+						{this.props.identifier === 'channel' ? 
+							<IconMenu
+    							iconButtonElement={<IconButton><SettingsIcon /></IconButton>}
+    							anchorOrigin={{horizontal: 'left', vertical: 'top'}}
+    							targetOrigin={{horizontal: 'left', vertical: 'top'}}
+  							>
 
-							<MenuItem primaryText="Invite member to join" />
-							<MenuItem primaryText="View channel details" />
-							<Divider />
-							<MenuItem primaryText={muteText} />
-							<Divider />
-							<MenuItem primaryText={leaveText} />
-    					</IconMenu>
-    					<IconMenu
-    						iconButtonElement={<IconButton><i className="material-icons">chrome_reader_mode</i></IconButton>}
-    						anchorOrigin={{horizontal: 'left', vertical: 'top'}}
-    						targetOrigin={{horizontal: 'left', vertical: 'top'}}
-  						>
-  							<MenuItem primaryText="Team Members"/>
-							<MenuItem primaryText="Ankit" rightIcon={<CommunicationChatBubble />}/>
-							<MenuItem primaryText="Apurv" rightIcon={<CommunicationChatBubble />}/>
-							<MenuItem primaryText="Gobinda" rightIcon={<CommunicationChatBubble />}/>
-							<MenuItem primaryText="Suganya" rightIcon={<CommunicationChatBubble />}/>
-							<MenuItem primaryText="Ruchika" rightIcon={<CommunicationChatBubble />}/>
-							<MenuItem primaryText="Vikram" rightIcon={<CommunicationChatBubble />}/>
-    					</IconMenu>
+								<MenuItem primaryText="Invite member to join" />
+								<MenuItem primaryText="View channel details" />
+								<Divider />
+								<MenuItem primaryText={muteText} />
+								<Divider />
+								<MenuItem primaryText={leaveText} />
+    						</IconMenu> : 
+    						<IconMenu
+    							iconButtonElement={<IconButton><SettingsIcon /></IconButton>}
+    							anchorOrigin={{horizontal: 'left', vertical: 'top'}}
+    							targetOrigin={{horizontal: 'left', vertical: 'top'}}
+  							>
+
+								<MenuItem primaryText={viewName} />
+								<MenuItem primaryText={viewChanel} />
+								<Divider />
+								<MenuItem primaryText={muteText} />
+    						</IconMenu>
+    					}
+    					{this.props.identifier === 'channel' ? 
+    						<IconMenu
+    							iconButtonElement={<IconButton><i className="material-icons">chrome_reader_mode</i></IconButton>}
+    							anchorOrigin={{horizontal: 'left', vertical: 'top'}}
+    							targetOrigin={{horizontal: 'left', vertical: 'top'}}
+  							>
+  								<MenuItem primaryText="Team Members"/>
+								<MenuItem primaryText="Ankit" rightIcon={<CommunicationChatBubble />}/>
+								<MenuItem primaryText="Apurv" rightIcon={<CommunicationChatBubble />}/>
+								<MenuItem primaryText="Gobinda" rightIcon={<CommunicationChatBubble />}/>
+								<MenuItem primaryText="Suganya" rightIcon={<CommunicationChatBubble />}/>
+								<MenuItem primaryText="Ruchika" rightIcon={<CommunicationChatBubble />}/>
+								<MenuItem primaryText="Vikram" rightIcon={<CommunicationChatBubble />}/>
+    						</IconMenu> : 
+    						''
+    					}
     					<ToolbarSeparator />
     					<IconMenu
     						iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
