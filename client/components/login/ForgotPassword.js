@@ -9,14 +9,12 @@ import FormsyText from 'formsy-material-ui/lib/FormsyText';
 import Formsy from 'formsy-react';
 import Paper from 'material-ui/Paper';
 import { Card, CardHeader, CardMedia } from 'material-ui/Card';
-import { Link } from 'react-router';
-import FlatButton from 'material-ui/FlatButton';
-import ChangePassword from './ChangePassword';
-import Dialog from 'material-ui/Dialog';
+
 const errorMessages = {
   emailError: "Please enter valid email",
   numericError: "Please provide a password"
 };
+
 export default class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -24,10 +22,8 @@ export default class Login extends React.Component {
     this.disableButton = this.disableButton.bind(this);
     this.submitForm = this.submitForm.bind(this);
     this.notifyFormError = this.notifyFormError.bind(this);
-    this.changeStateDialogue = this.changeStateDialogue.bind(this);
-    this.handleClose = this.handleClose.bind(this);
     this.state = {
-      canSubmit: false,open:false
+      canSubmit: false
     };
   }
   enableButton() {
@@ -49,37 +45,17 @@ export default class Login extends React.Component {
   notifyFormError(data) {
     console.error('Form error:', data);
   }
-  changeStateDialogue(){
-    this.setState({open:true});
-          
-  }
-  handleClose(){
-    this.setState({open:false});
-  }
   render() {
     const muiTheme1 = getMuiTheme({
       palette: {
         background: red500,
       }
     });
-    const imageSize = {
-      mystyle: {
-        height: 100,
-        width: 100
-      }
-    };
     const styles = {
-      paper: {
-        padding: '50px'
+      paper:{
+        padding:'50px'
       }
     }
-    const actions = [
-      <FlatButton
-                  label="cancel"
-                  primary={ true }
-                  onTouchTap={ this.handleClose }/>
-    ];
-
     return (
       <div>
         <Grid>
@@ -93,13 +69,6 @@ export default class Login extends React.Component {
               <Paper
                      zDepth={ 2 }
                      style={ styles.paper }>
-                <Col
-                     lg={ 12 }
-                     md={ 12 }
-                     sm={ 12 }
-                     xs={ 12 }>
-                <ActionAccountCircle style={ imageSize.mystyle } />
-                </Col>
                 <Col
                      lg={ 12 }
                      md={ 12 }
@@ -127,56 +96,7 @@ export default class Login extends React.Component {
                                 updateImmediately />
                     </Col>
                   </Row>
-                  <Row center="xs">
-                    <Col
-                         lg={ 12 }
-                         md={ 12 }
-                         sm={ 12 }
-                         xs={ 12 }>
-                    <FormsyText
-                                type="password"
-                                name="password"
-                                validationError={ errorMessages.numericError }
-                                required
-                                hintText="Enter your password"
-                                floatingLabelText="Password"
-                                updateImmediately />
-                    </Col>
-                  </Row>
                   <Row>
-                    <Col
-                         lg={ 12 }
-                         md={ 12 }
-                         sm={ 12 }
-                         xs={ 12 }>
-                    <Link to={ "login/ForgotPassword" }>  
-                    <FlatButton
-                                label="Forgot Password?"
-                                secondary={ true }></FlatButton>
-                    </Link>
-                    </Col>
-                    <Col
-                         lg={ 12 }
-                         md={ 12 }
-                         sm={ 12 }
-                         xs={ 12 }> 
-                    <FlatButton
-                                label="Change Password?"
-                                secondary={ true } onClick = {this.changeStateDialogue}></FlatButton>
-                    <Col lg={ 12 }
-                         md={ 12 }
-                         sm={ 12 }
-                         xs={ 12 }><Dialog
-                                title="Change Password Here"
-                                actions={ actions }
-                                modal={ false }
-                                open={ this.state.open }
-                                onRequestClose={this.handleClose}>
-                                <ChangePassword/>
-                    </Dialog>
-                    </Col>
-
-                    </Col>
                     <Col
                          lg={ 12 }
                          md={ 12 }
@@ -184,12 +104,10 @@ export default class Login extends React.Component {
                          xs={ 12 }>
                     <RaisedButton
                                   type="submit"
-                                  label="Login"
+                                  label="Reset Password"
                                   primary={ true }
                                   disabled={ !this.state.canSubmit } />
                     </Col>
-                  </Row>
-                  <Row>
                   </Row>
                 </Formsy.Form>
                 </Col>
