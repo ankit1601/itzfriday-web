@@ -191,7 +191,7 @@ class ChatWindow extends Component {
                 <span style={styles.author}>BOB</span>
                 <span style={styles.timestamp}>19:00:06 pm</span>
                 </div>
-                <p style={styles.messageBody}>Hey! Thank you for your patience. Your repository is created. Here is the link: https://github.com/GO345724/react-app </p>
+                <p style={styles.messageBody}>Hey! Thank you for your patience. Your repository is created. Here is the link: <a href="#">https://github.com/GO345724/react-app</a></p>
               </div>
             </li>
             <li style = {styles.message}>
