@@ -35,6 +35,7 @@ const iconButton = {
 const container = {
 	margin: '10px 0px 10px 0px',
 	padding: '10px',
+	background: "#e0f2f1"
 };
 
 const appBar = {
@@ -66,27 +67,20 @@ export default class LoggedInLayout extends React.Component
 
 		this.state = {mainMenuOpen: false, appBarTitle: 'Buddy'};
 
-		messages.push(<ListItem key={0} leftIcon={<SocialPerson />}><Link to={"chat/"+"?name=Buddy&key=message"} style={linkItem} onTouchTap={this.handleMessages}>Buddy</Link></ListItem>);
-		messages.push(<ListItem key={1} leftIcon={<SocialPerson />}><Link to={"chat/"+"?name=Gobinda&key=message"} style={linkItem} onTouchTap={this.handleMessages}>Gobinda</Link></ListItem>);
-		messages.push(<ListItem key={2} leftIcon={<SocialPerson />}><Link to={"chat/"+"?name=Ruchika&key=message"} style={linkItem} onTouchTap={this.handleMessages}>Ruchika</Link></ListItem>);
-		messages.push(<ListItem key={3} leftIcon={<SocialPerson />}><Link to={"chat/"+"?name=Apurv&key=message"} style={linkItem} onTouchTap={this.handleMessages}>Apurv</Link></ListItem>);
-		messages.push(<ListItem key={4} leftIcon={<SocialPerson />}><Link to={"chat/"+"?name=Suganya&key=message"} style={linkItem} onTouchTap={this.handleMessages}>Suganya</Link></ListItem>);
-		messages.push(<ListItem key={5} leftIcon={<SocialPerson />}><Link to={"chat/"+"?name=Ankit&key=message"} style={linkItem} onTouchTap={this.handleMessages}>Ankit</Link></ListItem>);
-		messages.push(<ListItem key={6} leftIcon={<SocialPerson />}><Link to={"chat/"+"?name=Vikram&key=message"} style={linkItem} onTouchTap={this.handleMessages}>Vikram</Link></ListItem>);
+		messages.push(<ListItem key={0} leftIcon={<SocialPerson />}><Link to={"chat/"+"?name=Buddy&identifier=message"} style={linkItem} onTouchTap={this.handleMessages}>Buddy</Link></ListItem>);
+		messages.push(<ListItem key={1} leftIcon={<SocialPerson />}><Link to={"chat/"+"?name=Gobinda&identifier=message"} style={linkItem} onTouchTap={this.handleMessages}>Gobinda</Link></ListItem>);
+		messages.push(<ListItem key={2} leftIcon={<SocialPerson />}><Link to={"chat/"+"?name=Ruchika&identifier=message"} style={linkItem} onTouchTap={this.handleMessages}>Ruchika</Link></ListItem>);
+		messages.push(<ListItem key={3} leftIcon={<SocialPerson />}><Link to={"chat/"+"?name=Apurv&identifier=message"} style={linkItem} onTouchTap={this.handleMessages}>Apurv</Link></ListItem>);
+		messages.push(<ListItem key={4} leftIcon={<SocialPerson />}><Link to={"chat/"+"?name=Suganya&identifier=message"} style={linkItem} onTouchTap={this.handleMessages}>Suganya</Link></ListItem>);
+		messages.push(<ListItem key={5} leftIcon={<SocialPerson />}><Link to={"chat/"+"?name=Ankit&identifier=message"} style={linkItem} onTouchTap={this.handleMessages}>Ankit</Link></ListItem>);
+		messages.push(<ListItem key={6} leftIcon={<SocialPerson />}><Link to={"chat/"+"?name=Vikram&identifier=message"} style={linkItem} onTouchTap={this.handleMessages}>Vikram</Link></ListItem>);
 		
-<<<<<<< HEAD
-		channels.push(<ListItem key={0} leftIcon={<HardwareTv />}><Link to={"channel/"+"?name=General&key=channel"} style={linkItem} onTouchTap={this.handleChannel}>General</Link></ListItem>);
-		channels.push(<ListItem key={1} leftIcon={<HardwareTv />}><Link to={"channel/"+"?name=Acolyte&key=channel"} style={linkItem} onTouchTap={this.handleChannel}>Acolyte</Link></ListItem>);
-        channels.push(<ListItem key={2} leftIcon={<HardwareTv />}><Link to={"channel/"+"?name=Buddy&key=channel"} style={linkItem} onTouchTap={this.handleChannel}>Buddy</Link></ListItem>);
-        channels.push(<ListItem key={3} leftIcon={<HardwareTv />}><Link to={"channel/"+"?name=Rule&key=channel"} style={linkItem} onTouchTap={this.handleChannel}>Rule</Link></ListItem>);
-=======
-		channels.push(<ListItem key={0} leftIcon={<HardwareTv />}><Link to={"chat/"+"?name=General&key=channel"} style={linkItem} onTouchTap={this.handleChannel}>General</Link></ListItem>);
-		channels.push(<ListItem leftIcon={<HardwareTv />}><Link to={"chat/"+"?name=Acolyte&key=channel"} style={linkItem} onTouchTap={this.handleChannel}>Acolyte</Link></ListItem>);
-        channels.push(<ListItem leftIcon={<HardwareTv />}><Link to={"chat/"+"?name=Buddy&key=channel"} style={linkItem} onTouchTap={this.handleChannel}>Buddy</Link></ListItem>);
-        channels.push(<ListItem leftIcon={<HardwareTv />}><Link to={"chat/"+"?name=Rule&key=channel"} style={linkItem} onTouchTap={this.handleChannel}>Rule</Link></ListItem>);
->>>>>>> e04d4fc550b67a89ce3605fa00cde5b7da289ac4
+		channels.push(<ListItem key={7} leftIcon={<HardwareTv />}><Link to={"chat/"+"?name=General&identifier=channel"} style={linkItem} onTouchTap={this.handleChannel}>General</Link></ListItem>);
+		channels.push(<ListItem key={8} leftIcon={<HardwareTv />}><Link to={"chat/"+"?name=Acolyte&identifier=channel"} style={linkItem} onTouchTap={this.handleChannel}>Acolyte</Link></ListItem>);
+        channels.push(<ListItem key={9} leftIcon={<HardwareTv />}><Link to={"chat/"+"?name=Buddy&identifier=channel"} style={linkItem} onTouchTap={this.handleChannel}>Buddy</Link></ListItem>);
+        channels.push(<ListItem key={10} leftIcon={<HardwareTv />}><Link to={"chat/"+"?name=Rule&identifier=channel"} style={linkItem} onTouchTap={this.handleChannel}>Rule</Link></ListItem>);
         channels.push(<Divider />);
-        channels.push(<ListItem key={4} leftIcon={<ContentAddCircle />}><Link to={"channel/"} style={linkItem} onTouchTap={this.handleChannel}>Create channel</Link></ListItem>);
+        channels.push(<ListItem key={11} leftIcon={<ContentAddCircle />}><Link to={"channel/"} style={linkItem} onTouchTap={this.handleChannel}>Create channel</Link></ListItem>);
         channels.push(<Divider />);
 	}
 
@@ -177,7 +171,7 @@ export default class LoggedInLayout extends React.Component
 				</Drawer>
 				<div id="content">
 
-					<Paper id="container" zDepth={2} style={container}>
+					<Paper id="container" style={container}>
 						
 					{this.props.children}
 					</Paper>
