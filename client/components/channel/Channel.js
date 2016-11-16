@@ -16,7 +16,7 @@ export default class Channel extends React.Component
 	{
 		return(
 			<div>
-				This is a {this.props.location.query.name} channel chat window at {this.props.location.query.key}.
+				This is a {this.props.location.query.name} channel chat window at {this.props.location.query.identifier}.
 			</div>
 			);
 	}
