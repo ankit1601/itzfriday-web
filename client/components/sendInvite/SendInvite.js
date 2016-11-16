@@ -8,7 +8,10 @@ import ContentAddCircleOutline from 'material-ui/svg-icons/content/add-circle-ou
 import ActionAccountCircle from 'material-ui/svg-icons/action/account-circle';
 import Chip from 'material-ui/Chip';
 import Avatar from 'material-ui/Avatar';
+import {Grid, Row, Col} from 'react-flexbox-grid'
+import RaisedButton from 'material-ui/RaisedButton';
 import {grey400,cyan50,red500,grey500,grey100,blueGrey100,blueGrey50,teal100} from 'material-ui/styles/colors';
+import {Link} from 'react-router';
 
 
 var previous="blank";
@@ -23,15 +26,12 @@ const styles = {
         display: 'flex',
         flexWrap: 'wrap',
       },
-      divWrapper:{
-      	marginLeft:600
-      },
-      paperWrapper:{
-      	width:600,
-      	marginLeft:500,
-      	marginTop:100,
-      },
-      underlineStyle:{borderColor: red500,color:red500}
+      paperStyle:{
+      	backgroundColor:blueGrey50,
+    	height:window.innerHeight,
+    	padding:10,
+    	width:"100%"
+      }
     };
 export default class SendInvite extends React.Component
 {
@@ -41,6 +41,7 @@ export default class SendInvite extends React.Component
 		this.handleAdd=this.handleAdd.bind(this);
 		this.handleAddClick=this.handleAddClick.bind(this);
 		this.state={email:'',addIconState:true,errorMsg:'',chipData:[]}
+		this.sendInvite=this.sendInvite.bind(this);
 	}	
 	handleAdd(event)
 	{	
@@ -110,13 +111,23 @@ export default class SendInvite extends React.Component
 	    else
 	    	this.setState({errorMsg:"Email already Entered"})
 	}
+	sendInvite()
+	{
+		console.log("in sendInvite");
+		this.props.route.checkLoggedIn(true);
+		console.log(this.props.route.checkLoggedIn(true));
+
+	}
 	render()
 	{	
-		return(
-		<Paper style={styles.paperWrapper}>
-			<h2 style={{textAlign:'center',paddingTop:50}}>Invite Team Members</h2>
+		return(<Grid>
+		<Paper style={styles.paperStyle}>
+			<Row center="xs">
+			<h2>Invite Team Members</h2>
+			</Row>
+
+			<Row center="xs">
 			<TextField type="email"
-			style={{marginLeft:150}}
 			floatingLabelText="Email Address"
 			onChange={this.handleAdd}
 			errorText={this.state.errorMsg}/>
@@ -125,7 +136,25 @@ export default class SendInvite extends React.Component
 				onClick={this.handleAddClick}>
 				<ContentAddCircleOutline/>
 			</IconButton>
+			</Row>
+
+			<Row center="xs">
 			<div id="chipArea" style={{marginLeft:90,paddingTop:25,paddingBottom:50}}></div>
-		</Paper>);
+			</Row>
+			<Row center="xs">
+			<RaisedButton 
+                          label="Skip"
+                          backgroundColor='#D32F2F'
+   						style={{marginRight:20}}
+   						onClick={this.sendInvite}/>
+        
+            <RaisedButton 
+                          label="Send Invite"
+                          backgroundColor='#4CAF50'
+                          onClick={this.sendInvite}/>
+
+			</Row>
+        </Paper>
+				</Grid>);
 	}
 }

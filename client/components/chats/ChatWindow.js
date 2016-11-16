@@ -112,7 +112,7 @@ class ChatWindow extends Component {
   }
 
   submitForm(data) {
-    alert(JSON.stringify(data, null, 4));
+    console.log(JSON.stringify(data, null, 4));
   }
 
   notifyFormError(data) {
