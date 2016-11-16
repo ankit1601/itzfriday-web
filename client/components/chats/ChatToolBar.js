@@ -8,10 +8,13 @@ import ViewList from 'material-ui/svg-icons/action/view-list';
 import IconMenu from 'material-ui/IconMenu';
 import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import Paper from 'material-ui/Paper';
 
 const styles = {
 	toolbarStyle: {
-		background: "#e0f2f1"
+		background: "white",
+		width: "100%",
+		textIndent: '20px',	
 	},
 	toolbarText: {
 		color: "#004d40"
@@ -30,6 +33,7 @@ class ChatToolBar extends Component {
 		const viewName = "View "+name+ "'s profile";
 		const viewChanel = "View "+name+ "'s channels";
 		return (
+			<Paper zDepth={1}>
 				<Toolbar style={styles.toolbarStyle}>
 					<ToolbarGroup firstChild={true}>
 						<ToolbarTitle text={name} style={styles.toolbarText}/>
@@ -91,6 +95,7 @@ class ChatToolBar extends Component {
     					</IconMenu>
 					</ToolbarGroup>
 				</Toolbar>
+				</Paper>
 			)
 	}
 }

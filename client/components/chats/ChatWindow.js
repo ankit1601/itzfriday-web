@@ -3,13 +3,13 @@ import {Grid, Row, Col} from 'react-flexbox-grid';
 import Formsy from 'formsy-react';
 import FormsyText from 'formsy-material-ui/lib/FormsyText';
 import RaisedButton from 'material-ui/RaisedButton';
+import Paper from 'material-ui/Paper';
 
 const styles = {
   chatBox: {
     position: "relative",
     height: "100%",
     background: "white",
-    border: "1px solid #dae2e3",
     padding: 0
   },
   messageList: {
@@ -119,7 +119,7 @@ class ChatWindow extends Component {
   }
 	render() {
 		return (
-				<div style={styles.chatBox}>
+				<Paper zDepth={1} style={styles.chatBox}>
           <ul style= {styles.messageList}>
             <li style = {styles.message}>
               <div style = {styles.profilePic}>
@@ -271,7 +271,7 @@ class ChatWindow extends Component {
               </div>
             </Formsy.Form>
           </div>
-        </div>
+        </Paper>
 			)
 	}
 }

@@ -12,6 +12,7 @@ import {List, ListItem} from 'material-ui/List';
 import Paper from 'material-ui/Paper';
 import Drawer from 'material-ui/Drawer';
 import Divider from 'material-ui/Divider';
+import Avatar from 'material-ui/Avatar';
 
 import SocialNotifications from 'material-ui/svg-icons/social/notifications';
 import SocialPerson from 'material-ui/svg-icons/social/person';
@@ -119,9 +120,9 @@ export default class LoggedInLayout extends React.Component
 			<AppBar title={this.state.appBarTitle} style={styles.appBar}
 			zDepth={2}
 			iconElementLeft={
-				<IconButton>
-				<img src="./../../resources/images/buddy.png" alt="qwerty" height="30"/>
-				</IconButton>}
+				<span>
+				<Avatar backgroundColor={"#004D40"} src="./../../resources/images/buddy.png" alt="qwerty" height="30"/>
+				</span>}
 				iconElementRight={
 					<span>
 					<IconButton>
