@@ -24,8 +24,6 @@ export default class Login extends React.Component {
     this.disableButton = this.disableButton.bind(this);
     this.submitForm = this.submitForm.bind(this);
     this.notifyFormError = this.notifyFormError.bind(this);
-    this.changeStateDialogue = this.changeStateDialogue.bind(this);
-    this.handleClose = this.handleClose.bind(this);
     this.state = {
       canSubmit: false,open:false
     };
@@ -49,19 +47,7 @@ export default class Login extends React.Component {
   notifyFormError(data) {
     console.error('Form error:', data);
   }
-  changeStateDialogue(){
-    this.setState({open:true});
-          
-  }
-  handleClose(){
-    this.setState({open:false});
-  }
   render() {
-    const muiTheme1 = getMuiTheme({
-      palette: {
-        background: red500,
-      }
-    });
     const imageSize = {
       mystyle: {
         height: 100,
@@ -71,17 +57,13 @@ export default class Login extends React.Component {
     const styles = {
       paper: {
         padding: '50px'
+      },
+      bodyBackground:{
+        background:"url('../images/background.jpeg')"
       }
     }
-    const actions = [
-      <FlatButton
-                  label="cancel"
-                  primary={ true }
-                  onTouchTap={ this.handleClose }/>
-    ];
-
     return (
-      <div>
+      <div style={styles.bodyBackground}>
         <Grid>
           <Row>
             <Col
@@ -154,28 +136,6 @@ export default class Login extends React.Component {
                                 label="Forgot Password?"
                                 secondary={ true }></FlatButton>
                     </Link>
-                    </Col>
-                    <Col
-                         lg={ 12 }
-                         md={ 12 }
-                         sm={ 12 }
-                         xs={ 12 }> 
-                    <FlatButton
-                                label="Change Password?"
-                                secondary={ true } onClick = {this.changeStateDialogue}></FlatButton>
-                    <Col lg={ 12 }
-                         md={ 12 }
-                         sm={ 12 }
-                         xs={ 12 }><Dialog
-                                title="Change Password Here"
-                                actions={ actions }
-                                modal={ false }
-                                open={ this.state.open }
-                                onRequestClose={this.handleClose}>
-                                <ChangePassword/>
-                    </Dialog>
-                    </Col>
-
                     </Col>
                     <Col
                          lg={ 12 }

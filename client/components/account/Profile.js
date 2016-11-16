@@ -9,6 +9,7 @@ import FlatButton from 'material-ui/FlatButton';
 import Paper from 'material-ui/Paper';
 import { FormsyCheckbox, FormsyDate, FormsyRadio, FormsyRadioGroup,
     FormsySelect, FormsyText, FormsyTime, FormsyToggle } from 'formsy-material-ui/lib';
+import ChangePassword from './../login/ChangePassword';
 
 const styles = {
 
@@ -51,9 +52,11 @@ export default class Profile extends React.Component {
   constructor(props)
   {
     super(props);
-    this.state={canSubmit:false};
+    this.state={canSubmit:false,open:false};
     this.enableButton=this.enableButton.bind(this);
     this.disableButton=this.disableButton.bind(this);
+        this.changeStateDialogue = this.changeStateDialogue.bind(this);
+    this.handleClose = this.handleClose.bind(this);
   }
   enableButton() {
     this.setState({canSubmit: true,});
@@ -67,8 +70,20 @@ export default class Profile extends React.Component {
   notifyFormError(data) {
     console.error('Form error:', data);
   }
-
+  changeStateDialogue(){
+    this.setState({open:true});
+          
+  }
+  handleClose(){
+    this.setState({open:false});
+  }
   render() {
+    const actions = [
+      <FlatButton
+                  label="cancel"
+                  primary={ true }
+                  onTouchTap={ this.handleClose }/>
+    ];
     return (
       <div style={styles.stylePage}>
           <Paper style={styles.paperStyle}>
@@ -116,9 +131,17 @@ export default class Profile extends React.Component {
                  floatingLabelText="Email" />
                 <br /><br />
 
-                <FlatButton label="Change Password" backgroundColor="#4CAF50" labelStyle={styles.stylePassword} hoverColor="#1B5E20" />
-                <br /><br />
-
+                <FlatButton label="Change Password" backgroundColor="#4CAF50" labelStyle={styles.stylePassword} hoverColor="#1B5E20" secondary={ true } onClick = {this.changeStateDialogue} />
+                <br />
+                      <Dialog
+                                title="Change Password Here"
+                                actions={ actions }
+                                modal={ false }
+                                open={ this.state.open }
+                                onRequestClose={this.handleClose}>
+                                <ChangePassword/>
+                    </Dialog>
+                <br/>
                 <RaisedButton
                  label="cancel"
                  labelColor="white"
