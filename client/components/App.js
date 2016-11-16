@@ -14,7 +14,7 @@ class App extends Component {
 			<Route path="/" component={LoggedInLayout}>
 			<IndexRoute component={Message}></IndexRoute>
 			<Route path="chat/" component={Chat}></Route>
-			<Route path="channel/" component={Channel}></Route>
+			<Route path="addChannel/" component={Channel}></Route>
 			<Route path="profile/" component={Profile}></Route>
 			<Route path="buddy/" component={Channel}></Route>
 			</Route>
