@@ -41,6 +41,7 @@ export default class Login extends React.Component {
   }
 
   submitForm(data) {
+
     alert(JSON.stringify(data, null, 4));
   }
 
@@ -58,13 +59,13 @@ export default class Login extends React.Component {
       paper: {
         padding: '50px'
       },
-      bodyBackground:{
-        background:"url('../images/background.jpeg')"
+      gridAlign: {
+        margin:'auto',
+        marginTop: window.innerHeight/4
       }
     }
     return (
-      <div style={styles.bodyBackground}>
-        <Grid>
+        <Grid style={styles.gridAlign}>
           <Row>
             <Col
                  lg={ 12 }
@@ -74,7 +75,7 @@ export default class Login extends React.Component {
             <Row center="xs">
               <Paper
                      zDepth={ 2 }
-                     style={ styles.paper }>
+                     style={styles.paper}>
                 <Col
                      lg={ 12 }
                      md={ 12 }
@@ -131,7 +132,7 @@ export default class Login extends React.Component {
                          md={ 12 }
                          sm={ 12 }
                          xs={ 12 }>
-                    <Link to={ "login/ForgotPassword" }>  
+                    <Link to={ "ForgotPassword/" }>  
                     <FlatButton
                                 label="Forgot Password?"
                                 secondary={ true }></FlatButton>
@@ -146,7 +147,7 @@ export default class Login extends React.Component {
                                   type="submit"
                                   label="Login"
                                   primary={ true }
-                                  disabled={ !this.state.canSubmit } />
+                                  disabled={ !this.state.canSubmit }/>
                     </Col>
                   </Row>
                   <Row>
@@ -158,7 +159,6 @@ export default class Login extends React.Component {
             </Col>
           </Row>
         </Grid>
-      </div>
       );
   }
 }

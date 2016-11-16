@@ -1,14 +1,24 @@
 import React, { Component } from 'react';
 import {Router, Route, hashHistory, IndexRoute} from 'react-router';
 import LoggedInLayout from './layout/loggedIn/LoggedInLayout';
+import NotLoggedInLayout from './layout/notloggedin/NotLoggedInLayout';
 import Message from './message/Message';
 import Channel from './channel/Channel';
 import Profile from './account/Profile';
 import Chat from './chats/ChatBox';
+import Login from './login/Login';
+import ForgotPassword from './login/ForgotPassword';
 
 class App extends Component {
-	
+	constructor(props)
+	{
+		super(props);
+		this.state={loggedIn : false};
+	}
 	render() {
+		
+		if(this.state.loggedIn)
+		{
 		return (
 			<Router history={hashHistory}>
 			<Route path="/" component={LoggedInLayout}>
@@ -19,7 +29,20 @@ class App extends Component {
 			<Route path="buddy/" component={Channel}></Route>
 			</Route>
 			</Router>
-			)
+			);
+		}
+		else
+		{
+			
+		return (
+			<Router history={hashHistory}>
+			<Route path="/" component={NotLoggedInLayout}>
+				<IndexRoute component={Login}></IndexRoute>
+				<Route path="ForgotPassword/" component={ForgotPassword}></Route>
+			</Route>
+			</Router>
+			);	
+		}
 	}
 }
 
