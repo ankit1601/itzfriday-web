@@ -6,6 +6,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import ImageAddAPhoto from 'material-ui/svg-icons/image/add-a-photo';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import {Grid, Row, Col} from 'react-flexbox-grid';
 import Paper from 'material-ui/Paper';
 import { FormsyCheckbox, FormsyDate, FormsyRadio, FormsyRadioGroup,
     FormsySelect, FormsyText, FormsyTime, FormsyToggle } from 'formsy-material-ui/lib';
@@ -15,33 +16,27 @@ const styles = {
   exampleImageInput: {
     cursor: 'pointer',
     position: 'absolute',
-    top: 0,
-    bottom: 0,
-    right: 0,
-    left: 0,
+    
     width: '100%',
-    opacity: 0,
+    opacity: '0',
   },
   paperStyle: {
-   height: 600,
-  width: 400,
-  marginLeft: 200,
+  width: '100%',
+  margin: 'auto',
   textAlign: 'center',
-  display: 'inline-block'
+  display: 'inline-block',
+  padding: '10px',
   },
-  styleContent: {
-    marginTop:10
-  },
+  
   styleButtonSubmit: {
-    marginLeft:10,
+    marginLeft:'10px',
   },
   styleTitle: {
     backgroundColor: '#004D40',
     color: 'white'
   },
   stylePage: {
-    marginLeft: 350,
-    marginTop: 30
+    margin: 'auto',
   },
   stylePassword: {
     color:'white'
@@ -70,9 +65,12 @@ export default class Profile extends React.Component {
 
   render() {
     return (
+      <Grid>
+      <Row>
+      <Col xs={12} sm={12} md={12} lg={12}>
       <div style={styles.stylePage}>
           <Paper style={styles.paperStyle}>
-          <div style={styles.styleContent}>
+          <div>
               <Avatar size={150} src="./../../resources/images/userAvatar.jpg" />
               <div>
                 <FlatButton label="Choose Picture" primary={true} icon={<ImageAddAPhoto/>} >
@@ -136,6 +134,9 @@ export default class Profile extends React.Component {
               </div>
         </Paper>
         </div>
+        </Col>
+        </Row>
+        </Grid>
     );
   }
 }

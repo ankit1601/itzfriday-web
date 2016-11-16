@@ -12,6 +12,7 @@ import Paper from 'material-ui/Paper';
 
 const styles = {
 	toolbarStyle: {
+		margin: '0px 0px 0px 0px',
 		background: "white",
 		width: "100%",
 		textIndent: '20px',	

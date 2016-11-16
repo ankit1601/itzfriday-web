@@ -34,8 +34,8 @@ iconButton : {
 },
 
 container : {
-	margin: '10px 0px 10px 0px',
-	padding: '10px',
+	margin: '0px 0px 0px 0px',
+	padding: '0px 0px 0px 0px',
 	background: "#e0f2f1"
 },
 
@@ -155,7 +155,7 @@ export default class LoggedInLayout extends React.Component
 				<Divider />
 				<ListItem id="accountSettings" key="accountSettings" style={styles.listItem} initiallyOpen={false} primaryTogglesNestedList={true}
 				nestedItems={[
-					<ListItem key="profile" ><Link to={"profile/"} style={styles.linkItem} onTouchTap={this.handleAccount}>Profile</Link></ListItem>,
+					<ListItem leftIcon={<SocialPerson />} key="profile" ><Link to={"profile/"} style={styles.linkItem} onTouchTap={this.handleAccount}>Profile</Link></ListItem>,
 					<ListItem key="buddy" ><Link to={"buddy/"} style={styles.linkItem} onTouchTap={this.handleAccount}>Buddy</Link></ListItem>,
 					<Divider />
 				]}>

@@ -7,6 +7,11 @@ import Profile from './account/Profile';
 import Chat from './chats/ChatBox';
 
 class App extends Component {
+	constructor(props)
+	{
+		super(props);
+
+	}
 	
 	render() {
 		return (
