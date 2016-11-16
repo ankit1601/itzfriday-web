@@ -3,6 +3,8 @@ import {Router, Route, hashHistory, IndexRoute} from 'react-router';
 import LoggedInLayout from './layout/loggedIn/LoggedInLayout';
 import Message from './message/Message';
 import Channel from './channel/Channel';
+import Profile from './account/Profile';
+import Chat from './chats/ChatBox';
 
 class App extends Component {
 	
@@ -11,8 +13,10 @@ class App extends Component {
 			<Router history={hashHistory}>
 			<Route path="/" component={LoggedInLayout}>
 			<IndexRoute component={Message}></IndexRoute>
-			<Route path="message/:name" component={Message}></Route>
-			<Route path="channel/:name" component={Channel}></Route>
+			<Route path="chat/" component={Chat}></Route>
+			<Route path="addChannel/" component={Channel}></Route>
+			<Route path="profile/" component={Profile}></Route>
+			<Route path="buddy/" component={Channel}></Route>
 			</Route>
 			</Router>
 			)
