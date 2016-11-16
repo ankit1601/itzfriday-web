@@ -24,8 +24,6 @@ export default class Login extends React.Component {
     this.disableButton = this.disableButton.bind(this);
     this.submitForm = this.submitForm.bind(this);
     this.notifyFormError = this.notifyFormError.bind(this);
-    this.changeStateDialogue = this.changeStateDialogue.bind(this);
-    this.handleClose = this.handleClose.bind(this);
     this.state = {
       canSubmit: false,open:false
     };
@@ -43,25 +41,14 @@ export default class Login extends React.Component {
   }
 
   submitForm(data) {
-    alert(JSON.stringify(data, null, 4));
+    console.log(JSON.stringify(data, null, 4));
+    this.props.route.checkLoggedIn(true);
   }
 
   notifyFormError(data) {
     console.error('Form error:', data);
   }
-  changeStateDialogue(){
-    this.setState({open:true});
-          
-  }
-  handleClose(){
-    this.setState({open:false});
-  }
   render() {
-    const muiTheme1 = getMuiTheme({
-      palette: {
-        background: red500,
-      }
-    });
     const imageSize = {
       mystyle: {
         height: 100,
@@ -71,18 +58,14 @@ export default class Login extends React.Component {
     const styles = {
       paper: {
         padding: '50px'
+      },
+      gridAlign: {
+        margin:'auto',
+        marginTop: window.innerHeight/4
       }
     }
-    const actions = [
-      <FlatButton
-                  label="cancel"
-                  primary={ true }
-                  onTouchTap={ this.handleClose }/>
-    ];
-
     return (
-      <div>
-        <Grid>
+        <Grid style={styles.gridAlign}>
           <Row>
             <Col
                  lg={ 12 }
@@ -92,7 +75,7 @@ export default class Login extends React.Component {
             <Row center="xs">
               <Paper
                      zDepth={ 2 }
-                     style={ styles.paper }>
+                     style={styles.paper}>
                 <Col
                      lg={ 12 }
                      md={ 12 }
@@ -149,33 +132,11 @@ export default class Login extends React.Component {
                          md={ 12 }
                          sm={ 12 }
                          xs={ 12 }>
-                    <Link to={ "login/ForgotPassword" }>  
+                    <Link to={ "ForgotPassword/" }>  
                     <FlatButton
                                 label="Forgot Password?"
                                 secondary={ true }></FlatButton>
                     </Link>
-                    </Col>
-                    <Col
-                         lg={ 12 }
-                         md={ 12 }
-                         sm={ 12 }
-                         xs={ 12 }> 
-                    <FlatButton
-                                label="Change Password?"
-                                secondary={ true } onClick = {this.changeStateDialogue}></FlatButton>
-                    <Col lg={ 12 }
-                         md={ 12 }
-                         sm={ 12 }
-                         xs={ 12 }><Dialog
-                                title="Change Password Here"
-                                actions={ actions }
-                                modal={ false }
-                                open={ this.state.open }
-                                onRequestClose={this.handleClose}>
-                                <ChangePassword/>
-                    </Dialog>
-                    </Col>
-
                     </Col>
                     <Col
                          lg={ 12 }
@@ -186,7 +147,7 @@ export default class Login extends React.Component {
                                   type="submit"
                                   label="Login"
                                   primary={ true }
-                                  disabled={ !this.state.canSubmit } />
+                                  disabled={ !this.state.canSubmit }/>
                     </Col>
                   </Row>
                   <Row>
@@ -198,7 +159,6 @@ export default class Login extends React.Component {
             </Col>
           </Row>
         </Grid>
-      </div>
       );
   }
 }

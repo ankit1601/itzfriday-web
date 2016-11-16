@@ -21,6 +21,7 @@ import ContentAddCircle from 'material-ui/svg-icons/content/add-circle';
 import HardwareTv from 'material-ui/svg-icons/hardware/tv';
 import NavigationExpandMore from 'material-ui/svg-icons/navigation/expand-more';
 import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less';
+import ImageTagFaces from 'material-ui/svg-icons/image/tag-faces';
 
 //styling
 const styles = {
@@ -34,14 +35,15 @@ iconButton : {
 },
 
 container : {
-	margin: '10px 0px 10px 0px',
+	margin: '10px 0px 0px 0px',
 	padding: '10px',
-	background: "#e0f2f1"
+	background: "#e0f2f1",
 },
 
 appBar : {
 	color: 'white',
 	backgroundColor: '#004D40',
+	width: window.innerWidth,
 },
 
 listItem : {
@@ -67,7 +69,7 @@ export default class LoggedInLayout extends React.Component
 	{
 		super(props);
 
-		this.state = {mainMenuOpen: false, appBarTitle: 'Buddy'};
+		this.state = {mainMenuOpen: false, appBarTitle: 'Buddy',imageLogoUrl: './../../resources/images/buddy.png'};
 
 		messages.push(<ListItem key={0} leftIcon={<SocialPerson />}><Link to={"chat/"+"?name=Buddy&identifier=message"} style={styles.linkItem} onTouchTap={this.handleMessages}>Buddy</Link></ListItem>);
 		messages.push(<ListItem key={1} leftIcon={<SocialPerson />}><Link to={"chat/"+"?name=Gobinda&identifier=message"} style={styles.linkItem} onTouchTap={this.handleMessages}>Gobinda</Link></ListItem>);
@@ -101,10 +103,9 @@ export default class LoggedInLayout extends React.Component
 		this.closeMainMenu();
 	};
 
-	handleExpandIcon = (e) =>
+	changeLogo = (url) =>
 	{
-	
-		
+		this.setState({imageLogoUrl : url});
 	};
 
 	toggleMainMenu = () => this.setState({mainMenuOpen: !this.state.mainMenuOpen});
@@ -121,7 +122,7 @@ export default class LoggedInLayout extends React.Component
 			zDepth={2}
 			iconElementLeft={
 				<span>
-				<Avatar backgroundColor={"#004D40"} src="./../../resources/images/buddy.png" alt="qwerty" height="30"/>
+				<Avatar backgroundColor={'transparent'} src={this.state.imageLogoUrl} alt="qwerty" height="30"/>
 				</span>}
 				iconElementRight={
 					<span>
@@ -155,8 +156,8 @@ export default class LoggedInLayout extends React.Component
 				<Divider />
 				<ListItem id="accountSettings" key="accountSettings" style={styles.listItem} initiallyOpen={false} primaryTogglesNestedList={true}
 				nestedItems={[
-					<ListItem key="profile" ><Link to={"profile/"} style={styles.linkItem} onTouchTap={this.handleAccount}>Profile</Link></ListItem>,
-					<ListItem key="buddy" ><Link to={"buddy/"} style={styles.linkItem} onTouchTap={this.handleAccount}>Buddy</Link></ListItem>,
+					<ListItem leftIcon={<SocialPerson />} key="profile" ><Link to={"profile/"} style={styles.linkItem} onTouchTap={this.handleAccount}>Profile</Link></ListItem>,
+					<ListItem leftIcon={<ImageTagFaces />} key="buddy" ><Link to={"buddy/"} style={styles.linkItem} onTouchTap={this.handleAccount}>Buddy</Link></ListItem>,
 					<Divider />
 				]}>
 					<strong>Account settings</strong>
