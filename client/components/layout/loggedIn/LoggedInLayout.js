@@ -34,14 +34,15 @@ iconButton : {
 },
 
 container : {
-	margin: '10px 0px 10px 0px',
+	margin: '10px 0px 0px 0px',
 	padding: '10px',
-	background: "#e0f2f1"
+	background: "#e0f2f1",
 },
 
 appBar : {
 	color: 'white',
 	backgroundColor: '#004D40',
+	width: window.innerWidth,
 },
 
 listItem : {
