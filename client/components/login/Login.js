@@ -97,7 +97,7 @@ export default class Login extends React.Component {
                           validationError={ errorMessages.emailError }
                           required
                           hintText="Enter Password"
-                          floatingLabelText="Email"
+                          floatingLabelText="Password"
                           updateImmediately />
                   </Col>
                 </Row>
