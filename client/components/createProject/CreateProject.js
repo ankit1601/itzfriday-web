@@ -7,6 +7,7 @@ import Paper from 'material-ui/Paper';
 import {grey400,cyan50,red500,grey500,grey100,blueGrey100,blueGrey50} from 'material-ui/styles/colors';
 import {Grid, Row, Col} from 'react-flexbox-grid'
 import Avatar from 'material-ui/Avatar';
+import {Link} from 'react-router';
 
 const styles ={
   paperStyle:{backgroundColor:blueGrey50,
@@ -58,11 +59,11 @@ export default class CreateProject extends React.Component
     return(
       <Grid>
       <Paper style={styles.paperStyle}>
-        <RaisedButton label="Sign In"
+        <Link to={"login/"}><RaisedButton label="Sign In"
             labelPosition="before"
             primary={true}
             style={{}}
-            icon={<ActionAccountCircle />}/>
+            icon={<ActionAccountCircle />}/></Link>
         <Row>
           <span style={{marginTop:100,margin:'auto'}}>
           <Avatar style={{backgroundColor:"#004D40"}} src="./../../resources/images/buddy.png" alt="qwerty" size={150}/>
@@ -87,11 +88,11 @@ export default class CreateProject extends React.Component
                  md={ 12 }
                  sm={ 12 }
                  xs={ 12 }>
-            <RaisedButton 
+           <Link to={"confirmationCode/"}><RaisedButton 
                           label="Create Project"
                           disabled={this.state.buttonState}
                           onClick={this.handleClick}
-                          primary={true}/>
+                          primary={true}/></Link>
         </Col>
         </Row>
       </Paper>

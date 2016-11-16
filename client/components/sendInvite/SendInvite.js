@@ -11,6 +11,7 @@ import Avatar from 'material-ui/Avatar';
 import {Grid, Row, Col} from 'react-flexbox-grid'
 import RaisedButton from 'material-ui/RaisedButton';
 import {grey400,cyan50,red500,grey500,grey100,blueGrey100,blueGrey50,teal100} from 'material-ui/styles/colors';
+import {Link} from 'react-router';
 
 
 var previous="blank";
@@ -40,6 +41,7 @@ export default class SendInvite extends React.Component
 		this.handleAdd=this.handleAdd.bind(this);
 		this.handleAddClick=this.handleAddClick.bind(this);
 		this.state={email:'',addIconState:true,errorMsg:'',chipData:[]}
+		this.sendInvite=this.sendInvite.bind(this);
 	}	
 	handleAdd(event)
 	{	
@@ -109,6 +111,13 @@ export default class SendInvite extends React.Component
 	    else
 	    	this.setState({errorMsg:"Email already Entered"})
 	}
+	sendInvite()
+	{
+		console.log("in sendInvite");
+		this.props.route.checkLoggedIn(true);
+		console.log(this.props.route.checkLoggedIn(true));
+
+	}
 	render()
 	{	
 		return(<Grid>
@@ -136,11 +145,13 @@ export default class SendInvite extends React.Component
 			<RaisedButton 
                           label="Skip"
                           backgroundColor='#D32F2F'
-   						style={{marginRight:20}}/>
+   						style={{marginRight:20}}
+   						onClick={this.sendInvite}/>
         
             <RaisedButton 
                           label="Send Invite"
-                          backgroundColor='#4CAF50'/>
+                          backgroundColor='#4CAF50'
+                          onClick={this.sendInvite}/>
 
 			</Row>
         </Paper>
