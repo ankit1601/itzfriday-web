@@ -6,18 +6,14 @@ import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 import {grey400,cyan50,red500,grey500,grey100,blueGrey100,blueGrey50} from 'material-ui/styles/colors';
 import {Grid, Row, Col} from 'react-flexbox-grid'
-const styles ={
-  buttonStyle: {margin: 10,float:'right'},
-  textboxStyle:{marginLeft:180,marginTop:20},
-  createProjectbuttonStyle:{marginLeft:180,marginTop:10},
-  paperStyle:{backgroundColor:blueGrey50,height:760},
-  floatingLabelStyle:{color:red500},
-  floatingLabelFocusStyle:{color:red500},
-  underlineStyle:{borderColor: red500},
-  divWrapper:{width:600,height:200,WebkitBorderRadius: 20,MozBorderRadius: 10,borderRadius: 20,backgroundColor:'#CCE3E2',marginLeft:500,marginTop:50},
-  heading:{textAlign:'center',paddingTop:250},
-  paragraph:{textAlign:'center'}
+import Avatar from 'material-ui/Avatar';
 
+const styles ={
+  paperStyle:{backgroundColor:blueGrey50,
+    height:window.innerHeight,
+    padding:10,
+    width:"100%"
+  },
 };
 
 export default class CreateProject extends React.Component
@@ -60,32 +56,46 @@ export default class CreateProject extends React.Component
   render()
   { 
     return(
+      <Grid>
       <Paper style={styles.paperStyle}>
         <RaisedButton label="Sign In"
             labelPosition="before"
             primary={true}
-            icon={<ActionAccountCircle />}
-            style={styles.buttonStyle}/>
-        <RaisedButton label="Logo"
-            primary={true}
-            style={{float:'left',margin:10}}/>
-
-        <h1 style={styles.heading}>A messaging app for teams who see through the Earth</h1>
-        <p style={styles.paragraph}>The IceCube Collaboration is one of tens of thousands of teams around the world using Slack to make their working lives simpler, more pleasant, and more productive.</p>
-        
-        <div style={styles.divWrapper}>
-          <TextField style={styles.textboxStyle}
+            style={{}}
+            icon={<ActionAccountCircle />}/>
+        <Row>
+          <span style={{marginTop:100,margin:'auto'}}>
+          <Avatar style={{backgroundColor:"#004D40"}} src="./../../resources/images/buddy.png" alt="qwerty" size={150}/>
+          </span> 
+        </Row>
+        <Row center="xs">
+          <h1>A messaging app for teams who see through the Earth</h1>
+          <p>The IceCube Collaboration is one of tens of thousands of teams around the world using Slack to make their working lives simpler, more pleasant, and more productive.</p>
+        </Row>
+        <Row center="xs">
+        <Col lg={ 12 }
+                 md={ 12 }
+                 sm={ 12 }
+                 xs={ 12 }>
+          <TextField
             type="email" 
             floatingLabelText="Email Address"
             onChange={this.handleChange}
             errorText={this.state.error}/>
-            <RaisedButton style={styles.createProjectbuttonStyle}
+        </Col>
+        <Col lg={ 12 }
+                 md={ 12 }
+                 sm={ 12 }
+                 xs={ 12 }>
+            <RaisedButton 
                           label="Create Project"
                           disabled={this.state.buttonState}
                           onClick={this.handleClick}
                           primary={true}/>
-        </div>
-      </Paper>);
+        </Col>
+        </Row>
+      </Paper>
+      </Grid>);
   }
 
 }
