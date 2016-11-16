@@ -41,8 +41,8 @@ export default class Login extends React.Component {
   }
 
   submitForm(data) {
-
     alert(JSON.stringify(data, null, 4));
+    this.props.route.checkLoggedIn(true);
   }
 
   notifyFormError(data) {
