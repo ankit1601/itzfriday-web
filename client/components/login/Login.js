@@ -93,10 +93,10 @@ export default class Login extends React.Component {
                   <Col xs={12} sm={12} md={12} lg={12}>
                     <FormsyText
                           type="password"
-                          name="email"
+                          name="password"
                           validationError={ errorMessages.emailError }
                           required
-                          hintText="Enter your Email"
+                          hintText="Enter Password"
                           floatingLabelText="Email"
                           updateImmediately />
                   </Col>
