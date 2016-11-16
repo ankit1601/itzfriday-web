@@ -27,13 +27,13 @@ class App extends Component {
 		{
 		return (
 			<Router key={ 1 } history={hashHistory}>
-			<Route path="/" component={LoggedInLayout}>
-			<IndexRoute component={Message}></IndexRoute>
-			<Route path="chat/" component={Chat}></Route>
-			<Route path="addChannel/" component={Channel}></Route>
-			<Route path="profile/" component={Profile}></Route>
-			<Route path="buddy/" component={Channel}></Route>
-			</Route>
+				<Route path="/" component={LoggedInLayout}>
+					<IndexRoute component={Message}></IndexRoute>
+					<Route path="chat/" component={Chat}></Route>
+					<Route path="addChannel/" component={Channel}></Route>
+					<Route path="profile/" component={Profile}></Route>
+					<Route path="buddy/" component={Channel}></Route>
+				</Route>
 			</Router>
 			);
 		}
