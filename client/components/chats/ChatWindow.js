@@ -13,9 +13,10 @@ const styles = {
     padding: 0
   },
   messageList: {
-    height: 500,
-    overflow: "scroll",
-    listStyle: "none"
+    height: 380,
+    overflow: "auto",
+    listStyle: "none",
+    marginLeft: "-20px"
   },
   message: {
     zoom: 1,
