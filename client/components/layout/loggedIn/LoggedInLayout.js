@@ -75,11 +75,11 @@ export default class LoggedInLayout extends React.Component
 		messages.push(<ListItem key={6} leftIcon={<SocialPerson />}><Link to={"message/"+"?name=Vikram&key=message"} style={linkItem} onTouchTap={this.handleMessages}>Vikram</Link></ListItem>);
 		
 		channels.push(<ListItem key={0} leftIcon={<HardwareTv />}><Link to={"channel/"+"?name=General&key=channel"} style={linkItem} onTouchTap={this.handleChannel}>General</Link></ListItem>);
-		channels.push(<ListItem leftIcon={<HardwareTv />}><Link to={"channel/"+"?name=Acolyte&key=channel"} style={linkItem} onTouchTap={this.handleChannel}>Acolyte</Link></ListItem>);
-        channels.push(<ListItem leftIcon={<HardwareTv />}><Link to={"channel/"+"?name=Buddy&key=channel"} style={linkItem} onTouchTap={this.handleChannel}>Buddy</Link></ListItem>);
-        channels.push(<ListItem leftIcon={<HardwareTv />}><Link to={"channel/"+"?name=Rule&key=channel"} style={linkItem} onTouchTap={this.handleChannel}>Rule</Link></ListItem>);
+		channels.push(<ListItem key={1} leftIcon={<HardwareTv />}><Link to={"channel/"+"?name=Acolyte&key=channel"} style={linkItem} onTouchTap={this.handleChannel}>Acolyte</Link></ListItem>);
+        channels.push(<ListItem key={2} leftIcon={<HardwareTv />}><Link to={"channel/"+"?name=Buddy&key=channel"} style={linkItem} onTouchTap={this.handleChannel}>Buddy</Link></ListItem>);
+        channels.push(<ListItem key={3} leftIcon={<HardwareTv />}><Link to={"channel/"+"?name=Rule&key=channel"} style={linkItem} onTouchTap={this.handleChannel}>Rule</Link></ListItem>);
         channels.push(<Divider />);
-        channels.push(<ListItem leftIcon={<ContentAddCircle />}><Link to={"channel/"} style={linkItem} onTouchTap={this.handleChannel}>Create channel</Link></ListItem>);
+        channels.push(<ListItem key={4} leftIcon={<ContentAddCircle />}><Link to={"channel/"} style={linkItem} onTouchTap={this.handleChannel}>Create channel</Link></ListItem>);
         channels.push(<Divider />);
 	}
 
