@@ -19,6 +19,9 @@ var counter=0;
 var validExpre=/^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
 
 const styles = {
+		button: {
+			color: 'white',
+		},
       chip: {
         margin: 4,
       },
@@ -27,7 +30,6 @@ const styles = {
         flexWrap: 'wrap',
       },
       paperStyle:{
-      	backgroundColor:blueGrey50,
     	height:window.innerHeight,
     	padding:10,
     	width:"100%"
@@ -123,7 +125,7 @@ export default class SendInvite extends React.Component
 		return(<Grid>
 		<Paper style={styles.paperStyle}>
 			<Row center="xs">
-			<h2>Invite Team Members</h2>
+			<h3 style={{color:'#607D8B'}}>Invite Team Members</h3>
 			</Row>
 
 			<Row center="xs">
@@ -131,7 +133,7 @@ export default class SendInvite extends React.Component
 			floatingLabelText="Email Address"
 			onChange={this.handleAdd}
 			errorText={this.state.errorMsg}/>
-			<IconButton tooltip="Add"
+			<IconButton tooltip="Add" style={{marginTop: '20px'}}
 				disabled={this.state.addIconState}
 				onClick={this.handleAddClick}>
 				<ContentAddCircleOutline/>
@@ -146,11 +148,13 @@ export default class SendInvite extends React.Component
                           label="Skip"
                           backgroundColor='#D32F2F'
    						style={{marginRight:20}}
+   						labelColor="white"
    						onClick={this.sendInvite}/>
         
             <RaisedButton 
                           label="Send Invite"
                           backgroundColor='#4CAF50'
+                          labelColor="white"
                           onClick={this.sendInvite}/>
 
 			</Row>

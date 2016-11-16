@@ -78,7 +78,7 @@ export default class ProjectCreator extends React.Component{
             onInvalidSubmit={this.notifyFormError}>
             <div>
 			<div>
-			<strong><h2 style={{color:'#607D8B'}}>Enter your details</h2></strong>
+			<strong><h3 style={{color:'#607D8B'}}>Enter your details</h3></strong>
 			</div>
     		<FormsyText
               		  name="FullName"
