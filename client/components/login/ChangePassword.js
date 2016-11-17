@@ -5,11 +5,8 @@ import RaiseButton from 'material-ui/RaisedButton';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import Formsy from 'formsy-react';
 import FormsyText from 'formsy-material-ui/lib/FormsyText';
-import Paper from 'material-ui/Paper'
-/**
- * Dialog with change password option where it will accept current password , new password and confirm password options"
- * 
- */
+import Paper from 'material-ui/Paper';
+
 const errorMessages = {
 	passwordError:"please provide password"
 }
