@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
 import MenuItem from 'material-ui/MenuItem';
 import Divider from 'material-ui/Divider';
@@ -9,6 +10,8 @@ import IconMenu from 'material-ui/IconMenu';
 import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import Paper from 'material-ui/Paper';
+import Files from './../files/Files';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 const styles = {
 	toolbarStyle: {
@@ -22,10 +25,23 @@ const styles = {
 	}
 }
 
+var pageNewlyRendered = true;
+
 class ChatToolBar extends Component {
 	constructor(props) {
 		super(props);
+
 	}
+
+	showFiles = (which) =>
+	{
+		console.log('show '+which+' files');
+		ReactDOM.unmountComponentAtNode(document.getElementById('dialog'));
+		ReactDOM.render(<MuiThemeProvider><Files open={true} /></MuiThemeProvider>
+			,
+			document.getElementById('dialog'));
+	}
+
 	render() {
 		const name = this.props.name;
 		const identifier = this.props.identifier;
@@ -89,13 +105,15 @@ class ChatToolBar extends Component {
     						targetOrigin={{horizontal: 'left', vertical: 'top'}}
   						>
 
-							<MenuItem primaryText="Your Files" leftIcon={<i className="material-icons">description</i>}/>
-							<MenuItem primaryText="All Files" leftIcon={<i className="material-icons">library_books</i>}/>
+							<MenuItem primaryText="Your Files" leftIcon={<i className="material-icons">description</i>} onTouchTap={() => this.showFiles('my')}/>
+							<MenuItem primaryText="All Files" leftIcon={<i className="material-icons">library_books</i>} onTouchTap={() => this.showFiles('all')}/>
 							<Divider />
 							<MenuItem primaryText="Help" leftIcon={<i className="material-icons">help</i>}/>
     					</IconMenu>
 					</ToolbarGroup>
 				</Toolbar>
+				<div id="dialog">
+				</div>
 				</Paper>
 			)
 	}

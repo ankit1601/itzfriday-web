@@ -21,9 +21,14 @@ const styles = {
 
 
 export default class Files extends React.Component {
-  state = {
-    open: false,
-  };
+  constructor(props)
+  {
+    super(props);
+
+    this.state = {
+      open: this.props.open,
+    };
+  }
 
   handleOpen = () => {
     this.setState({open: true});
@@ -64,9 +69,7 @@ export default class Files extends React.Component {
     }
 
     return (
-    	
       	<div>
-        <RaisedButton label="files" onTouchTap={this.handleOpen} />
         <Grid>
         <Row>
         <Col xs={12} sm={12} md={12} lg={12}>
@@ -86,5 +89,7 @@ export default class Files extends React.Component {
         </Grid>
       </div>
     );
+  
+  
   }
 }

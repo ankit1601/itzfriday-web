@@ -138,6 +138,7 @@ export default class LoggedInLayout extends React.Component
 				<Drawer
 				docked={false}
 				open={this.state.mainMenuOpen}
+				openSecondary={true}
 				onRequestChange={(mainMenuOpen) => this.setState({mainMenuOpen})}
 				>
 				<List>
