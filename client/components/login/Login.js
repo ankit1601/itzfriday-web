@@ -51,6 +51,7 @@ export default class Login extends React.Component {
 
   submitForm(data) {
     console.log(JSON.stringify(data, null, 4));
+    this.props.router.replace('/');
     this.props.route.checkLoggedIn(true);
   }
 
