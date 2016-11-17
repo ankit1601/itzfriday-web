@@ -105,12 +105,9 @@ export default class Profile extends React.Component {
                         src="./../../resources/images/userAvatar.jpg" />
                 <div>
                   <FlatButton
-                              label="Choose Picture"
                               primary={ true }
-                              icon={ <ImageAddAPhoto/> }>
-                    <input
-                           type="file"
-                           style={ styles.exampleImageInput } />
+                              icon={<ImageAddAPhoto/>}>
+                    <label><input type="file" style={ styles.exampleImageInput }/>Choose a picture</label>
                   </FlatButton>
                 </div>
                 <Formsy.Form

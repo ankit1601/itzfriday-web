@@ -57,8 +57,9 @@ constructor(props){
 
 render(){
 		return(
-			<Paper style={styles.paperStyle}>
+			
       <Grid>
+      <Paper style={styles.paperStyle}>
       <Row center="xs">
       <Col xs={12} sm={12} md={12} lg={12}>
       <h3 style={{color:'#607D8B'}}>Please enter the confirmation code sent to you via email</h3>
@@ -81,8 +82,9 @@ render(){
         </Formsy.Form>
         </Col>
         </Row>
+        </Paper>
         </Grid>
-      </Paper>
+      
 				  );
 				   
 	}

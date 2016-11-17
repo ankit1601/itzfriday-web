@@ -8,12 +8,20 @@ import ActionAccountCircle from 'material-ui/svg-icons/action/account-box';
 import FormsyText from 'formsy-material-ui/lib/FormsyText';
 import Formsy from 'formsy-react';
 import Paper from 'material-ui/Paper';
-import { Card, CardHeader, CardMedia } from 'material-ui/Card';
+import { Card, CardHeader, CardText } from 'material-ui/Card';
 
 const errorMessages = {
   emailError: "Please enter valid email",
   numericError: "Please provide a password"
 };
+
+const styles = {
+  forgotStyle: {
+    marginTop: window.innerHeight/4.5,
+    marginLeft: "auto",
+    marginRight: "auto"
+  }
+}
 
 export default class Login extends React.Component {
   constructor(props) {
@@ -39,47 +47,43 @@ export default class Login extends React.Component {
   }
 
   submitForm(data) {
-    alert(JSON.stringify(data, null, 4));
+    console.log(JSON.stringify(data, null, 4));
   }
 
   notifyFormError(data) {
     console.error('Form error:', data);
   }
   render() {
-    const muiTheme1 = getMuiTheme({
-      palette: {
-        background: red500,
+  const styles = {
+      paper: {
+        padding: '30px',
+        margin:10
+      },
+        cardStyle: {
+         padding: '30px',
+        marginTop: window.innerHeight/4.5,
+        marginLeft: "auto",
+        marginRight:'auto'
+      },
+      gridAlign: {
+        margin:'auto',
+        marginTop: window.innerHeight/3.4,
+        width:window.innerWidth
       }
-    });
-    const styles = {
-      paper:{
-        padding:'50px'
-      }
-    }
+    };
     return (
-      <div>
         <Grid>
-          <Row>
-            <Col
-                 lg={ 12 }
-                 md={ 12 }
-                 sm={ 12 }
-                 xs={ 12 }>
-            <Row center="xs">
-              <Paper
+          <Col xs={12}>
+              <Card
                      zDepth={ 2 }
-                     style={ styles.paper }>
-                <Col
-                     lg={ 12 }
-                     md={ 12 }
-                     sm={ 12 }
-                     xs={ 12 }>
+                     style={ styles.cardStyle }>
                 <Formsy.Form
                              onValid={ this.enableButton }
                              onInvalid={ this.disableButton }
                              onValidSubmit={ this.submitForm }
                              onInvalidSubmit={ this.notifyFormError }>
-                  <Row center="lg">
+                  <CardText>
+                  <Row center="xs">
                     <Col
                          lg={ 12 }
                          md={ 12 }
@@ -96,7 +100,7 @@ export default class Login extends React.Component {
                                 updateImmediately />
                     </Col>
                   </Row>
-                  <Row>
+                  <Row center="xs">
                     <Col
                          lg={ 12 }
                          md={ 12 }
@@ -109,14 +113,11 @@ export default class Login extends React.Component {
                                   disabled={ !this.state.canSubmit } />
                     </Col>
                   </Row>
+                  </CardText>
                 </Formsy.Form>
-                </Col>
-              </Paper>
-            </Row>
-            </Col>
-          </Row>
-        </Grid>
-      </div>
+              </Card>
+              </Col>
+             </Grid>
       );
   }
 }

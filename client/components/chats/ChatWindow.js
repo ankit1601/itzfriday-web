@@ -4,6 +4,7 @@ import Formsy from 'formsy-react';
 import FormsyText from 'formsy-material-ui/lib/FormsyText';
 import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
+import IconButton from 'material-ui/IconButton'
 
 const styles = {
   chatBox: {
@@ -64,20 +65,7 @@ const styles = {
   actionBar: {
     position: "relative",
     width: "100%",
-    bottom: 0,
-    padding: 0,
-    borderTop: "1px solid #dae2e3",
-    marginRight: "-1px"
-  },
-  options: {
-    cursor: "pointer",
-    padding: "unset",
-    paddingTop: 8,
-    height: 40,
-    display: "inline-block",
-    fontSize: 22,
-    textAlign: "center",
-    width: 40
+    borderTop: "1px solid #dae2e3"
   },
   inputArea: {
     height: 40,
@@ -89,6 +77,12 @@ const styles = {
     textIndent: 5,
     backgroundColor: "#fff",
     width: "100%"
+  },
+  iconStyle: {
+    marginLeft: "-18px"
+  },
+  smileyStyle: {
+    marginLeft: "-12px"
   }
 
 }
@@ -244,15 +238,18 @@ class ChatWindow extends Component {
             </li>
           </ul>
           <div style={styles.actionBar}>
-              <Formsy.Form
+          <Formsy.Form
                     onValid={this.enableButton.bind(this)}
                     onInvalid={this.disableButton.bind(this)}
                     onValidSubmit={this.submitForm.bind(this)}
                     onInvalidSubmit={this.notifyFormError.bind(this)}
                   >
-              <div style={styles.options}>
-                  
-              </div>
+            <Grid>
+              <Row center="xs" style={{padding: '5px 5px 5px 5px'}}>
+                <Col xs={1} sm={1} md={1} lg={1}>
+                  <IconButton style={styles.smileyStyle}><i className="material-icons">tag_faces</i></IconButton>
+                </Col>
+                <Col xs={8} sm={8} md={8} lg={8}>
                 <FormsyText
                   name="messages"
                   validations="minLength:1"
@@ -262,14 +259,19 @@ class ChatWindow extends Component {
                   style={styles.inputArea}
                   updateImmediately
                 />
-                <div style={styles.options}>
-                  <RaisedButton
-                    primary={true}
+                </Col>
+                <Col xs={2} sm={2} md={2} lg={2}>
+                  <IconButton><i className="material-icons">attach_file</i></IconButton>
+                </Col>
+                <Col xs={1} sm={1} md={1} lg={1}>
+                  <IconButton
                     type="submit"
-                    label="Send"
                     disabled={!this.state.canSubmit}
-                  />
-              </div>
+                    style={styles.iconStyle}
+                  ><i className="material-icons">send</i></IconButton>
+                </Col>
+              </Row>
+            </Grid>
             </Formsy.Form>
           </div>
         </Paper>
