@@ -22,11 +22,11 @@ class App extends Component {
 		this.checkLoggedIn = this.checkLoggedIn.bind(this);
 	}
 	checkLoggedIn(value) {
-		alert(value);
 		if(value !== undefined) {
 			this.setState({loggedIn: value})
 		}
 	}
+	
 	render() {
 		if(this.state.loggedIn)
 		{
@@ -49,7 +49,7 @@ class App extends Component {
 			<Router key= { 2 } history={hashHistory}>
 			<Route path="/" component={NotLoggedInLayout}>
 				<IndexRoute component={CreateProject}></IndexRoute>
-				<Route checkLoggedIn={this.checkLoggedIn} path="login/" component={Login}></Route>
+				<Route checkLoggedIn={this.checkLoggedIn} path="login" component={Login}></Route>
 				<Route path="confirmationCode/" component={ConfirmCode}></Route>
 				<Route path="projectDetails/" component={ProjectCreator}></Route>
 				<Route path="sendInvite/" component={SendInvite}></Route>
