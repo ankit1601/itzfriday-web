@@ -52,7 +52,7 @@ class App extends Component {
 				<Route checkLoggedIn={this.checkLoggedIn} path="login" component={Login}></Route>
 				<Route path="confirmationCode/" component={ConfirmCode}></Route>
 				<Route path="projectDetails/" component={ProjectCreator}></Route>
-				<Route path="sendInvite/" component={SendInvite}></Route>
+				<Route path="sendInvite/" checkLoggedIn={this.checkLoggedIn} component={SendInvite}></Route>
 				<Route path="ForgotPassword/" component={ForgotPassword}></Route>
 			</Route>
 			</Router>
