@@ -8,6 +8,8 @@ import {grey400,cyan50,red500,grey500,grey100,blueGrey100,blueGrey50} from 'mate
 import {Grid, Row, Col} from 'react-flexbox-grid'
 import Avatar from 'material-ui/Avatar';
 import {Link} from 'react-router';
+import Formsy from 'formsy-react';
+import FormsyText from 'formsy-material-ui/lib/FormsyText';
 
 const styles ={
   paperStyle:{backgroundColor:blueGrey50,
@@ -22,41 +24,56 @@ export default class CreateProject extends React.Component
   constructor(props)
   {
     super(props);
-    this.handleChange=this.handleChange.bind(this);
-    this.handleClick=this.handleClick.bind(this);
-    this.state={email:'',buttonState:true,error:''};
+    this.state={canSubmit: false};
+    this.enableButton = this.enableButton.bind(this);
+    this.disableButton = this.disableButton.bind(this);
   }
-  handleChange(event)
+
+  enableButton() 
   {
-    this.setState({email:event.target.value});
-    if(event.target.value=='')
-    {
-      this.setState({buttonState:true});
-      this.setState({error:''});
-    }
-    else
-      this.setState({buttonState:false});
+   this.setState({canSubmit: true});
+ }
+   disableButton() 
+   {
+    this.setState({canSubmit: false});
   }
-  handleClick()
-  {
-    var validExpre=/^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
-    var msg;
-    var username=this.state.email;
-   if(!validExpre.test(username))
-    {
-      msg="Enter valid email";
-      this.setState({error:msg});
-    }
-    else
-    {
-      msg="";
-      this.setState({error:msg});
-    }
-  }
+  submitForm(data) {
+   alert(JSON.stringify(data, null, 4));
+ }
+
+
+
+  // handleChange(event)
+  // {
+  //   this.setState({email:event.target.value});
+  //   if(event.target.value=='')
+  //   {
+  //     this.setState({buttonState:true});
+  //     this.setState({error:''});
+  //   }
+  //   else
+  //     this.setState({buttonState:false});
+  // }
+  // handleClick()
+  // {
+  //   var validExpre=/^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
+  //   var msg;
+  //   var username=this.state.email;
+  //  if(!validExpre.test(username))
+  //   {
+  //     msg="Enter valid email";
+  //     this.setState({error:msg});
+  //   }
+  //   else
+  //   {
+  //     msg="";
+  //     this.setState({error:msg});
+  //   }
+  // }
 
   render()
   { 
-    return(
+     return(
       <Grid>
       <Paper style={styles.paperStyle}>
         <Link to={"login/"}><RaisedButton label="Sign In"
@@ -78,21 +95,39 @@ export default class CreateProject extends React.Component
                  md={ 12 }
                  sm={ 12 }
                  xs={ 12 }>
-          <TextField
-            type="email" 
-            floatingLabelText="Email Address"
-            onChange={this.handleChange}
-            errorText={this.state.error}/>
-        </Col>
-        <Col lg={ 12 }
-                 md={ 12 }
-                 sm={ 12 }
-                 xs={ 12 }>
-           <Link to={"confirmationCode/"}><RaisedButton 
-                          label="Create Project"
-                          disabled={this.state.buttonState}
-                          onClick={this.handleClick}
-                          primary={true}/></Link>
+          <Formsy.Form
+            onValid={ this.enableButton }
+            onInvalid={ this.disableButton }
+            onValidSubmit={ this.submitForm }
+            onInvalidSubmit={ this.notifyFormError }>
+          <FormsyText
+             name="email"
+             validations="isEmail"
+             validationError="Please enter a valid email"
+             required
+             hintText="Enter your email"
+             updateImmediately
+             floatingLabelText="Email" />
+            <div>
+          {
+            !this.state.canSubmit ?(<RaisedButton 
+              type="submit"
+              style={{marginTop:20}}
+            label="Create Project"
+            disabled={!this.state.canSubmit}
+            primary={true}/>)
+            :(<Link to={"confirmationCode/"}>
+           <RaisedButton 
+           style={{marginTop:20}}
+           type="submit"
+            label="Create Project"
+            disabled={!this.state.canSubmit}
+            primary={true}/>
+            </Link>)
+          }
+</div>
+          </Formsy.Form>
+
         </Col>
         </Row>
       </Paper>
