@@ -9,7 +9,7 @@ import {Link} from 'react-router';
 
  const errorMessages = {
     wordsError: "Please only use letters",
-    emailError: "Please enter valid email ID(someone@example.com)",
+    emailError: "Please enter valid emailID(someone@example.com)",
     passwordError: "Password should be of minimum 8 characters(including special and numeric characters)",
     confirmPasswordError: "Password and confirm password do not match",
  }
@@ -50,14 +50,14 @@ export default class ProjectCreator extends React.Component{
   }
   submitForm(data) {
 
-  	var password=JSON.stringify(data.Password);
-  	var confirmpassword=JSON.stringify(data.ConfirmPassword);
+ //  	var password=JSON.stringify(data.Password);
+ //  	var confirmpassword=JSON.stringify(data.ConfirmPassword);
   	
-  	if(password!==confirmpassword)
-  	{	
-	this.setState({errorMsg:"Password and confirm password do not match"});
-	return false;
-  	}
+ //  	if(password!==confirmpassword)
+ //  	{	
+	// this.setState({errorMsg:"Password and confirm password do not match"});
+	// return false;
+ //  	}
   }
 
   notifyFormError(data) {
@@ -118,20 +118,28 @@ export default class ProjectCreator extends React.Component{
 				      name="ConfirmPassword"
 				      onChange={this.handleChange}
 				      hintText="Same as password"
-				      validations="minLength:8"
+				      validations="equalsField:Password"
 				      type="password"
 				      validationError={errorMessages.confirmPasswordError}
 				      required
 				      floatingLabelText="Confirm Password"	
 				      updateImmediately/><br />
-			<div>
-					{this.state.errorMsg}
-			</div>
-			<Link to={"sendInvite/"}><RaisedButton
-			  type="submit"
-              label="SUBMIT"
-              backgroundColor="#4CAF50"
-              disabled={!this.state.canSubmit}/></Link>
+	
+			 {
+            this.state.canSubmit?(<Link to={"sendInvite/"}>
+            <RaisedButton 
+                type="submit"
+                label="Continue"
+                primary={true}
+                labelColor="white"
+                disabled={!this.state.canSubmit}/>
+                </Link>):(<RaisedButton 
+                type="submit"
+                label="Continue"
+                primary={true}
+                labelColor="white"
+                disabled={!this.state.canSubmit}/>)
+          }   
               </div>
          </Formsy.Form>
         </Col>

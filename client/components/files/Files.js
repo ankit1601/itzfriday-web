@@ -5,11 +5,17 @@ import RaisedButton from 'material-ui/RaisedButton';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import {List, ListItem} from 'material-ui/List';
 import FileFileDownload from 'material-ui/svg-icons/file/file-download';
+import {Grid, Row, Col} from 'react-flexbox-grid';
 
 const styles = {
-  listItem : {
+  downloadItem : {
 	textDecoration: 'none',
-	color: '#424242'
+	color: '#424242',
+	cursor: 'pointer',
+	margin: 'auto',
+	textAlign: 'center',
+	float: 'left',
+	padding: '10px',
 	}
 }
 
@@ -39,28 +45,31 @@ export default class Files extends React.Component {
         labelStyle={{color: "white"}}
         backgroundColor={'#D32F2F'}
         primary={true}
-        onTouchTap={this.handleClose}
-      />
+        onTouchTap={this.handleClose}/>
     ];
 
     const filesList = [];
     for (let i = 0; i < 30; i++) {
       filesList.push(
-        <label onClick={this.handleDownload}>
-        <ListItem
-          key={i}
+        <label onClick={this.handleDownload} style={styles.downloadItem}>
+        <div
           style={styles.listItem}
-          leftIcon={<FileFileDownload/>}
-        >
+          >
+          <img src="./../../resources/images/download.png" width="150"/>
+          <br/>
         {i + 1}
-        </ListItem>
+        </div>
         </label>
       );
     }
 
     return (
-      <div>
+    	
+      	<div>
         <RaisedButton label="files" onTouchTap={this.handleOpen} />
+        <Grid>
+        <Row>
+        <Col xs={12} sm={12} md={12} lg={12}>
         <Dialog
           title="Files"
           titleStyle={{color: 'white', backgroundColor: '#607D8B'}}
@@ -70,10 +79,11 @@ export default class Files extends React.Component {
           onRequestClose={this.handleClose}
           autoScrollBodyContent={true}
         >
-          <List>
             {filesList}
-          </List>
         </Dialog>
+        </Col>
+        </Row>
+        </Grid>
       </div>
     );
   }
