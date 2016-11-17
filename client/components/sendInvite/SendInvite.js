@@ -42,7 +42,7 @@ export default class SendInvite extends React.Component
 		super(props);
 		this.handleAdd=this.handleAdd.bind(this);
 		this.handleAddClick=this.handleAddClick.bind(this);
-		this.state={email:'',addIconState:true,errorMsg:'',chipData:[]}
+		this.state={email:'',addIconState:true,addbuttonState:true,errorMsg:'',chipData:[]}
 		this.sendInvite=this.sendInvite.bind(this);
 	}	
 	handleAdd(event)
@@ -62,6 +62,9 @@ export default class SendInvite extends React.Component
 	    const chipToDelete = this.chipData.map((chip) => chip.key).indexOf(key);
 	    this.chipData.splice(chipToDelete, 1);
 	    this.setState({chipData: this.chipData});
+	    if(this.state.chipData.length==0)
+	    		this.setState({addbuttonState:true})
+
 	    ReactDOM.render(<MuiThemeProvider>
 							<div style={styles.wrapper}>
 								{this.state.chipData.map(this.renderChip, this)}
@@ -92,7 +95,9 @@ export default class SendInvite extends React.Component
 	    			break;
 	    		}
 	    	}
-
+	    	console.log(this.state.chipData.length);
+	    	if(this.state.chipData.length>=0)
+	    		this.setState({addbuttonState:false})
 	    	if(!exists)
 	    	{
 	       	this.state.chipData.push({key:counter++,label:this.state.email});
@@ -155,7 +160,8 @@ export default class SendInvite extends React.Component
                           label="Send Invite"
                           backgroundColor='#4CAF50'
                           labelColor="white"
-                          onClick={this.sendInvite}/>
+                          onClick={this.sendInvite}
+                          disabled={this.state.addbuttonState}/>
 
 			</Row>
         </Paper>
