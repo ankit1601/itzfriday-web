@@ -74,7 +74,7 @@ export default class Files extends React.Component {
         <Row>
         <Col xs={12} sm={12} md={12} lg={12}>
         <Dialog
-          title="Files"
+          title={this.props.title}
           titleStyle={{color: 'white', backgroundColor: '#607D8B'}}
           actions={actions}
           modal={false}

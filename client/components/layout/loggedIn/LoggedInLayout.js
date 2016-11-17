@@ -91,22 +91,28 @@ export default class LoggedInLayout extends React.Component
 	handleChannel = (e) => 
 	{
 		this.closeMainMenu();
-	};
+	}
 
 	handleAccount = (e) => 
 	{
 		this.closeMainMenu();
-	};
+	}
 
 	handleMessages = (e) => 
 	{
 		this.closeMainMenu();
-	};
+	}
+
+	signOut = (e) =>
+	{
+		this.props.router.replace('/login/');
+		this.props.route.checkLoggedIn(false);
+	}
 
 	changeLogo = (url) =>
 	{
 		this.setState({imageLogoUrl : url});
-	};
+	}
 
 	toggleMainMenu = () => this.setState({mainMenuOpen: !this.state.mainMenuOpen});
 
@@ -167,7 +173,7 @@ export default class LoggedInLayout extends React.Component
 					<strong>Notification settings</strong>
 				</ListItem>
 				<Divider />
-				<ListItem id="signOut" key="signOut" style={styles.listItem} onTouchTap={this.closeMainMenu}>
+				<ListItem id="signOut" key="signOut" style={styles.listItem} onTouchTap={this.signOut}>
 					<strong>Sign out</strong>
 				</ListItem>
 				<Divider/>

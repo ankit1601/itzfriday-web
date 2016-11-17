@@ -41,36 +41,6 @@ export default class CreateProject extends React.Component
    alert(JSON.stringify(data, null, 4));
  }
 
-
-
-  // handleChange(event)
-  // {
-  //   this.setState({email:event.target.value});
-  //   if(event.target.value=='')
-  //   {
-  //     this.setState({buttonState:true});
-  //     this.setState({error:''});
-  //   }
-  //   else
-  //     this.setState({buttonState:false});
-  // }
-  // handleClick()
-  // {
-  //   var validExpre=/^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
-  //   var msg;
-  //   var username=this.state.email;
-  //  if(!validExpre.test(username))
-  //   {
-  //     msg="Enter valid email";
-  //     this.setState({error:msg});
-  //   }
-  //   else
-  //   {
-  //     msg="";
-  //     this.setState({error:msg});
-  //   }
-  // }
-
   render()
   { 
      return(

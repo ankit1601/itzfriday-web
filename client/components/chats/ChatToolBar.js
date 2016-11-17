@@ -35,11 +35,10 @@ class ChatToolBar extends Component {
 
 	showFiles = (which) =>
 	{
-		console.log('show '+which+' files');
 		ReactDOM.unmountComponentAtNode(document.getElementById('dialog'));
-		ReactDOM.render(<MuiThemeProvider><Files open={true} /></MuiThemeProvider>
-			,
-			document.getElementById('dialog'));
+		ReactDOM.render(<MuiThemeProvider><Files open={true} title={which + ' Files'} /></MuiThemeProvider>
+		,
+		document.getElementById('dialog'));
 	}
 
 	render() {
@@ -105,8 +104,8 @@ class ChatToolBar extends Component {
     						targetOrigin={{horizontal: 'left', vertical: 'top'}}
   						>
 
-							<MenuItem primaryText="Your Files" leftIcon={<i className="material-icons">description</i>} onTouchTap={() => this.showFiles('my')}/>
-							<MenuItem primaryText="All Files" leftIcon={<i className="material-icons">library_books</i>} onTouchTap={() => this.showFiles('all')}/>
+							<MenuItem primaryText="Your Files" leftIcon={<i className="material-icons">description</i>} onTouchTap={() => this.showFiles('Your')}/>
+							<MenuItem primaryText="All Files" leftIcon={<i className="material-icons">library_books</i>} onTouchTap={() => this.showFiles('All')}/>
 							<Divider />
 							<MenuItem primaryText="Help" leftIcon={<i className="material-icons">help</i>}/>
     					</IconMenu>
