@@ -12,7 +12,7 @@ import CreateProject from './createProject/CreateProject';
 import ConfirmCode from './createProject/ConfirmCode';
 import ProjectCreator from './createProject/ProjectCreator';
 import SendInvite from './sendInvite/SendInvite';
-
+import BuddyAvatar from './buddyAvatar/BuddyAvatar';
 
 class App extends Component {
 	constructor(props)
@@ -37,7 +37,7 @@ class App extends Component {
 					<Route path="chat/" component={Chat}></Route>
 					<Route path="addChannel/" component={AddChannel}></Route>
 					<Route path="profile/" component={Profile}></Route>
-					<Route path="buddy/" component={AddChannel}></Route>
+					<Route path="buddy/" component={BuddyAvatar}></Route>
 				</Route>
 			</Router>
 			);
