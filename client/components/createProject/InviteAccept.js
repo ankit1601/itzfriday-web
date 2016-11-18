@@ -38,6 +38,11 @@ export default class InviteAccept extends React.Component
    alert(JSON.stringify(data, null, 4));
  }
 
+  redirectInvitedMemberDetails(email,title)
+  {
+    this.props.router.replace('/memberDetails/?email='+email+'&title='+title);
+  }
+
   render()
   { 
      return(
@@ -63,7 +68,8 @@ export default class InviteAccept extends React.Component
             type="submit"
             label="Accept Invitation"
             labelColor="white"
-            backgroundColor="#4CAF50"><Link to={"projectDetails/"}></Link>
+            backgroundColor="#4CAF50" 
+            onClick={() => this.redirectInvitedMemberDetails("abc@gmail.com","Friday")}>
             </RaisedButton> 
           </Row>
           <Row center="xs">
