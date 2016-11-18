@@ -5,6 +5,7 @@ import Paper from 'material-ui/Paper';
 import FormsyText from 'formsy-material-ui/lib/FormsyText';
 import {Grid, Row, Col} from 'react-flexbox-grid';
 import {Link} from 'react-router';
+import TextField from 'material-ui/TextField';
 
 const errorMessages = {
     wordsError: "Please only use letters",
@@ -19,7 +20,7 @@ const errorMessages = {
       	padding: '10px',	
       	height: window.innerHeight,
     	}
-
+    }
 export default class InvitedMemberDetails extends React.Component
 {
 	constructor(props)
@@ -28,10 +29,8 @@ export default class InvitedMemberDetails extends React.Component
 	this.state={password: ''};
 	this.enableButton= this.enableButton.bind(this);
 	this.disableButton= this.disableButton.bind(this);
-	this.submitForm = this.submitForm.bind(this);
 	this.notifyFormError = this.notifyFormError.bind(this);
 	this.state = {canSubmit:false,errorMsg:''};
-	this.handleChange=this.handleChange.bind(this);
 	}
 
 	enableButton() 
@@ -43,7 +42,9 @@ export default class InvitedMemberDetails extends React.Component
    {
     this.setState({canSubmit:false});
   	}
-
+ notifyFormError(data) {
+    console.error('Form error:', data);
+  }
   	render()
 	{
    		return(	
@@ -67,26 +68,22 @@ export default class InvitedMemberDetails extends React.Component
     			      validations="isWords"
                       validationError={errorMessages.wordsError}
               		  required
-				      floatingLabelText="First Name"/><br />
+				      floatingLabelText="First Name"
+				      updateImmediately/><br />
 			<FormsyText
 					  name="Last Name"
-					  
 				      hintText="Last Name"
 				      validations="isWords"
 				      validationError={errorMessages.wordsError}
 				      required
 				      floatingLabelText="Last Name"
 				      updateImmediately/><br />
-			<FormsyText
-				      name="ProjectTitle"
-				      
-				      hintText="Project Title"
-				      required
-				      floatingLabelText="Project Title"
-				      updateImmediately/><br />
+			<TextField
+    					hintText="Project Title"
+    					disabled={true}
+     					floatingLabelText="Project Title"/><br />
 			<FormsyText
 				      name="Password"
-				   
 				      hintText="Password"
 				      validations="minLength:8"
 				      type="password"
@@ -96,7 +93,6 @@ export default class InvitedMemberDetails extends React.Component
 				      updateImmediately/><br />
 			<FormsyText
 				      name="ConfirmPassword"
-		
 				      hintText="Same as password"
 				      validations="equalsField:Password"
 				      type="password"
@@ -129,6 +125,4 @@ export default class InvitedMemberDetails extends React.Component
         </Grid>
       );
 	}
-
-
 }
