@@ -32,7 +32,7 @@ class App extends Component {
 		{
 		return (
 			<Router key={ 1 } history={hashHistory}>
-				<Route path="/" component={LoggedInLayout}>
+				<Route path="/" checkLoggedIn={this.checkLoggedIn}  component={LoggedInLayout}>
 					<IndexRoute component={Message}></IndexRoute>
 					<Route path="chat/" component={Chat}></Route>
 					<Route path="addChannel/" component={Channel}></Route>
@@ -49,7 +49,7 @@ class App extends Component {
 			<Router key= { 2 } history={hashHistory}>
 			<Route path="/" component={NotLoggedInLayout}>
 				<IndexRoute component={CreateProject}></IndexRoute>
-				<Route checkLoggedIn={this.checkLoggedIn} path="login" component={Login}></Route>
+				<Route checkLoggedIn={this.checkLoggedIn} path="login/" component={Login}></Route>
 				<Route path="confirmationCode/" component={ConfirmCode}></Route>
 				<Route path="projectDetails/" component={ProjectCreator}></Route>
 				<Route path="sendInvite/" checkLoggedIn={this.checkLoggedIn} component={SendInvite}></Route>

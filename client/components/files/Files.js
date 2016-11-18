@@ -69,7 +69,7 @@ export default class Files extends React.Component {
     }
 
     return (
-        <div>
+      <div>
         <Grid>
         <Row>
         <Col xs={12} sm={12} md={12} lg={12}>
