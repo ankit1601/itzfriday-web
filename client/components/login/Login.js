@@ -14,13 +14,14 @@ import FlatButton from 'material-ui/FlatButton';
 import ChangePassword from './ChangePassword';
 import Dialog from 'material-ui/Dialog';
 const errorMessages = {
+  projectName:"Please enter only characters and number",
   emailError: "Please enter valid email",
   numericError: "Please provide a password"
 };
 
 const styles = {
   loginStyle: {
-    marginTop: window.innerHeight/4.5,
+    marginTop: window.innerHeight/6,
     marginLeft: "auto",
     marginRight: "auto"
   }
@@ -77,6 +78,19 @@ export default class Login extends React.Component {
                        onInvalidSubmit={ this.notifyFormError }>
                 <ActionAccountCircle style={ imageSize.mystyle } />
                 <CardText>
+                <Row>
+                  <Col xs={12} sm={12} md={12} lg={12}>
+                   <strong><FormsyText
+                          type="text"
+                          name="email"
+                          validations="isAlphanumeric"
+                          validationError={ errorMessages.projectName }
+                          required
+                          hintText="Enter your Project"
+                          floatingLabelText="Project"
+                          updateImmediately /></strong>
+                  </Col>
+                </Row>
                 <Row>
                   <Col xs={12} sm={12} md={12} lg={12}>
                     <FormsyText

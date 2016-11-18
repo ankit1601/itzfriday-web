@@ -3,7 +3,7 @@ import {Router, Route, hashHistory, IndexRoute} from 'react-router';
 import LoggedInLayout from './layout/loggedIn/LoggedInLayout';
 import NotLoggedInLayout from './layout/notloggedin/NotLoggedInLayout';
 import Message from './message/Message';
-import Channel from './channel/Channel';
+import AddChannel from './channel/AddChannel';
 import Profile from './account/Profile';
 import Chat from './chats/ChatBox';
 import Login from './login/Login';
@@ -35,9 +35,9 @@ class App extends Component {
 				<Route path="/" checkLoggedIn={this.checkLoggedIn}  component={LoggedInLayout}>
 					<IndexRoute component={Message}></IndexRoute>
 					<Route path="chat/" component={Chat}></Route>
-					<Route path="addChannel/" component={Channel}></Route>
+					<Route path="addChannel/" component={AddChannel}></Route>
 					<Route path="profile/" component={Profile}></Route>
-					<Route path="buddy/" component={Channel}></Route>
+					<Route path="buddy/" component={AddChannel}></Route>
 				</Route>
 			</Router>
 			);
