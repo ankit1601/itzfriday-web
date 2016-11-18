@@ -46,6 +46,7 @@ export default class InviteAccept extends React.Component
   render()
   { 
      return(
+      
       <Grid>
       <Paper>
       <Card style={styles.cardStyle}>
@@ -77,7 +78,9 @@ export default class InviteAccept extends React.Component
          </Row>
          </Card>
       </Paper>
+      
       </Grid>
+      
       );
   }
 

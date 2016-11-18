@@ -20,7 +20,7 @@ class App extends Component {
 	constructor(props)
 	{
 		super(props);
-		this.state={loggedIn : false, invited: true};
+		this.state={loggedIn : false, invited: false};
 
 		this.checkLoggedIn = this.checkLoggedIn.bind(this);
 		this.checkInvited = this.checkInvited.bind(this);
