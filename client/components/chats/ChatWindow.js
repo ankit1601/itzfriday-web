@@ -112,9 +112,9 @@ class ChatWindow extends Component {
   notifyFormError(data) {
     console.error('Form error:', data);
   }
-	render() {
-		return (
-				<Paper zDepth={1} style={styles.chatBox}>
+  render() {
+    return (
+        <Paper zDepth={1} style={styles.chatBox}>
           <ul style= {styles.messageList}>
             <li style = {styles.message}>
               <div style = {styles.profilePic}>
@@ -275,8 +275,8 @@ class ChatWindow extends Component {
             </Formsy.Form>
           </div>
         </Paper>
-			)
-	}
+      )
+  }
 }
 
 export default ChatWindow;

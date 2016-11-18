@@ -9,21 +9,26 @@ import {Grid, Row, Col} from 'react-flexbox-grid';
 
 const styles = {
   downloadItem : {
-	textDecoration: 'none',
-	color: '#424242',
-	cursor: 'pointer',
-	margin: 'auto',
-	textAlign: 'center',
-	float: 'left',
-	padding: '10px',
-	}
+  textDecoration: 'none',
+  color: '#424242',
+  cursor: 'pointer',
+  margin: 'auto',
+  textAlign: 'center',
+  float: 'left',
+  padding: '10px',
+  }
 }
 
 
 export default class Files extends React.Component {
-  state = {
-    open: false,
-  };
+  constructor(props)
+  {
+    super(props);
+
+    this.state = {
+      open: this.props.open,
+    };
+  }
 
   handleOpen = () => {
     this.setState({open: true});
@@ -35,7 +40,7 @@ export default class Files extends React.Component {
 
   handleDownload = () =>
   {
-  	alert('file downloaded');
+    alert('file downloaded');
   };
 
   render() {
@@ -51,7 +56,7 @@ export default class Files extends React.Component {
     const filesList = [];
     for (let i = 0; i < 30; i++) {
       filesList.push(
-        <label onClick={this.handleDownload} style={styles.downloadItem}>
+        <label key={i} onClick={this.handleDownload} style={styles.downloadItem}>
         <div
           style={styles.listItem}
           >
@@ -64,14 +69,12 @@ export default class Files extends React.Component {
     }
 
     return (
-    	
-      	<div>
-        <RaisedButton label="files" onTouchTap={this.handleOpen} />
+        <div>
         <Grid>
         <Row>
         <Col xs={12} sm={12} md={12} lg={12}>
         <Dialog
-          title="Files"
+          title={this.props.title}
           titleStyle={{color: 'white', backgroundColor: '#607D8B'}}
           actions={actions}
           modal={false}
@@ -86,5 +89,7 @@ export default class Files extends React.Component {
         </Grid>
       </div>
     );
+  
+  
   }
 }
