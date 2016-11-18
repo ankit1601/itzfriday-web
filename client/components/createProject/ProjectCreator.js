@@ -12,6 +12,8 @@ import {Link} from 'react-router';
     emailError: "Please enter valid emailID(someone@example.com)",
     passwordError: "Password should be of minimum 8 characters(including special and numeric characters)",
     confirmPasswordError: "Password and confirm password do not match",
+    projectTitleError: "Project title should be alphanumeric"
+
  }
   const styles={
     	paperStyle: {
@@ -87,7 +89,9 @@ export default class ProjectCreator extends React.Component{
     			      validations="isWords"
                       validationError={errorMessages.wordsError}
               		  required
-				      floatingLabelText="Full name"/><br />
+				      floatingLabelText="Full name"
+				      updateImmediately/><br />
+
 			<FormsyText
 					  name="Email"
 					  onChange={this.handleChange}
@@ -101,6 +105,8 @@ export default class ProjectCreator extends React.Component{
 				      name="ProjectTitle"
 				      onChange={this.handleChange}
 				      hintText="Project Title"
+				      validations="isAlphanumeric"
+				      validationError={errorMessages.projectTitleError}
 				      required
 				      floatingLabelText="Project Title"
 				      updateImmediately/><br />
@@ -124,7 +130,6 @@ export default class ProjectCreator extends React.Component{
 				      required
 				      floatingLabelText="Confirm Password"	
 				      updateImmediately/><br />
-	
 			 {
             this.state.canSubmit?(<Link to={"sendInvite/"}>
             <RaisedButton 
