@@ -13,6 +13,7 @@ import { Link } from 'react-router';
 import FlatButton from 'material-ui/FlatButton';
 import ChangePassword from './ChangePassword';
 import Dialog from 'material-ui/Dialog';
+
 const errorMessages = {
   projectName:"Please enter only characters and number",
   emailError: "Please enter valid email",

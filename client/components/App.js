@@ -11,6 +11,7 @@ import ForgotPassword from './login/ForgotPassword';
 import CreateProject from './createProject/CreateProject';
 import ConfirmCode from './createProject/ConfirmCode';
 import ProjectCreator from './createProject/ProjectCreator';
+import InvitedMemberDetails from './createProject/InvitedMemberDetails';
 import SendInvite from './sendInvite/SendInvite';
 import BuddyAvatar from './buddyAvatar/BuddyAvatar';
 
@@ -18,7 +19,8 @@ class App extends Component {
 	constructor(props)
 	{
 		super(props);
-		this.state={loggedIn : false};
+		this.state={loggedIn : false, invited: true};
+
 		this.checkLoggedIn = this.checkLoggedIn.bind(this);
 	}
 	checkLoggedIn(value) {
@@ -28,10 +30,23 @@ class App extends Component {
 	}
 	
 	render() {
+
+		if(this.state.invited)
+		{
+			return (
+			<Router key={ 1 } history={hashHistory}>
+				<Route path="/" checkLoggedIn={this.checkLoggedIn}  component={InvitedMemberDetails}>
+					
+				</Route>
+			</Router>
+			);	
+		}
+		else
+		{
 		if(this.state.loggedIn)
 		{
 		return (
-			<Router key={ 1 } history={hashHistory}>
+			<Router key={ 2 } history={hashHistory}>
 				<Route path="/" checkLoggedIn={this.checkLoggedIn}  component={LoggedInLayout}>
 					<IndexRoute component={Message}></IndexRoute>
 					<Route path="chat/" component={Chat}></Route>
@@ -46,7 +61,7 @@ class App extends Component {
 		{
 			
 		return (
-			<Router key= { 2 } history={hashHistory}>
+			<Router key= { 3 } history={hashHistory}>
 			<Route path="/" component={NotLoggedInLayout}>
 				<IndexRoute component={CreateProject}></IndexRoute>
 				<Route checkLoggedIn={this.checkLoggedIn} path="login/" component={Login}></Route>
@@ -57,6 +72,7 @@ class App extends Component {
 			</Route>
 			</Router>
 			);	
+			}
 		}
 	}
 }
