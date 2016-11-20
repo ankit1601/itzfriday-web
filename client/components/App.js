@@ -56,7 +56,7 @@ class App extends Component {
 			return (
 			<Router key={ 2 } history={hashHistory}>
 				<Route path="/" checkLoggedIn={this.checkLoggedIn}  component={LoggedInLayout}>
-					<IndexRoute component={Message}></IndexRoute>
+					<IndexRoute component={Chat}></IndexRoute>
 					<Route path="chat/" component={Chat}></Route>
 					<Route path="addChannel/" component={AddChannel}></Route>
 					<Route path="profile/" component={Profile}></Route>

@@ -22,7 +22,7 @@ const errorMessages = {
 
 const styles = {
   loginStyle: {
-    marginTop: window.innerHeight/6,
+    marginTop: window.innerHeight/4.5,
     marginLeft: "auto",
     marginRight: "auto"
   }
@@ -79,19 +79,6 @@ export default class Login extends React.Component {
                        onInvalidSubmit={ this.notifyFormError }>
                 <ActionAccountCircle style={ imageSize.mystyle } />
                 <CardText>
-                <Row>
-                  <Col xs={12} sm={12} md={12} lg={12}>
-                   <strong><FormsyText
-                          type="text"
-                          name="email"
-                          validations="isAlphanumeric"
-                          validationError={ errorMessages.projectName }
-                          required
-                          hintText="Enter your Project"
-                          floatingLabelText="Project"
-                          updateImmediately /></strong>
-                  </Col>
-                </Row>
                 <Row>
                   <Col xs={12} sm={12} md={12} lg={12}>
                     <FormsyText

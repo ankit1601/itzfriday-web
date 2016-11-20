@@ -245,7 +245,7 @@ class ChatWindow extends Component {
                     onInvalidSubmit={this.notifyFormError.bind(this)}
                   >
             <Grid>
-              <Row center="xs" style={{padding: '5px 5px 5px 5px'}}>
+              <Row center="xs" style={{padding: '2px 2px 2px 2px'}}>
                 <Col xs={1} sm={1} md={1} lg={1}>
                   <IconButton style={styles.smileyStyle}><i className="material-icons">tag_faces</i></IconButton>
                 </Col>
@@ -260,7 +260,7 @@ class ChatWindow extends Component {
                   updateImmediately
                 />
                 </Col>
-                <Col xs={2} sm={2} md={2} lg={2}>
+                <Col xs={1} sm={1} md={1} lg={1}>
                   <IconButton><i className="material-icons">attach_file</i></IconButton>
                 </Col>
                 <Col xs={1} sm={1} md={1} lg={1}>
