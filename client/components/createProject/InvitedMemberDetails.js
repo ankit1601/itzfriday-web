@@ -2,18 +2,16 @@ import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import Formsy from 'formsy-react';
 import Paper from 'material-ui/Paper';
-import {blue500} from 'material-ui/styles/colors';
 import FormsyText from 'formsy-material-ui/lib/FormsyText';
 import {Grid, Row, Col} from 'react-flexbox-grid';
 import {Link} from 'react-router';
+import TextField from 'material-ui/TextField';
 
- const errorMessages = {
+const errorMessages = {
     wordsError: "Please only use letters",
     emailError: "Please enter valid emailID(someone@example.com)",
     passwordError: "Password should be of minimum 8 characters(including special and numeric characters)",
     confirmPasswordError: "Password and confirm password do not match",
-    projectTitleError: "Project title should be alphanumeric"
-
  }
   const styles={
     	paperStyle: {
@@ -22,51 +20,38 @@ import {Link} from 'react-router';
       	padding: '10px',	
       	height: window.innerHeight,
     	}
-   }
-export default class ProjectCreator extends React.Component{
-	constructor(props){
+    }
+export default class InvitedMemberDetails extends React.Component
+{
+	constructor(props)
+	{
 	super(props);
 	this.state={password: ''};
 	this.enableButton= this.enableButton.bind(this);
 	this.disableButton= this.disableButton.bind(this);
-	this.submitForm = this.submitForm.bind(this);
 	this.notifyFormError = this.notifyFormError.bind(this);
+  this.submitForm=this.submitForm.bind(this);
 	this.state = {canSubmit:false,errorMsg:''};
-	this.handleChange=this.handleChange.bind(this);
 	}
-	handleChange()
+
+	enableButton() 
 	{
-		this.setState({errorMsg:''})
-	}
+ 	this.setState({canSubmit:true});
+  	}
 
-	enableButton() {
-    this.setState({
-      canSubmit:true
-    });
-  }
-
-   disableButton() {
-    this.setState({
-      canSubmit:false
-    });
-  }
-  submitForm(data) {
-
- //  	var password=JSON.stringify(data.Password);
- //  	var confirmpassword=JSON.stringify(data.ConfirmPassword);
-  	
- //  	if(password!==confirmpassword)
- //  	{	
-	// this.setState({errorMsg:"Password and confirm password do not match"});
-	// return false;
- //  	}
-  }
-
-  notifyFormError(data) {
+   disableButton() 
+   {
+    this.setState({canSubmit:false});
+  	}
+ notifyFormError(data) {
     console.error('Form error:', data);
   }
-
-	render(){
+   submitForm(data) {
+   this.props.route.checkInvited(false);
+   this.props.router.replace('/login/');
+ }
+  	render()
+	{
    		return(	
 		  <Grid>
 		  <Paper style={styles.paperStyle}>
@@ -83,36 +68,27 @@ export default class ProjectCreator extends React.Component{
 			<strong><h3 style={{color:'#607D8B'}}>Enter your details</h3></strong>
 			</div>
     		<FormsyText
-              		  name="FullName"
-              		  onChange={this.handleChange}
-    			      hintText="Full Name"
+              		  name="First Name"
+    			      hintText="First Name"
     			      validations="isWords"
                       validationError={errorMessages.wordsError}
               		  required
-				      floatingLabelText="Full name"
-				      updateImmediately/><br />
-
-			<FormsyText
-					  name="Email"
-					  onChange={this.handleChange}
-				      hintText="Email"
-				      validations="isEmail"
-				      validationError={errorMessages.emailError}
-				      required
-				      floatingLabelText="Email ID"
+				      floatingLabelText="First Name"
 				      updateImmediately/><br />
 			<FormsyText
-				      name="ProjectTitle"
-				      onChange={this.handleChange}
-				      hintText="Project Title"
-				      validations="isAlphanumeric"
-				      validationError={errorMessages.projectTitleError}
+					  name="Last Name"
+				      hintText="Last Name"
+				      validations="isWords"
+				      validationError={errorMessages.wordsError}
 				      required
-				      floatingLabelText="Project Title"
+				      floatingLabelText="Last Name"
 				      updateImmediately/><br />
+			<TextField
+    					hintText="Project Title"
+    					disabled={true}
+     					value={this.props.location.query.title}/><br />
 			<FormsyText
 				      name="Password"
-				      onChange={this.handleChange}
 				      hintText="Password"
 				      validations="minLength:8"
 				      type="password"
@@ -122,7 +98,6 @@ export default class ProjectCreator extends React.Component{
 				      updateImmediately/><br />
 			<FormsyText
 				      name="ConfirmPassword"
-				      onChange={this.handleChange}
 				      hintText="Same as password"
 				      validations="equalsField:Password"
 				      type="password"
@@ -130,20 +105,16 @@ export default class ProjectCreator extends React.Component{
 				      required
 				      floatingLabelText="Confirm Password"	
 				      updateImmediately/><br />
+	
 			 {
-            this.state.canSubmit?(<Link to={"sendInvite/"}>
+            
             <RaisedButton 
                 type="submit"
                 label="Continue"
                 primary={true}
                 labelColor="white"
                 disabled={!this.state.canSubmit}/>
-                </Link>):(<RaisedButton 
-                type="submit"
-                label="Continue"
-                primary={true}
-                labelColor="white"
-                disabled={!this.state.canSubmit}/>)
+                
           }   
               </div>
          </Formsy.Form>

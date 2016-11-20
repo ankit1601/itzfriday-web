@@ -63,28 +63,32 @@ projectListItem : {
 var messages=[];
 var channels=[];
 
+
 export default class LoggedInLayout extends React.Component
 {
 	constructor(props)
 	{
 		super(props);
 
+		messages = [];
+		channels= [];
+
 		this.state = {mainMenuOpen: false, appBarTitle: 'Buddy',imageLogoUrl: './../../resources/images/buddy.png'};
 
-		messages.push(<ListItem key={0} leftIcon={<SocialPerson />}><Link to={"chat/"+"?name=Buddy&identifier=message"} style={styles.linkItem} onTouchTap={this.handleMessages}>Buddy</Link></ListItem>);
-		messages.push(<ListItem key={1} leftIcon={<SocialPerson />}><Link to={"chat/"+"?name=Gobinda&identifier=message"} style={styles.linkItem} onTouchTap={this.handleMessages}>Gobinda</Link></ListItem>);
-		messages.push(<ListItem key={2} leftIcon={<SocialPerson />}><Link to={"chat/"+"?name=Ruchika&identifier=message"} style={styles.linkItem} onTouchTap={this.handleMessages}>Ruchika</Link></ListItem>);
-		messages.push(<ListItem key={3} leftIcon={<SocialPerson />}><Link to={"chat/"+"?name=Apurv&identifier=message"} style={styles.linkItem} onTouchTap={this.handleMessages}>Apurv</Link></ListItem>);
-		messages.push(<ListItem key={4} leftIcon={<SocialPerson />}><Link to={"chat/"+"?name=Suganya&identifier=message"} style={styles.linkItem} onTouchTap={this.handleMessages}>Suganya</Link></ListItem>);
-		messages.push(<ListItem key={5} leftIcon={<SocialPerson />}><Link to={"chat/"+"?name=Ankit&identifier=message"} style={styles.linkItem} onTouchTap={this.handleMessages}>Ankit</Link></ListItem>);
-		messages.push(<ListItem key={6} leftIcon={<SocialPerson />}><Link to={"chat/"+"?name=Vikram&identifier=message"} style={styles.linkItem} onTouchTap={this.handleMessages}>Vikram</Link></ListItem>);
+		messages.push(<Link to={"chat/"+"?name=Buddy&identifier=message"} style={styles.linkItem} onTouchTap={this.handleMessages}><ListItem key={0} leftIcon={<SocialPerson />}>Buddy</ListItem></Link>);
+		messages.push(<Link to={"chat/"+"?name=Gobinda&identifier=message"} style={styles.linkItem} onTouchTap={this.handleMessages}><ListItem key={1} leftIcon={<SocialPerson />}>Gobinda</ListItem></Link>);
+		messages.push(<Link to={"chat/"+"?name=Ruchika&identifier=message"} style={styles.linkItem} onTouchTap={this.handleMessages}><ListItem key={2} leftIcon={<SocialPerson />}>Ruchika</ListItem></Link>);
+		messages.push(<Link to={"chat/"+"?name=Apurv&identifier=message"} style={styles.linkItem} onTouchTap={this.handleMessages}><ListItem key={3} leftIcon={<SocialPerson />}>Apurv</ListItem></Link>);
+		messages.push(<Link to={"chat/"+"?name=Suganya&identifier=message"} style={styles.linkItem} onTouchTap={this.handleMessages}><ListItem key={4} leftIcon={<SocialPerson />}>Suganya</ListItem></Link>);
+		messages.push(<Link to={"chat/"+"?name=Ankit&identifier=message"} style={styles.linkItem} onTouchTap={this.handleMessages}><ListItem key={5} leftIcon={<SocialPerson />}>Ankit</ListItem></Link>);
+		messages.push(<Link to={"chat/"+"?name=Vikram&identifier=message"} style={styles.linkItem} onTouchTap={this.handleMessages}><ListItem key={6} leftIcon={<SocialPerson />}>Vikram</ListItem></Link>);
 		
-		channels.push(<ListItem key={7} leftIcon={<HardwareTv />}><Link to={"chat/"+"?name=General&identifier=channel"} style={styles.linkItem} onTouchTap={this.handleChannel}>General</Link></ListItem>);
-		channels.push(<ListItem key={8} leftIcon={<HardwareTv />}><Link to={"chat/"+"?name=Acolyte&identifier=channel"} style={styles.linkItem} onTouchTap={this.handleChannel}>Acolyte</Link></ListItem>);
-        channels.push(<ListItem key={9} leftIcon={<HardwareTv />}><Link to={"chat/"+"?name=Buddy&identifier=channel"} style={styles.linkItem} onTouchTap={this.handleChannel}>Buddy</Link></ListItem>);
-        channels.push(<ListItem key={10} leftIcon={<HardwareTv />}><Link to={"chat/"+"?name=Rule&identifier=channel"} style={styles.linkItem} onTouchTap={this.handleChannel}>Rule</Link></ListItem>);
+		channels.push(<Link to={"chat/"+"?name=General&identifier=channel"} style={styles.linkItem} onTouchTap={this.handleChannel}><ListItem key={7} leftIcon={<HardwareTv />}>General</ListItem></Link>);
+		channels.push(<Link to={"chat/"+"?name=Acolyte&identifier=channel"} style={styles.linkItem} onTouchTap={this.handleChannel}><ListItem key={8} leftIcon={<HardwareTv />}>Acolyte</ListItem></Link>);
+        channels.push(<Link to={"chat/"+"?name=Buddy&identifier=channel"} style={styles.linkItem} onTouchTap={this.handleChannel}><ListItem key={9} leftIcon={<HardwareTv />}>Buddy</ListItem></Link>);
+        channels.push(<Link to={"chat/"+"?name=Rule&identifier=channel"} style={styles.linkItem} onTouchTap={this.handleChannel}><ListItem key={10} leftIcon={<HardwareTv />}>Rule</ListItem></Link>);
         channels.push(<Divider />);
-        channels.push(<ListItem key={11} leftIcon={<ContentAddCircle />}><Link to={"channel/"} style={styles.linkItem} onTouchTap={this.handleChannel}>Create channel</Link></ListItem>);
+        channels.push(<Link to={"addChannel/"} style={styles.linkItem} onTouchTap={this.handleChannel}><ListItem key={11} leftIcon={<ContentAddCircle />}>Create channel</ListItem></Link>);
         channels.push(<Divider />);
 	}
 
@@ -163,8 +167,8 @@ export default class LoggedInLayout extends React.Component
 				<Divider />
 				<ListItem id="accountSettings" key="accountSettings" style={styles.listItem} initiallyOpen={false} primaryTogglesNestedList={true}
 				nestedItems={[
-					<ListItem leftIcon={<SocialPerson />} key="profile" ><Link to={"profile/"} style={styles.linkItem} onTouchTap={this.handleAccount}>Profile</Link></ListItem>,
-					<ListItem leftIcon={<ImageTagFaces />} key="buddy" ><Link to={"buddy/"} style={styles.linkItem} onTouchTap={this.handleAccount}>Buddy</Link></ListItem>,
+					<Link to={"profile/"} style={styles.linkItem} onTouchTap={this.handleAccount}><ListItem leftIcon={<SocialPerson />} key="profile" >Profile</ListItem></Link>,
+					<Link to={"buddy/"} style={styles.linkItem} onTouchTap={this.handleAccount}><ListItem leftIcon={<ImageTagFaces />} key="buddy" >Buddy</ListItem></Link>,
 					<Divider />
 				]}>
 					<strong>Account settings</strong>
