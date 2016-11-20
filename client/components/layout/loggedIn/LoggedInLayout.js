@@ -63,11 +63,15 @@ projectListItem : {
 var messages=[];
 var channels=[];
 
+
 export default class LoggedInLayout extends React.Component
 {
 	constructor(props)
 	{
 		super(props);
+
+		messages = [];
+		channels= [];
 
 		this.state = {mainMenuOpen: false, appBarTitle: 'Buddy',imageLogoUrl: './../../resources/images/buddy.png'};
 
@@ -163,8 +167,8 @@ export default class LoggedInLayout extends React.Component
 				<Divider />
 				<ListItem id="accountSettings" key="accountSettings" style={styles.listItem} initiallyOpen={false} primaryTogglesNestedList={true}
 				nestedItems={[
-					<ListItem leftIcon={<SocialPerson />} key="profile" ><Link to={"profile/"} style={styles.linkItem} onTouchTap={this.handleAccount}>Profile</Link></ListItem>,
-					<ListItem leftIcon={<ImageTagFaces />} key="buddy" ><Link to={"buddy/"} style={styles.linkItem} onTouchTap={this.handleAccount}>Buddy</Link></ListItem>,
+					<Link to={"profile/"} style={styles.linkItem} onTouchTap={this.handleAccount}><ListItem leftIcon={<SocialPerson />} key="profile" >Profile</ListItem></Link>,
+					<Link to={"buddy/"} style={styles.linkItem} onTouchTap={this.handleAccount}><ListItem leftIcon={<ImageTagFaces />} key="buddy" >Buddy</ListItem></Link>,
 					<Divider />
 				]}>
 					<strong>Account settings</strong>
