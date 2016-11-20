@@ -33,4 +33,3 @@ npm run serve
 * *Suganya G*
 * *Ankit Aggarwal*
 * *Apurv Tiwari*
->>>>>>> c0c33b2c418dfc2a0d15002dba637015a3e9bc2a
