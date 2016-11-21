@@ -8,7 +8,7 @@ import {Link} from 'react-router';
 
 
 const errorMessages = {
-    numberError: "Please enter the correct confirmation code(number)"
+    numberError: "Please enter the correct six digits confirmation code"
 }
 const styles={
      paperStyle: {
@@ -68,7 +68,7 @@ render(){
             onValidSubmit={this.submitForm}>
           <FormsyText
               name="confirmCode"
-              validations="isNumeric"
+              validations="isNumeric,maxLength:6,minLength:6"
               validationError={errorMessages.numberError}
               required
               floatingLabelText="Confirmation code"
