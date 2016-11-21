@@ -17,14 +17,9 @@ const styles = {
   messageList: {
     height: 380,
     listStyle: "none",
-    overflow: "scroll",
-    marginLeft: "-20px"
-  },
-  message: {
-    zoom: 1,
-    overflow: "hidden",
-    marginTop: 15,
-    padding: "2px"
+    overflowY: "scroll",
+    marginLeft: "-20px",
+    paddingTop: "20px"
   },
   actionBar: {
     position: "relative",
@@ -69,8 +64,7 @@ class ChatWindow extends Component {
     super(props);
     this.state= {
       canSubmit: false,
-      chats: chatMessages,
-      name: this.props.name
+      chats: chatMessages
     };
   }
     enableButton() {
@@ -87,7 +81,7 @@ class ChatWindow extends Component {
 
   submitForm(data) {
     var newChat = {
-      author: this.state.name,
+      author: this.props.name,
       chatTime: "19:00:06 am",
       chatText: data.messages,
       authorAvtar: "https://twitter.com/@gobinda_thakur/profile_image?size=original"
@@ -102,9 +96,9 @@ class ChatWindow extends Component {
   }
   render() {
     let listView = []
-    for(let messages=0; messages < chatMessages.length; messages ++) {
-           listView.push(<li key={messages} style = {styles.message}>
-              <ChatText chats = {this.state.chats[messages]}/>
+    for(let i=0; i < chatMessages.length; i ++) {
+           listView.push(<li key={i} style = {styles.message}>
+              <ChatText chats = {this.state.chats[i]}/>
             </li>);
           }
     return (
@@ -120,7 +114,7 @@ class ChatWindow extends Component {
                     onInvalidSubmit={this.notifyFormError.bind(this)}
                   >
             <Grid>
-              <Row center="xs" style={{padding: '5px 5px 5px 5px'}}>
+              <Row center="xs" style={{padding: '2px 2px 2px 2px'}}>
                 <Col xs={1} sm={1} md={1} lg={1}>
                   <IconButton style={styles.smileyStyle}><i className="material-icons">tag_faces</i></IconButton>
                 </Col>
@@ -136,7 +130,7 @@ class ChatWindow extends Component {
                   updateImmediately
                 />
                 </Col>
-                <Col xs={2} sm={2} md={2} lg={2}>
+                <Col xs={1} sm={1} md={1} lg={1}>
                   <IconButton><i className="material-icons">attach_file</i></IconButton>
                 </Col>
                 <Col xs={1} sm={1} md={1} lg={1}>

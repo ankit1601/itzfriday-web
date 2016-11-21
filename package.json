@@ -4,9 +4,11 @@
   "description": "App for managing project and team collaboration",
   "main": "index.js",
   "scripts": {
+    "test":"mocha",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "node node_modules/webpack/bin/webpack.js",
-    "serve": "node node_modules/webpack-dev-server/bin/webpack-dev-server.js --content-base client --inline --hot"
+    "serve": "node node_modules/webpack-dev-server/bin/webpack-dev-server.js --content-base client --inline --hot",
+    "lint": "node node_modules/gulp/bin/gulp.js lint"
   },
   "keywords": [
     "ReactJS"
@@ -39,6 +41,16 @@
     "flexboxgrid": "^6.3.1",
     "formsy-material-ui": "^0.5.2",
     "formsy-react": "^0.18.1",
-    "history": "^4.4.0"
+    "history": "^4.4.0",
+    "babel-eslint": "^7.1.0",
+    "eslint-plugin-angular": "^1.4.1",
+    "eslint-plugin-react": "^6.5.0",
+    "gulp": "^3.9.1",
+    "gulp-eslint": "^3.0.1",
+    "gulp-htmlhint": "^0.3.1",
+    "gulp-mocha": "^3.0.1",
+    "mocha": "^3.1.2",
+    "should": "^11.1.1"
+
   }
 }

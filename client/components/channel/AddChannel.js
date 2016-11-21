@@ -10,6 +10,8 @@ import IconButton from 'material-ui/IconButton';
 import AutoComplete from 'material-ui/AutoComplete';
 import RaisedButton from 'material-ui/RaisedButton';
 import Chip from 'material-ui/Chip';
+import Paper from 'material-ui/Paper';
+
 const error="";
 var myArray=[];
 var counter=0;
@@ -57,7 +59,7 @@ export default class AddChannel extends React.Component {
       },
       wrapper: {
         display: 'flex',
-        flexWrap: 'wrap',
+        
       }
     }
 
@@ -94,7 +96,6 @@ export default class AddChannel extends React.Component {
     this.chipData = this.state.chipData;
     const chipToDelete = this.chipData.map((chip) => chip.key).indexOf(key);
     fruit.push(label);
-    console.log(label);
     this.chipData.splice(chipToDelete, 1);
     this.setState({chipData: this.chipData});
   }
@@ -112,14 +113,15 @@ export default class AddChannel extends React.Component {
   render() {
     return (
       <Grid>
+      <Paper style={{padding: '10px'}}>
+        
         <Col xs={ 12 }>
-        <Card style={{height:window.innerHeight}}>
           <Formsy.Form
                        onValid={ this.enableCreate }
                        onInvalid={ this.disableCreate }
                        onValidSubmit={ this.submitForm }
                        onInvalidSubmit={ this.notifyFormError }>
-            <CardText>
+            
             	<Row>
             		<Col
                      xs={ 12 }
@@ -187,10 +189,10 @@ export default class AddChannel extends React.Component {
                <div>
         			
       		   </div>
-            </CardText>
+            
           </Formsy.Form>
-        </Card>
         </Col>
+        </Paper>
       </Grid>
       );
   }

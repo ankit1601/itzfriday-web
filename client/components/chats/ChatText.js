@@ -48,9 +48,9 @@ class ChatText extends Component {
 			message: this.props.chats
 		}
 	}
-
 	render() {
 		const messages = this.state.message;
+    console.log(messages);
 		return(
       <div>
 			{ messages !== undefined || messages !== null ?
