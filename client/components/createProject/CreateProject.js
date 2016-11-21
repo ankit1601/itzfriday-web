@@ -10,6 +10,7 @@ import Avatar from 'material-ui/Avatar';
 import {Link} from 'react-router';
 import Formsy from 'formsy-react';
 import FormsyText from 'formsy-material-ui/lib/FormsyText';
+import Request from 'superagent';
 
 const styles ={
   paperStyle:{backgroundColor:blueGrey50,
@@ -18,7 +19,7 @@ const styles ={
     width:"100%"
   },
 };
-
+  
 export default class CreateProject extends React.Component
 {
   constructor(props)
@@ -27,6 +28,7 @@ export default class CreateProject extends React.Component
     this.state={canSubmit: false};
     this.enableButton = this.enableButton.bind(this);
     this.disableButton = this.disableButton.bind(this);
+    this.submitForm=this.submitForm.bind(this);
   }
 
   enableButton() 
@@ -34,11 +36,15 @@ export default class CreateProject extends React.Component
    this.setState({canSubmit: true});
  }
    disableButton() 
-   {
+  {
     this.setState({canSubmit: false});
   }
-  submitForm(data) {
-   alert(JSON.stringify(data, null, 4));
+
+  submitForm(data) 
+  {
+    localStorage['email']=data.email;
+
+    this.props.router.replace("confirmationCode/");
  }
 
   render()
@@ -46,11 +52,11 @@ export default class CreateProject extends React.Component
      return(
       <Grid>
       <Paper style={styles.paperStyle}>
-        <Link to={"login/"}><RaisedButton label="Sign In"
+        <RaisedButton label="Sign In"
             labelPosition="before"
             primary={true}
             style={{}}
-            icon={<ActionAccountCircle />}/></Link>
+            icon={<ActionAccountCircle />}/>
         <Row>
           <span style={{marginTop:100,margin:'auto'}}>
           <Avatar style={{backgroundColor:"#004D40"}} src="./../../resources/images/buddy.png" alt="qwerty" size={150}/>
@@ -79,22 +85,12 @@ export default class CreateProject extends React.Component
              updateImmediately
              floatingLabelText="Email" />
             <div>
-          {
-            !this.state.canSubmit ?(<RaisedButton 
+         <RaisedButton 
               type="submit"
               style={{marginTop:20}}
             label="Create Project"
             disabled={!this.state.canSubmit}
-            primary={true}/>)
-            :(<Link to={"confirmationCode/"}>
-           <RaisedButton 
-           style={{marginTop:20}}
-           type="submit"
-            label="Create Project"
-            disabled={!this.state.canSubmit}
             primary={true}/>
-            </Link>)
-          }
 </div>
           </Formsy.Form>
 
