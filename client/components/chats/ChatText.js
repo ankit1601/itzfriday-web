@@ -50,7 +50,6 @@ class ChatText extends Component {
 	}
 	render() {
 		const messages = this.state.message;
-    console.log(messages);
 		return(
       <div>
 			{ messages !== undefined || messages !== null ?

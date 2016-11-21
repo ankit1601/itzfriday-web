@@ -6,6 +6,9 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
 import IconButton from 'material-ui/IconButton';
 import ChatText from './ChatText';
+import ImageTagFaces from 'material-ui/svg-icons/image/tag-faces';
+import EditorAttachFile from 'material-ui/svg-icons/editor/attach-file';
+import ContentSend from 'material-ui/svg-icons/content/send';
 
 const styles = {
   chatBox: {
@@ -116,7 +119,7 @@ class ChatWindow extends Component {
             <Grid>
               <Row center="xs" style={{padding: '2px 2px 2px 2px'}}>
                 <Col xs={1} sm={1} md={1} lg={1}>
-                  <IconButton style={styles.smileyStyle}><i className="material-icons">tag_faces</i></IconButton>
+                  <IconButton style={styles.smileyStyle}><ImageTagFaces /></IconButton>
                 </Col>
                 <Col xs={8} sm={8} md={8} lg={8}>
                 <FormsyText
@@ -131,14 +134,14 @@ class ChatWindow extends Component {
                 />
                 </Col>
                 <Col xs={1} sm={1} md={1} lg={1}>
-                  <IconButton><i className="material-icons">attach_file</i></IconButton>
+                  <IconButton><EditorAttachFile /></IconButton>
                 </Col>
                 <Col xs={1} sm={1} md={1} lg={1}>
                   <IconButton
                     type="submit"
                     disabled={!this.state.canSubmit}
                     style={styles.iconStyle}
-                  ><i className="material-icons">send</i></IconButton>
+                  ><ContentSend/></IconButton>
                 </Col>
               </Row>
             </Grid>
