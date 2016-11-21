@@ -44,8 +44,8 @@ const styles = {
 	},
 	projectList : {
 		color: 'white',
-		minWidth: '200px',
 		float: 'left',
+		width: '150px',
 		height: window.innerHeight,
 		margin: '0px 0px 0px 0px',
 		padding: '2px 2px 2px 2px',
