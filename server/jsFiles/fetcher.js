@@ -3,7 +3,7 @@ module.exports = function()
 	var faker = require("faker");
 	var lodash = require("lodash");
 	return {
-		team : lodash.time(100000, function(n)
+		team : lodash.times(100000, function(n)
 		{
 			return {
 				id: n,
@@ -12,8 +12,7 @@ module.exports = function()
 				email: faker.internet.email(),
 				password: faker.internet.password(),
 				contact: faker.phone.phoneNumber(),
-				team: faker.team.findName()
 			}
-		});
+		})
 	}
 }
