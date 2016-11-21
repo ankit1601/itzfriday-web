@@ -4,10 +4,11 @@
   "description": "App for managing project and team collaboration",
   "main": "index.js",
   "scripts": {
-    "lint": "node node_modules/gulp/bin/gulp.js lint",
+    "test":"mocha",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "node node_modules/webpack/bin/webpack.js",
-    "serve": "node node_modules/webpack-dev-server/bin/webpack-dev-server.js --content-base client --inline --hot"
+    "serve": "node node_modules/webpack-dev-server/bin/webpack-dev-server.js --content-base client --inline --hot",
+    "lint": "node node_modules/gulp/bin/gulp.js lint"
   },
   "keywords": [
     "ReactJS"
@@ -27,8 +28,8 @@
     "babel-preset-react": "^6.16.0",
     "babel-preset-stage-1": "^6.16.0",
     "material-ui": "^0.16.1",
-    "react": "^15.3.2",
-    "react-dom": "^15.3.2",
+    "react": "~15.3.2",
+    "react-dom": "~15.3.2",
     "react-tap-event-plugin": "^1.0.0",
     "webpack": "^1.13.3",
     "webpack-dev-server": "^1.16.2",
@@ -50,5 +51,6 @@
     "gulp-mocha": "^3.0.1",
     "mocha": "^3.1.2",
     "should": "^11.1.1"
+
   }
 }
