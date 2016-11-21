@@ -8,7 +8,7 @@ import {Link} from 'react-router';
 
 
 const errorMessages = {
-    numberError: "Please enter the correct confirmation code(number)"
+    numberError: "Please enter the correct six digits confirmation code"
 }
 const styles={
      paperStyle: {
@@ -56,8 +56,9 @@ constructor(props){
 
 render(){
     return(
-      <Paper style={styles.paperStyle}>
+      
       <Grid>
+      <Paper style={styles.paperStyle}>
       <Row center="xs">
       <Col xs={12} sm={12} md={12} lg={12}>
       <h3 style={{color:'#607D8B'}}>Please enter the confirmation code sent to you via email</h3>
@@ -67,7 +68,7 @@ render(){
             onValidSubmit={this.submitForm}>
           <FormsyText
               name="confirmCode"
-              validations="isNumeric"
+              validations="isNumeric,maxLength:6,minLength:6"
               validationError={errorMessages.numberError}
               required
               floatingLabelText="Confirmation code"
@@ -89,8 +90,9 @@ render(){
         </Formsy.Form>
         </Col>
         </Row>
+        </Paper>
         </Grid>
-      </Paper>
+      
           );
            
   }

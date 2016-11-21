@@ -30,6 +30,7 @@ export default class InvitedMemberDetails extends React.Component
 	this.enableButton= this.enableButton.bind(this);
 	this.disableButton= this.disableButton.bind(this);
 	this.notifyFormError = this.notifyFormError.bind(this);
+  this.submitForm=this.submitForm.bind(this);
 	this.state = {canSubmit:false,errorMsg:''};
 	}
 
@@ -45,6 +46,10 @@ export default class InvitedMemberDetails extends React.Component
  notifyFormError(data) {
     console.error('Form error:', data);
   }
+   submitForm(data) {
+   this.props.route.checkInvited(false);
+   this.props.router.replace('/login/');
+ }
   	render()
 	{
    		return(	
@@ -81,7 +86,7 @@ export default class InvitedMemberDetails extends React.Component
 			<TextField
     					hintText="Project Title"
     					disabled={true}
-     					floatingLabelText="Project Title"/><br />
+     					value={this.props.location.query.title}/><br />
 			<FormsyText
 				      name="Password"
 				      hintText="Password"
@@ -102,19 +107,14 @@ export default class InvitedMemberDetails extends React.Component
 				      updateImmediately/><br />
 	
 			 {
-            this.state.canSubmit?(<Link to={"login/"}>
+            
             <RaisedButton 
                 type="submit"
                 label="Continue"
                 primary={true}
                 labelColor="white"
                 disabled={!this.state.canSubmit}/>
-                </Link>):(<RaisedButton 
-                type="submit"
-                label="Continue"
-                primary={true}
-                labelColor="white"
-                disabled={!this.state.canSubmit}/>)
+                
           }   
               </div>
          </Formsy.Form>
