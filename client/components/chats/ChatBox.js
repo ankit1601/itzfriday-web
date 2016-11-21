@@ -17,7 +17,7 @@ class ChatBox extends Component {
         			</Row>
         			<Row>
           				<Col xs={12} sm={12} md={12} lg={12}>
-                    <ChatWindow />
+                    <ChatWindow name={this.props.location.query.name}/>
                   </Col>
         			</Row>
       			</Grid>

@@ -4,7 +4,8 @@ import Formsy from 'formsy-react';
 import FormsyText from 'formsy-material-ui/lib/FormsyText';
 import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
-import IconButton from 'material-ui/IconButton'
+import IconButton from 'material-ui/IconButton';
+import ChatText from './ChatText';
 
 const styles = {
   chatBox: {
@@ -15,8 +16,8 @@ const styles = {
   },
   messageList: {
     height: 380,
-    overflow: "auto",
     listStyle: "none",
+    overflow: "scroll",
     marginLeft: "-20px"
   },
   message: {
@@ -24,43 +25,6 @@ const styles = {
     overflow: "hidden",
     marginTop: 15,
     padding: "2px"
-  },
-  profilePic: {
-    display: "table-cell",
-    verticalAlign: "top",
-    paddingRight: 10
-  },
-  imageStyle: {
-    maxWidth: "inherit",
-    height: 44,
-    width: 44,
-    borderRadius: "50%",
-    display: "block",
-    verticalAlign: "middle"
-  },
-  messageTextDisplay: {
-    paddingTop: 0,
-    fontWeight: 200,
-    fontSize: 14,
-    width: 10000,
-    display: "table-cell",
-    verticalAlign: "top"
-  },
-  messageData: {
-    marginBottom: 5
-  },
-  author: {
-    fontWeight: 400,
-    color: "#89969c"
-  },
-  timestamp: {
-    fontSize: 12,
-    margin: "0 10px"
-  },
-  messageBody: {
-    fontSize: 14,
-    fontWeight: "normal",
-    fontFamily: "sans-serif"
   },
   actionBar: {
     position: "relative",
@@ -84,13 +48,29 @@ const styles = {
   smileyStyle: {
     marginLeft: "-12px"
   }
-
 }
+
+const chatMessages = [
+            {
+              author: "Gobinda",
+              chatTime: "19:00:06 am",
+              chatText: "Hi Kejru!",
+              authorAvtar: "https://twitter.com/@gobinda_thakur/profile_image?size=original"
+            },
+            {
+              author: "Arvind Kejriwal",
+              chatTime: "19:01:06 am",
+              chatText: "Hey Sir! Delhi aiye kavi.",
+              authorAvtar: "https://twitter.com/@ArvindKejriwal/profile_image?size=original"
+            }
+          ]
 class ChatWindow extends Component {
   constructor(props) {
     super(props);
     this.state= {
-      canSubmit: false
+      canSubmit: false,
+      chats: chatMessages,
+      name: this.props.name
     };
   }
     enableButton() {
@@ -106,136 +86,31 @@ class ChatWindow extends Component {
   }
 
   submitForm(data) {
-    console.log(JSON.stringify(data, null, 4));
+    var newChat = {
+      author: this.state.name,
+      chatTime: "19:00:06 am",
+      chatText: data.messages,
+      authorAvtar: "https://twitter.com/@gobinda_thakur/profile_image?size=original"
+    };
+    chatMessages.push(newChat);
+    this.setState({chats: chatMessages});
+    this.refs.email.setState({value: ''});
   }
 
   notifyFormError(data) {
     console.error('Form error:', data);
   }
   render() {
+    let listView = []
+    for(let messages=0; messages < chatMessages.length; messages ++) {
+           listView.push(<li key={messages} style = {styles.message}>
+              <ChatText chats = {this.state.chats[messages]}/>
+            </li>);
+          }
     return (
         <Paper zDepth={1} style={styles.chatBox}>
           <ul style= {styles.messageList}>
-            <li style = {styles.message}>
-              <div style = {styles.profilePic}>
-                <img src="https://twitter.com/@gobinda_thakur/profile_image?size=original" style = {styles.imageStyle}/>
-              </div>
-              <div style={styles.messageTextDisplay}>
-                <div style={styles.messageData}>
-                <span style={styles.author}>Gobinda</span>
-                <span style={styles.timestamp}>19:00:06 pm</span>
-                </div>
-                <p style={styles.messageBody}>Hi buddy!</p>
-              </div>
-            </li>
-            <li style = {styles.message}>
-              <div style = {styles.profilePic}>
-                <img src="https://twitter.com/pusher/profile_image?size=original" style = {styles.imageStyle}/>
-              </div>
-              <div style={styles.messageTextDisplay}>
-                <div style={styles.messageData}>
-                <span style={styles.author}>BOB</span>
-                <span style={styles.timestamp}>19:00:06 pm</span>
-                </div>
-                <p style={styles.messageBody}>Hey! Good morning. How can I help you?</p>
-              </div>
-            </li>
-            <li style = {styles.message}>
-              <div style = {styles.profilePic}>
-                <img src="https://twitter.com/@gobinda_thakur/profile_image?size=original" style = {styles.imageStyle}/>
-              </div>
-              <div style={styles.messageTextDisplay}>
-                <div style={styles.messageData}>
-                <span style={styles.author}>Gobinda</span>
-                <span style={styles.timestamp}>19:00:06 pm</span>
-                </div>
-                <p style={styles.messageBody}>Please create a git repository with name react-app</p>
-              </div>
-            </li>
-            <li style = {styles.message}>
-              <div style = {styles.profilePic}>
-                <img src="https://twitter.com/pusher/profile_image?size=original" style = {styles.imageStyle}/>
-              </div>
-              <div style={styles.messageTextDisplay}>
-                <div style={styles.messageData}>
-                <span style={styles.author}>BOB</span>
-                <span style={styles.timestamp}>19:00:06 pm</span>
-                </div>
-                <p style={styles.messageBody}>Okay! Please wait. I will confirm once it created</p>
-              </div>
-            </li>
-            <li style = {styles.message}>
-              <div style = {styles.profilePic}>
-                <img src="https://twitter.com/@gobinda_thakur/profile_image?size=original" style = {styles.imageStyle}/>
-              </div>
-              <div style={styles.messageTextDisplay}>
-                <div style={styles.messageData}>
-                <span style={styles.author}>Gobinda</span>
-                <span style={styles.timestamp}>19:00:06 pm</span>
-                </div>
-                <p style={styles.messageBody}>Okay! Fine.</p>
-              </div>
-            </li>
-            <li style = {styles.message}>
-              <div style = {styles.profilePic}>
-                <img src="https://twitter.com/pusher/profile_image?size=original" style = {styles.imageStyle}/>
-              </div>
-              <div style={styles.messageTextDisplay}>
-                <div style={styles.messageData}>
-                <span style={styles.author}>BOB</span>
-                <span style={styles.timestamp}>19:00:06 pm</span>
-                </div>
-                <p style={styles.messageBody}>Hey! Thank you for your patience. Your repository is created. Here is the link: <a href="#">https://github.com/GO345724/react-app</a></p>
-              </div>
-            </li>
-            <li style = {styles.message}>
-              <div style = {styles.profilePic}>
-                <img src="https://twitter.com/@gobinda_thakur/profile_image?size=original" style = {styles.imageStyle}/>
-              </div>
-              <div style={styles.messageTextDisplay}>
-                <div style={styles.messageData}>
-                <span style={styles.author}>Gobinda</span>
-                <span style={styles.timestamp}>19:00:06 pm</span>
-                </div>
-                <p style={styles.messageBody}>It is awesome. Thank you for your kind help.</p>
-              </div>
-            </li>
-            <li style = {styles.message}>
-              <div style = {styles.profilePic}>
-                <img src="https://twitter.com/pusher/profile_image?size=original" style = {styles.imageStyle}/>
-              </div>
-              <div style={styles.messageTextDisplay}>
-                <div style={styles.messageData}>
-                <span style={styles.author}>BOB</span>
-                <span style={styles.timestamp}>19:00:06 pm</span>
-                </div>
-                <p style={styles.messageBody}>It is my duty. Any other help you need!</p>
-              </div>
-            </li>
-            <li style = {styles.message}>
-              <div style = {styles.profilePic}>
-                <img src="https://twitter.com/@gobinda_thakur/profile_image?size=original" style = {styles.imageStyle}/>
-              </div>
-              <div style={styles.messageTextDisplay}>
-                <div style={styles.messageData}>
-                <span style={styles.author}>Gobinda</span>
-                <span style={styles.timestamp}>19:00:06 pm</span>
-                </div>
-                <p style={styles.messageBody}>No, Thank you and bye!</p>
-              </div>
-            </li>
-            <li style = {styles.message}>
-              <div style = {styles.profilePic}>
-                <img src="https://twitter.com/pusher/profile_image?size=original" style = {styles.imageStyle}/>
-              </div>
-              <div style={styles.messageTextDisplay}>
-                <div style={styles.messageData}>
-                <span style={styles.author}>BOB</span>
-                <span style={styles.timestamp}>19:00:06 pm</span>
-                </div>
-                <p style={styles.messageBody}>Bye!</p>
-              </div>
-            </li>
+            {listView}
           </ul>
           <div style={styles.actionBar}>
           <Formsy.Form
@@ -257,6 +132,7 @@ class ChatWindow extends Component {
                   required
                   hintText="Type your message"
                   style={styles.inputArea}
+                  ref="email"
                   updateImmediately
                 />
                 </Col>
