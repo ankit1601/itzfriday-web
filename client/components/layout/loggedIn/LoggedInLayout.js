@@ -72,6 +72,9 @@ var channels= [];
 var projects = [];
 var projectList = [];
 var currentProject = '';
+var members = [];
+var groups = [];
+var listKey = 0;
 
 export default class LoggedInLayout extends React.Component
 {
@@ -79,6 +82,7 @@ export default class LoggedInLayout extends React.Component
 	{
 		super(props);
 
+		listKey = 0;
 		messages = [];
 		channels = [];
 		projectList = [];
@@ -95,9 +99,9 @@ export default class LoggedInLayout extends React.Component
 
 		for( let index in projects)
 		{
-				projectList.push(<ListItem key={index} style={styles.projectListItem} Color={green100} onTouchTap={() => this.openThisProject(projects[index])}>{projects[index]}</ListItem>);
-				if(index < lastIndexOfProjects)
-					projectList.push(<Divider />);
+			projectList.push(<ListItem key={index} style={styles.projectListItem} Color={green100} onTouchTap={() => this.openThisProject(projects[index])}>{projects[index]}</ListItem>);
+			if(index < lastIndexOfProjects)
+				projectList.push(<Divider />);
 		}
 
 		this.openThisProject(currentProject);
@@ -112,73 +116,57 @@ export default class LoggedInLayout extends React.Component
 
 		if( currentProject === 'Friday')
 		{
-			messages.push(<Link to={"chat/"+"?name=Gobinda&identifier=message"} style={styles.linkItem} onTouchTap={this.handleMessages}><ListItem key={1} leftIcon={<SocialPerson />}>Gobinda</ListItem></Link>);
-			messages.push(<Link to={"chat/"+"?name=Ruchika&identifier=message"} style={styles.linkItem} onTouchTap={this.handleMessages}><ListItem key={2} leftIcon={<SocialPerson />}>Ruchika</ListItem></Link>);
-			messages.push(<Link to={"chat/"+"?name=Apurv&identifier=message"} style={styles.linkItem} onTouchTap={this.handleMessages}><ListItem key={3} leftIcon={<SocialPerson />}>Apurv</ListItem></Link>);
-			messages.push(<Link to={"chat/"+"?name=Suganya&identifier=message"} style={styles.linkItem} onTouchTap={this.handleMessages}><ListItem key={4} leftIcon={<SocialPerson />}>Suganya</ListItem></Link>);
-			messages.push(<Link to={"chat/"+"?name=Ankit&identifier=message"} style={styles.linkItem} onTouchTap={this.handleMessages}><ListItem key={5} leftIcon={<SocialPerson />}>Ankit</ListItem></Link>);
-			messages.push(<Link to={"chat/"+"?name=Vikram&identifier=message"} style={styles.linkItem} onTouchTap={this.handleMessages}><ListItem key={6} leftIcon={<SocialPerson />}>Vikram</ListItem></Link>);
+			members=["Gobinda","Apurv","Ruchika","Suganya","Ankit","Vikram"];
+			groups=["General","Acolyte"];
 
-			channels.push(<Link to={"chat/"+"?name=General&identifier=channel"} style={styles.linkItem} onTouchTap={this.handleChannel}><ListItem key={7} leftIcon={<HardwareTv />}>General</ListItem></Link>);
-			channels.push(<Link to={"chat/"+"?name=Acolyte&identifier=channel"} style={styles.linkItem} onTouchTap={this.handleChannel}><ListItem key={8} leftIcon={<HardwareTv />}>Acolyte</ListItem></Link>);
-			channels.push(<Link to={"chat/"+"?name=Rule&identifier=channel"} style={styles.linkItem} onTouchTap={this.handleChannel}><ListItem key={10} leftIcon={<HardwareTv />}>Rule</ListItem></Link>);
 		}
 		else if( currentProject === 'Samarth' )
 		{
-			messages.push(<Link to={"chat/"+"?name=Amol&identifier=message"} style={styles.linkItem} onTouchTap={this.handleMessages}><ListItem key={1} leftIcon={<SocialPerson />}>Amol</ListItem></Link>);
-			messages.push(<Link to={"chat/"+"?name=Ankit&identifier=message"} style={styles.linkItem} onTouchTap={this.handleMessages}><ListItem key={2} leftIcon={<SocialPerson />}>Ankit</ListItem></Link>);
-			messages.push(<Link to={"chat/"+"?name=Shinder&identifier=message"} style={styles.linkItem} onTouchTap={this.handleMessages}><ListItem key={3} leftIcon={<SocialPerson />}>Shinder</ListItem></Link>);
-			messages.push(<Link to={"chat/"+"?name=Ritesh&identifier=message"} style={styles.linkItem} onTouchTap={this.handleMessages}><ListItem key={4} leftIcon={<SocialPerson />}>Ritesh</ListItem></Link>);
-			messages.push(<Link to={"chat/"+"?name=Kumari&identifier=message"} style={styles.linkItem} onTouchTap={this.handleMessages}><ListItem key={5} leftIcon={<SocialPerson />}>Kumari</ListItem></Link>);
-			messages.push(<Link to={"chat/"+"?name=Hari&identifier=message"} style={styles.linkItem} onTouchTap={this.handleMessages}><ListItem key={6} leftIcon={<SocialPerson />}>Hari</ListItem></Link>);
-			messages.push(<Link to={"chat/"+"?name=Prerna&identifier=message"} style={styles.linkItem} onTouchTap={this.handleMessages}><ListItem key={7} leftIcon={<SocialPerson />}>Prerna</ListItem></Link>);
-
-			channels.push(<Link to={"chat/"+"?name=General&identifier=channel"} style={styles.linkItem} onTouchTap={this.handleChannel}><ListItem key={8} leftIcon={<HardwareTv />}>General</ListItem></Link>);
-			channels.push(<Link to={"chat/"+"?name=Trouble&identifier=channel"} style={styles.linkItem} onTouchTap={this.handleChannel}><ListItem key={9} leftIcon={<HardwareTv />}>Trouble</ListItem></Link>);
+			members=["Amol","Ankit","Shinder","Ritesh","Kumari","Hari","Prerna"];
+			groups=["General","Developers"];	
 		}
 		else if( currentProject === 'Semantic Web' )
 		{
-			messages.push(<Link to={"chat/"+"?name=Bala&identifier=message"} style={styles.linkItem} onTouchTap={this.handleMessages}><ListItem key={1} leftIcon={<SocialPerson />}>Bala</ListItem></Link>);
-			messages.push(<Link to={"chat/"+"?name=Toolika&identifier=message"} style={styles.linkItem} onTouchTap={this.handleMessages}><ListItem key={2} leftIcon={<SocialPerson />}>Toolika</ListItem></Link>);
-			messages.push(<Link to={"chat/"+"?name=Shipra&identifier=message"} style={styles.linkItem} onTouchTap={this.handleMessages}><ListItem key={3} leftIcon={<SocialPerson />}>Shipra</ListItem></Link>);
-			messages.push(<Link to={"chat/"+"?name=Sreenidhi&identifier=message"} style={styles.linkItem} onTouchTap={this.handleMessages}><ListItem key={4} leftIcon={<SocialPerson />}>Sreenidhi</ListItem></Link>);
-			messages.push(<Link to={"chat/"+"?name=Nanda&identifier=message"} style={styles.linkItem} onTouchTap={this.handleMessages}><ListItem key={5} leftIcon={<SocialPerson />}>Nanda</ListItem></Link>);
-			messages.push(<Link to={"chat/"+"?name=Divyanshu&identifier=message"} style={styles.linkItem} onTouchTap={this.handleMessages}><ListItem key={6} leftIcon={<SocialPerson />}>Divyanshu</ListItem></Link>);
-
-			channels.push(<Link to={"chat/"+"?name=General&identifier=channel"} style={styles.linkItem} onTouchTap={this.handleChannel}><ListItem key={7} leftIcon={<HardwareTv />}>General</ListItem></Link>);
-			channels.push(<Link to={"chat/"+"?name=Trouble&identifier=channel"} style={styles.linkItem} onTouchTap={this.handleChannel}><ListItem key={8} leftIcon={<HardwareTv />}>Trouble</ListItem></Link>);
-			channels.push(<Link to={"chat/"+"?name=Graph&identifier=channel"} style={styles.linkItem} onTouchTap={this.handleChannel}><ListItem key={10} leftIcon={<HardwareTv />}>Graph</ListItem></Link>);
+			members=["Sreenidhi","Toolika","Nanda","Shipra","Bala","Divyanshu"];
+			groups=["General","Designers"];
 		}
 		else
 		{
-			messages.push(<Link to={"chat/"+"?name=Vishant&identifier=message"} style={styles.linkItem} onTouchTap={this.handleMessages}><ListItem key={1} leftIcon={<SocialPerson />}>Vishant</ListItem></Link>);
-			messages.push(<Link to={"chat/"+"?name=Dhivya&identifier=message"} style={styles.linkItem} onTouchTap={this.handleMessages}><ListItem key={2} leftIcon={<SocialPerson />}>Dhivya</ListItem></Link>);
-			messages.push(<Link to={"chat/"+"?name=Kirti&identifier=message"} style={styles.linkItem} onTouchTap={this.handleMessages}><ListItem key={3} leftIcon={<SocialPerson />}>Kirti</ListItem></Link>);
-			messages.push(<Link to={"chat/"+"?name=Srinivasan&identifier=message"} style={styles.linkItem} onTouchTap={this.handleMessages}><ListItem key={4} leftIcon={<SocialPerson />}>Srinivasan</ListItem></Link>);
-			messages.push(<Link to={"chat/"+"?name=Lal&identifier=message"} style={styles.linkItem} onTouchTap={this.handleMessages}><ListItem key={5} leftIcon={<SocialPerson />}>Lal</ListItem></Link>);
-			messages.push(<Link to={"chat/"+"?name=Nitin&identifier=message"} style={styles.linkItem} onTouchTap={this.handleMessages}><ListItem key={6} leftIcon={<SocialPerson />}>Nitin</ListItem></Link>);
-
-			channels.push(<Link to={"chat/"+"?name=General&identifier=channel"} style={styles.linkItem} onTouchTap={this.handleChannel}><ListItem key={7} leftIcon={<HardwareTv />}>General</ListItem></Link>);
-			channels.push(<Link to={"chat/"+"?name=hahaha&identifier=channel"} style={styles.linkItem} onTouchTap={this.handleChannel}><ListItem key={8} leftIcon={<HardwareTv />}>hahaha</ListItem></Link>);
+			members=["Vishant","Kirti","Dhivya","Lal","Srinivasan","Nitin"];
+			groups=["General","Backend"];	
 		}
+
+
+
+		for( let index in members)
+		{
+			messages.push(<ListItem key={listKey} style={styles.linkItem} onTouchTap={() => this.handleChat(members[index],'message')} leftIcon={<SocialPerson />}>{members[index]}</ListItem>);
+			listKey++;
+		}
+
+		for( let index in groups)
+		{
+			channels.push(<ListItem key={listKey} style={styles.linkItem} onTouchTap={() => this.handleChat(groups[index],'channel')} leftIcon={<SocialPerson />}>{groups[index]}</ListItem>);
+			listKey++;
+		}
+
 		channels.push(<Divider />);
-		channels.push(<Link to={"addChannel/"} style={styles.linkItem} onTouchTap={this.handleChannel}><ListItem key={-1} leftIcon={<ContentAddCircle />}>Create channel</ListItem></Link>);
+		channels.push(<Link to={"addChannel/"} style={styles.linkItem} ><ListItem key={-1} leftIcon={<ContentAddCircle />}>Create channel</ListItem></Link>);
 		channels.push(<Divider />);
+
+
 
 		this.setState({appBarTitle: currentProject});
+		this.props.router.replace("chat/?name=Friday&identifier=message");
 	}
 
-	handleChannel = (e) => 
+	handleChat = (name,identifier) => 
 	{
+		this.props.router.replace('/chat/?name='+name+'&identifier='+identifier);
 		this.closeMainMenu();
 	}
 
 	handleAccount = (e) => 
-	{
-		this.closeMainMenu();
-	}
-
-	handleMessages = (e) => 
 	{
 		this.closeMainMenu();
 	}
