@@ -40,8 +40,8 @@ export default class ProjectCreator extends React.Component{
 	this.notifyFormError = this.notifyFormError.bind(this);
 	this.state = {canSubmit:false,errorMsg:''};
 	this.handleChange=this.handleChange.bind(this);
-	this.mappingAuthentication=this.mappingAuthentication.bind(this);
 	}
+  
 	handleChange()
 	{
 		this.setState({errorMsg:''})
@@ -72,21 +72,9 @@ export default class ProjectCreator extends React.Component{
   	postData[email]=pass;
 
 
-  	this.mappingAuthentication();
   	this.props.router.replace("sendInvite/");
   }
 
-  mappingAuthentication()
- {
-   let urlAuthentication='http://localhost:3000/authentication';
-   Request.post(urlAuthentication)
-          .set('Content-Type', 'application/json')
-          .send(postData)
-          .end(function(err,res)
-        {
-            alert(err);
-        });
- }
 
   notifyFormError(data) {
     console.error('Form error:', data);
