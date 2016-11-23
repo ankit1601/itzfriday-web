@@ -16,33 +16,34 @@ const error="";
 var myArray=[];
 var counter=0;
 
-var fruit = [
+var member = [
   'Apple', 'Apricot', 'Avocado',
   'Banana', 'Bilberry', 'Blackberry', 'Blackcurrant', 'Blueberry',
   'Boysenberry', 'Blood Orange',
   'Cantaloupe', 'Currant', 'Cherry', 'Cherimoya', 'Cloudberry',
   'Coconut', 'Cranberry', 'Clementine',
-  'Damson', 'Date', 'Dragonfruit', 'Durian',
+  'Damson', 'Date', 'Dragonmember', 'Durian',
   'Elderberry',
   'Feijoa', 'Fig',
-  'Goji berry', 'Gooseberry', 'Grape', 'Grapefruit', 'Guava',
+  'Goji berry', 'Gooseberry', 'Grape', 'Grapemember', 'Guava',
   'Honeydew', 'Huckleberry',
-  'Jabouticaba', 'Jackfruit', 'Jambul', 'Jujube', 'Juniper berry',
-  'Kiwi fruit', 'Kumquat',
+  'Jabouticaba', 'Jackmember', 'Jambul', 'Jujube', 'Juniper berry',
+  'Kiwi member', 'Kumquat',
   'Lemon', 'Lime', 'Loquat', 'Lychee',
   'Nectarine',
-  'Mango', 'Marion berry', 'Melon', 'Miracle fruit', 'Mulberry', 'Mandarine',
+  'Mango', 'Marion berry', 'Melon', 'Miracle member', 'Mulberry', 'Mandarine',
   'Olive', 'Orange',
-  'Papaya', 'Passionfruit', 'Peach', 'Pear', 'Persimmon', 'Physalis', 'Plum', 'Pineapple',
+  'Papaya', 'Passionmember', 'Peach', 'Pear', 'Persimmon', 'Physalis', 'Plum', 'Pineapple',
   'Pumpkin', 'Pomegranate', 'Pomelo', 'Purple Mangosteen',
   'Quince',
   'Raspberry', 'Raisin', 'Rambutan', 'Redcurrant',
-  'Salal berry', 'Satsuma', 'Star fruit', 'Strawberry', 'Squash', 'Salmonberry',
+  'Salal berry', 'Satsuma', 'Star member', 'Strawberry', 'Squash', 'Salmonberry',
   'Tamarillo', 'Tamarind', 'Tomato', 'Tangerine',
-  'Ugli fruit',
+  'Ugli member',
   'Watermelon',
 ];
 var counter=0;
+var isError = false;
 export default class AddChannel extends React.Component {
   constructor(props) {
     super(props);
@@ -52,7 +53,9 @@ export default class AddChannel extends React.Component {
     this.disableCreate = this.disableCreate.bind(this);
     this.submitForm = this.submitForm.bind(this);
     this.notifyFormError = this.notifyFormError.bind(this);
-    this.state = {chipData:[],canSubmit:true};
+    this.onNewRequest = this.onNewRequest.bind(this);
+    this.onUpdateInput = this.onUpdateInput.bind(this);
+    this.state = {chipData:[],canSubmit:true,err:"",searchText:""};
     this.styles = {
       chip: {
         margin: 4,
@@ -82,20 +85,47 @@ export default class AddChannel extends React.Component {
     console.log(JSON.stringify(data));
     this.props.router.replace("/");
   }
+  onNewRequest(data){
+      this.setState({err:''});
+  }
+  onUpdateInput(data){
+    this.setState({err:''})
+  }
   addData(){
   	const value = document.getElementById('memberName').value;
+    myArray.forEach(function(val){
+      if(val.label === value){
+        isError = true;
+      }
+    });
+    if(isError === true)
+    {
+      this.setState({err:'User already added!'});
+      isError = false;
+      return ;
+    }
+    if(value===""){
+     this.setState({err:'Please select a member to add!'}); 
+    }
+  	else if(member.indexOf(value) === -1){
+  		this.setState({err:'This member does not belong to project please select from search box suggestion!'});
+  	}
+  	else{
+  	this.setState({err:''});
   	myArray.push({key:counter,label:value})
   	this.setState ({chipData:myArray})
   	counter++;
-  	fruit = fruit.filter(item => item !== value);
+  	member = member.filter(item => item !== value);
+  	}
   }
   notifyFormError(data) {
+  	this.state.err=data;
     console.error('Form error:', data);
   }
   handleRequestDelete = (key,label) => {
     this.chipData = this.state.chipData;
     const chipToDelete = this.chipData.map((chip) => chip.key).indexOf(key);
-    fruit.push(label);
+    member.push(label);
     this.chipData.splice(chipToDelete, 1);
     this.setState({chipData: this.chipData});
   }
@@ -156,28 +186,34 @@ export default class AddChannel extends React.Component {
                 	</div>
               		</Col>
               </Row>
-              <Row start="xs">
-                <Col xs={10} sm={10} md={10} lg={10}>
-				<AutoComplete
-					  id="memberName"
-					  name="member"
-				      floatingLabelText="Add Members"
-				      filter={AutoComplete.fuzzyFilter}
-				      dataSource={fruit}
-				      maxSearchResults={5}
-				      hintText="Search Member Here"
-				      fullWidth
-				    />
-				</Col>
-			    <Col xs={ 2 }
-                     sm={ 2 }
-                     md={ 2 }
-                     lg={ 2 }>
-                     <IconButton type="button" onClick={this.addData}>
-      						<AddCircleOutline/>
-    				</IconButton>                  
-    			</Col>
-    			<Row center="xs">
+              <Row center="xs">
+                <Col xs={11} sm={11} md={11} lg={11}>
+        				<AutoComplete
+          					  id="memberName"
+          					  name="member"
+                      ref="member"
+        				      floatingLabelText="Add Members"
+        				      filter={AutoComplete.fuzzyFilter}
+        				      dataSource={member}
+        				      maxSearchResults={5}
+        				      hintText="Search Member Here"
+        				      fullWidth
+                      errorText = {this.state.err}
+                      searchText={this.state.searchText}
+                      onNewRequest = {this.onNewRequest}
+                      onUpdateInput = {this.onUpdateInput}
+        				    />
+				      </Col>
+    			    <Col xs={ 1 }
+                         sm={ 1 }
+                         md={ 1 }
+                         lg={ 1 }>
+                         <IconButton type="button" onClick={this.addData}>
+          						<AddCircleOutline/>
+        				</IconButton>                  
+        			</Col>
+          </Row>
+    			<Row start="xs">
                 <Col xs={ 12 }
                      sm={ 12 }
                      md={ 12 }
@@ -185,7 +221,6 @@ export default class AddChannel extends React.Component {
                      <RaisedButton type="submit" label="Create Channel" primary={true}/>       
     			</Col>
     			</Row>
-              </Row>
                <div>
         			
       		   </div>
