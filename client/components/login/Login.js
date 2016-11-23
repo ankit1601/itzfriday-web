@@ -25,7 +25,14 @@ const styles = {
     marginTop: window.innerHeight/4.5,
     marginLeft: "auto",
     marginRight: "auto"
+  },
+  errorStyle:{
+    color:'red'
   }
+}
+const credentials = {
+  login:'friday@gmail.com',
+  password:'hello'
 }
 export default class Login extends React.Component {
   constructor(props) {
@@ -36,7 +43,8 @@ export default class Login extends React.Component {
     this.notifyFormError = this.notifyFormError.bind(this);
     this.state = {
       canSubmit: false,
-      open: false
+      open: false,
+      err:''
     };
   }
   enableButton() {
@@ -52,9 +60,20 @@ export default class Login extends React.Component {
   }
 
   submitForm(data) {
+    if(data.email!==credentials.login){
+      this.setState({err:'username/password is incorrect please enter again'});
+      return false;
+    }
+    else if(data.password!==credentials.password){
+      this.setState({err:'username/password is incorrect please enter again'});
+      return false;
+    }
+    else{
+      this.setState({err:''});
     console.log(JSON.stringify(data, null, 4));
     this.props.router.replace('/');
     this.props.route.checkLoggedIn(true);
+    }
   }
 
   notifyFormError(data) {
@@ -85,7 +104,7 @@ export default class Login extends React.Component {
                           type="email"
                           name="email"
                           validations="isEmail"
-                          validationError={ errorMessages.emailError }
+                          validationError={ errorMessages.emailError}
                           required
                           hintText="Enter your Email"
                           floatingLabelText="Email"
@@ -97,11 +116,15 @@ export default class Login extends React.Component {
                     <FormsyText
                           type="password"
                           name="password"
-                          validationError={ errorMessages.emailError }
                           required
                           hintText="Enter Password"
                           floatingLabelText="Password"
                           updateImmediately />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col  xs={12} sm={12} md={12} lg={12}>
+                        <span style={styles.errorStyle}>{this.state.err}</span>
                   </Col>
                 </Row>
                 <Row>
