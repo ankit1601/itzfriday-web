@@ -46,12 +46,6 @@ constructor(props){
   handleLinkEvent(){
     return this.state.canSubmit;
   }
-    // var password=JSON.stringify(data.confirmCode);
-    // if()
-    // {
-    //  alert("Please enter correct confirmation code");
-
-    // }
 
 render(){
     return(

@@ -29,6 +29,7 @@ export default class CreateProject extends React.Component
     this.enableButton = this.enableButton.bind(this);
     this.disableButton = this.disableButton.bind(this);
     this.submitForm=this.submitForm.bind(this);
+    this.redirectLogin=this.redirectLogin.bind(this);
   }
 
   enableButton() 
@@ -47,6 +48,11 @@ export default class CreateProject extends React.Component
     this.props.router.replace("confirmationCode/");
  }
 
+ redirectLogin()
+ {
+  this.props.router.replace("login/");
+ }
+
   render()
   { 
      return(
@@ -55,7 +61,7 @@ export default class CreateProject extends React.Component
         <RaisedButton label="Sign In"
             labelPosition="before"
             primary={true}
-            style={{}}
+            onClick={this.redirectLogin}
             icon={<ActionAccountCircle />}/>
         <Row>
           <span style={{marginTop:100,margin:'auto'}}>
