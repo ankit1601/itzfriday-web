@@ -41,18 +41,11 @@ constructor(props){
     });
   }
   submitForm(data) {
-     alert(JSON.stringify(data));
+     this.props.router.replace("projectDetails/")
   }
   handleLinkEvent(){
-    alert(this.state.canSubmit);
     return this.state.canSubmit;
   }
-    // var password=JSON.stringify(data.confirmCode);
-    // if()
-    // {
-    //  alert("Please enter correct confirmation code");
-
-    // }
 
 render(){
     return(
@@ -73,20 +66,12 @@ render(){
               required
               floatingLabelText="Confirmation code"
               updateImmediately/><br />
-          {
-            this.state.canSubmit?(<Link to={"projectDetails/"}>
             <RaisedButton 
                 type="submit"
                 label="Continue"
                 primary={true}
                 backgroundColor="#4CAF50"
-                disabled={!this.state.canSubmit}/>
-                </Link>):(<RaisedButton 
-                type="submit"
-                label="Continue"
-                primary={true}
-                disabled={!this.state.canSubmit}/>)
-          }          
+                disabled={!this.state.canSubmit}/>       
         </Formsy.Form>
         </Col>
         </Row>

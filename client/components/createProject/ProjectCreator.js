@@ -6,6 +6,7 @@ import {blue500} from 'material-ui/styles/colors';
 import FormsyText from 'formsy-material-ui/lib/FormsyText';
 import {Grid, Row, Col} from 'react-flexbox-grid';
 import {Link} from 'react-router';
+import Request from 'superagent';
 
  const errorMessages = {
     wordsError: "Please only use letters",
@@ -22,7 +23,13 @@ import {Link} from 'react-router';
       	padding: '10px',	
       	height: window.innerHeight,
     	}
-   }
+}
+ var postData={};
+ var postData2={};
+ var pass={};
+var title;
+var email;
+
 export default class ProjectCreator extends React.Component{
 	constructor(props){
 	super(props);
@@ -33,6 +40,7 @@ export default class ProjectCreator extends React.Component{
 	this.notifyFormError = this.notifyFormError.bind(this);
 	this.state = {canSubmit:false,errorMsg:''};
 	this.handleChange=this.handleChange.bind(this);
+	this.mappingAuthentication=this.mappingAuthentication.bind(this);
 	}
 	handleChange()
 	{
@@ -52,15 +60,33 @@ export default class ProjectCreator extends React.Component{
   }
   submitForm(data) {
 
- //  	var password=JSON.stringify(data.Password);
- //  	var confirmpassword=JSON.stringify(data.ConfirmPassword);
-  	
- //  	if(password!==confirmpassword)
- //  	{	
-	// this.setState({errorMsg:"Password and confirm password do not match"});
-	// return false;
- //  	}
+  	localStorage['password']=data.Password;
+  	pass['password']=localStorage['password'];
+
+  	localStorage['projecttitle']=data.ProjectTitle;
+  	title=localStorage['projecttitle'];
+
+  	var email=localStorage['email'];
+
+  	console.log(localStorage);
+  	postData[email]=pass;
+
+
+  	this.mappingAuthentication();
+  	this.props.router.replace("sendInvite/");
   }
+
+  mappingAuthentication()
+ {
+   let urlAuthentication='http://localhost:3000/authentication';
+   Request.post(urlAuthentication)
+          .set('Content-Type', 'application/json')
+          .send(postData)
+          .end(function(err,res)
+        {
+            alert(err);
+        });
+ }
 
   notifyFormError(data) {
     console.error('Form error:', data);
@@ -94,13 +120,10 @@ export default class ProjectCreator extends React.Component{
 
 			<FormsyText
 					  name="Email"
-					  onChange={this.handleChange}
 				      hintText="Email"
-				      validations="isEmail"
-				      validationError={errorMessages.emailError}
-				      required
-				      floatingLabelText="Email ID"
-				      updateImmediately/><br />
+				      defaultValue={localStorage['email']}
+				      disabled={true}
+				      floatingLabelText="Email ID"/><br />
 			<FormsyText
 				      name="ProjectTitle"
 				      onChange={this.handleChange}
@@ -112,7 +135,6 @@ export default class ProjectCreator extends React.Component{
 				      updateImmediately/><br />
 			<FormsyText
 				      name="Password"
-				      onChange={this.handleChange}
 				      hintText="Password"
 				      validations="minLength:8"
 				      type="password"
@@ -130,21 +152,14 @@ export default class ProjectCreator extends React.Component{
 				      required
 				      floatingLabelText="Confirm Password"	
 				      updateImmediately/><br />
-			 {
-            this.state.canSubmit?(<Link to={"sendInvite/"}>
+			 
             <RaisedButton 
                 type="submit"
                 label="Continue"
                 primary={true}
                 labelColor="white"
                 disabled={!this.state.canSubmit}/>
-                </Link>):(<RaisedButton 
-                type="submit"
-                label="Continue"
-                primary={true}
-                labelColor="white"
-                disabled={!this.state.canSubmit}/>)
-          }   
+    
               </div>
          </Formsy.Form>
         </Col>
