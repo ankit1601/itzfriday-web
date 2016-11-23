@@ -157,7 +157,7 @@ export default class LoggedInLayout extends React.Component
 
 
 		this.setState({appBarTitle: currentProject});
-		this.props.router.replace("chat/?name=Friday&identifier=message");
+		this.props.router.replace("chat/?name=KickBot&identifier=message");
 	}
 
 	handleChat = (name,identifier) => 
@@ -226,7 +226,7 @@ export default class LoggedInLayout extends React.Component
 				<h3><u>{this.state.appBarTitle}</u></h3>
 				</ListItem>
 				<Divider />
-				<Link to={"chat/"+"?name=Friday&identifier=message"} style={styles.listItem} onTouchTap={this.handleMessages}><ListItem key="friday" id="friday" leftIcon={<ImageTagFaces />} style={styles.listItem}><strong>Friday</strong></ListItem></Link>
+				<Link to={"chat/"+"?name=KickBot&identifier=message"} style={styles.listItem} onTouchTap={this.handleMessages}><ListItem key="friday" id="friday" leftIcon={<ImageTagFaces />} style={styles.listItem}><strong>Friday</strong></ListItem></Link>
 				<Divider />
 				<ListItem id="channels" key="channels" style={styles.listItem} initiallyOpen={true} primaryTogglesNestedList={true}
 				nestedItems={channels}>
