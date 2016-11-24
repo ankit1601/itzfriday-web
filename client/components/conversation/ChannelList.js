@@ -119,8 +119,8 @@ export default class ChannelList extends React.Component
 
 	displayChannel(name)
 	{
-		//console.log(this.props);
-		this.props.handleChannelChange(name);
+		console.log(this.props);
+		this.props.changeChannel(name);
 		this.closeMainMenu();
 	}
 

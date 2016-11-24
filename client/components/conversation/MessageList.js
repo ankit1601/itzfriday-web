@@ -105,7 +105,7 @@ export default class MessageList extends React.Component
 	displayMessage(name)
 	{
 		console.log(this.props);
-		this.props.handleMessageChange(name);
+		this.props.changeMessage(name);
 		this.closeMainMenu();
 	}
 

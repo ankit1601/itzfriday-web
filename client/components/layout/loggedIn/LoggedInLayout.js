@@ -103,6 +103,7 @@ export default class LoggedInLayout extends React.Component
 		};
 
 		this.handleChannelChange = this.handleChannelChange.bind(this);
+		this.handleMessageChange = this.handleMessageChange.bind(this);
 		this.openThisProject = this.openThisProject.bind(this);
 		this.handleChat = this.handleChat.bind(this);
 		this.handleAccount = this.handleAccount.bind(this);
@@ -180,6 +181,12 @@ export default class LoggedInLayout extends React.Component
 	handleChannelChange(name) 
 	{
 		this.props.router.replace('/chat/?name='+name+'&identifier=channel');
+		this.closeMainMenu();
+	}
+
+	handleMessageChange(name) 
+	{
+		this.props.router.replace('/chat/?name='+name+'&identifier=message');
 		this.closeMainMenu();
 	}
 
