@@ -73,12 +73,33 @@ export default class MessageList extends React.Component
 	constructor(props)
 	{
 		super(props);
+		this.state = {
+			messages: this.props.messages,
+		};
 
 		this.displayMessage = this.displayMessage.bind(this);
+		this.changeState = this.changeState.bind(this);
+
+		groups = this.props.messages;
+		messages=[];
+		for( let index in groups)
+		{
+			messages.push(<ListItem style={styles.linkItem} onTouchTap={() => this.displayMessage(groups[index])} leftIcon={<SocialPerson />}>{groups[index]}</ListItem>);
+		}
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		return true;
+	componentWillReceiveProps(nextProps) {
+
+		this.changeState(nextProps.messages);
+
+		console.log(this.state.messages);
+		
+		groups = this.state.messages;
+		messages=[];
+		for( let index in groups)
+		{
+			messages.push(<ListItem style={styles.linkItem} onTouchTap={() => this.displayMessage(groups[index])} leftIcon={<SocialPerson />}>{groups[index]}</ListItem>);
+		}
 	}
 
 	displayMessage(name)
@@ -88,14 +109,13 @@ export default class MessageList extends React.Component
 		this.closeMainMenu();
 	}
 
+	changeState (messages)
+	{
+		this.setState({messages});
+	}
+
 	render()
 	{
-		groups = this.props.messages;
-		messages=[];
-		for( let index in groups)
-		{
-			messages.push(<ListItem style={styles.linkItem} onTouchTap={() => this.displayMessage(groups[index])} leftIcon={<SocialPerson />}>{groups[index]}</ListItem>);
-		}
 		return(
 				<ListItem id="messages" key="messages" style={styles.listItem} initiallyOpen={true} primaryTogglesNestedList={true}
 				nestedItems={messages}>

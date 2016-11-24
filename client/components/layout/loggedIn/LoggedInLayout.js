@@ -79,6 +79,7 @@ var currentProject = '';
 var members = [];
 var groups = [];
 var listKey = 0;
+var isFirst = true;
 
 export default class LoggedInLayout extends React.Component
 {
@@ -95,9 +96,23 @@ export default class LoggedInLayout extends React.Component
 
 		this.state = {
 			mainMenuOpen: false,
-			appBarTitle: currentProject,	//last project opened
+			appBarTitle: 'Dashboard',	//last project opened
 			imageLogoUrl: './../../resources/images/buddy.png',
+			channels: '',
+			messages: '',
 		};
+
+		this.handleChannelChange = this.handleChannelChange.bind(this);
+		this.openThisProject = this.openThisProject.bind(this);
+		this.handleChat = this.handleChat.bind(this);
+		this.handleAccount = this.handleAccount.bind(this);
+		this.signOut = this.signOut.bind(this);
+		this.toggleMainMenu = this.toggleMainMenu.bind(this);
+		this.closeMainMenu = this.closeMainMenu.bind(this);
+		this.changeLogo = this.changeLogo.bind(this);
+		this.changeChannelState = this.changeChannelState.bind(this);
+		this.changeMessageState = this.changeMessageState.bind(this);
+
 
 		let lastIndexOfProjects = projects.length - 1;
 
@@ -108,12 +123,11 @@ export default class LoggedInLayout extends React.Component
 				projectList.push(<Divider />);
 		}
 
-		this.openThisProject(currentProject);
-		this.handleChannelChange = this.handleChannelChange.bind(this);
+		//this.openThisProject(currentProject);
 		
 	}
 
-	openThisProject = (e) =>
+	openThisProject (e)
 	{
 		currentProject = e;
 		messages = [];
@@ -141,37 +155,25 @@ export default class LoggedInLayout extends React.Component
 			groups=["General","Backend"];	
 		}
 
-
-
-		for( let index in members)
-		{
-			messages.push(<ListItem key={listKey} style={styles.linkItem} onTouchTap={() => this.handleChat(members[index],'message')} leftIcon={<SocialPerson />}>{members[index]}</ListItem>);
-			listKey++;
-		}
-
-		for( let index in groups)
-		{
-			channels.push(<ListItem key={listKey} style={styles.linkItem} onTouchTap={() => this.handleChat(groups[index],'channel')} leftIcon={<SocialPerson />}>{groups[index]}</ListItem>);
-			listKey++;
-		}
-
-		channels.push(<Divider />);
-		channels.push(<Link to={"addChannel/"} style={styles.linkItem} ><ListItem key={-1} leftIcon={<ContentAddCircle />}>Create channel</ListItem></Link>);
-		channels.push(<Divider />);
-
-
 		this.setState({appBarTitle: currentProject});
-
-		ReactDOM.unmountComponentAtNode(document.getElementById("channels"));
-		ReactDOM.render(document.getElementById("channels"),<ChannelList channels={groups} changeChannel={this.handleChannelChange}/>);
 		
-		ReactDOM.unmountComponentAtNode(document.getElementById("messages"));
-		ReactDOM.render(document.getElementById("messages"),<MessageList messages={groups} changeMessage={this.handleMessageChange}/>);
-		
+		this.changeChannelState(groups);
+		this.changeMessageState(members);
+;
 		this.props.router.replace("chat/?name=KickBot&identifier=message");
 	}
 
-	handleChat = (name,identifier) => 
+	changeChannelState (channels)
+	{
+		this.setState({channels});
+	}
+	
+	changeMessageState (messages)
+	{
+		this.setState({messages});
+	}
+
+	handleChat (name,identifier) 
 	{
 		this.props.router.replace('/chat/?name='+name+'&identifier='+identifier);
 		this.closeMainMenu();
@@ -183,35 +185,34 @@ export default class LoggedInLayout extends React.Component
 		this.closeMainMenu();
 	}
 
-	handleMessageChange(name) 
-	{
-		this.props.router.replace('/chat/?name='+name+'&identifier=message');
-		this.closeMainMenu();
-	}
-
-	handleAccount = (e) => 
+	handleAccount (e) 
 	{
 		this.closeMainMenu();
 	}
 
-	signOut = (e) =>
+	signOut (e)
 	{
 		this.props.router.replace('/login/');
 		this.props.route.checkLoggedIn(false);
 	}
 
-	changeLogo = (url) =>
+	changeLogo (url)
 	{
 		this.setState({imageLogoUrl : url});
 	}
 
-	toggleMainMenu = () => this.setState({mainMenuOpen: !this.state.mainMenuOpen});
+	toggleMainMenu () 
+	{ 
+		this.setState({mainMenuOpen: !this.state.mainMenuOpen});
+	}
 
-	closeMainMenu = () => this.setState({mainMenuOpen: false});
+	closeMainMenu ()  
+	{
+		this.setState({mainMenuOpen: false});
+	}
 
 	render() {
 		
-
 		return (
 			<MuiThemeProvider>
 			<div style={styles.rootContainer}>
@@ -232,9 +233,11 @@ export default class LoggedInLayout extends React.Component
 					<IconButton>
 					<SocialNotifications color={grey50} />
 					</IconButton>
-					<IconButton onTouchTap={this.toggleMainMenu}>
-					<ImageDehaze color={grey50} />
-					</IconButton>
+					<span id="toggleMainMenu">
+						<IconButton onTouchTap={this.toggleMainMenu}>
+						<ImageDehaze color={grey50} />
+						</IconButton>
+					</span>
 					</span>		
 				}/>
 
@@ -249,17 +252,17 @@ export default class LoggedInLayout extends React.Component
 				<h3><u>{this.state.appBarTitle}</u></h3>
 				</ListItem>
 				<Divider />
-				<Link to={"chat/"+"?name=KickBot&identifier=message"} style={styles.listItem} onTouchTap={this.handleMessages}><ListItem key="friday" id="friday" leftIcon={<ImageTagFaces />} style={styles.listItem}><strong>Friday</strong></ListItem></Link>
+				<Link to={"chat/"+"?name=KickBot&identifier=message"} style={styles.listItem} onTouchTap={() => this.handleChat('KickBot','message')}><ListItem key="friday" id="friday" leftIcon={<ImageTagFaces />} style={styles.listItem}><strong>Friday</strong></ListItem></Link>
 				<Divider />
 
 				<div id="channels">
-				
+					<ChannelList channels={this.state.channels} changeChannel={this.handleChannelChange}/>
 				</div>
-
+				
 				<div id="messages">
+					<MessageList messages={this.state.messages} changeMessage={this.handleMessageChange}/>
+				</div>		
 				
-				</div>
-
 				<Divider />
 				<ListItem id="accountSettings" key="accountSettings" style={styles.listItem} initiallyOpen={false} primaryTogglesNestedList={true}
 				nestedItems={[

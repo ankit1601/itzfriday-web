@@ -2,7 +2,6 @@ import React from 'react';
 import Formsy from 'formsy-react';
 import Avatar from 'material-ui/Avatar';
 import RaisedButton from 'material-ui/RaisedButton';
-import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import ImageAddAPhoto from 'material-ui/svg-icons/image/add-a-photo';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
@@ -103,6 +102,7 @@ export default class Profile extends React.Component {
                 <Avatar
                         size={ 150 }
                         src="./../../resources/images/userAvatar.jpg" />
+
                 <div>
                   <FlatButton
                               primary={ true }

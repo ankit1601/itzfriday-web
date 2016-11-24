@@ -60,20 +60,20 @@ export default class Login extends React.Component {
   }
 
   submitForm(data) {
-    if(data.email!==credentials.login){
-      this.setState({err:'username/password is incorrect please enter again'});
-      return false;
-    }
-    else if(data.password!==credentials.password){
-      this.setState({err:'username/password is incorrect please enter again'});
-      return false;
-    }
-    else{
-      this.setState({err:''});
-    console.log(JSON.stringify(data, null, 4));
+    // if(data.email!==credentials.login){
+    //   this.setState({err:'username/password is incorrect please enter again'});
+    //   return false;
+    // }
+    // else if(data.password!==credentials.password){
+    //   this.setState({err:'username/password is incorrect please enter again'});
+    //   return false;
+    // }
+    // else{
+    //   this.setState({err:''});
+    // console.log(JSON.stringify(data, null, 4));
     this.props.router.replace('/');
     this.props.route.checkLoggedIn(true);
-    }
+    // }
   }
 
   notifyFormError(data) {

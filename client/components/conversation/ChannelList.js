@@ -73,34 +73,68 @@ export default class ChannelList extends React.Component
 	constructor(props)
 	{
 		super(props);
+		this.state = {
+			channels: this.props.channels,
+		};
+
+		
 
 		this.displayChannel = this.displayChannel.bind(this);
-	}
+		this.changeState = this.changeState.bind(this);
 
-	shouldComponentUpdate(nextProps, nextState) {
-		return true;
-	}
-
-	displayChannel(name)
-	{
-		console.log(this.props);
-		this.props.handleChannelChange(name);
-		this.closeMainMenu();
-	}
-
-	render()
-	{
 		groups = this.props.channels;
 		channels=[];
 		for( let index in groups)
 		{
 			channels.push(<ListItem style={styles.linkItem} onTouchTap={() => this.displayChannel(groups[index])} leftIcon={<SocialPerson />}>{groups[index]}</ListItem>);
 		}
+		channels.push(<Divider />);
+		channels.push(<Link to={"addChannel/"} style={styles.linkItem} ><ListItem key={-1} leftIcon={<ContentAddCircle />}>Create channel</ListItem></Link>);
+		channels.push(<Divider />);
+
+
+	}
+
+	componentWillMount() {
+		console.log(this.props);
+	}
+
+	componentWillReceiveProps(nextProps) {
+
+		this.changeState(nextProps.channels);
+
+		//console.log(this.state.channels);
+		
+		groups = this.state.channels;
+		channels=[];
+		for( let index in groups)
+		{
+			channels.push(<ListItem style={styles.linkItem} onTouchTap={() => this.displayChannel(groups[index])} leftIcon={<SocialPerson />}>{groups[index]}</ListItem>);
+		}
+		channels.push(<Divider />);
+		channels.push(<Link to={"addChannel/"} style={styles.linkItem} ><ListItem key={-1} leftIcon={<ContentAddCircle />}>Create channel</ListItem></Link>);
+		channels.push(<Divider />);
+	}
+
+	displayChannel(name)
+	{
+		//console.log(this.props);
+		this.props.handleChannelChange(name);
+		this.closeMainMenu();
+	}
+
+	changeState (channels)
+	{
+		this.setState({channels});
+	}
+
+	render()
+	{
 		return(
-				<ListItem id="channels" key="channels" style={styles.listItem} initiallyOpen={true} primaryTogglesNestedList={true}
-				nestedItems={channels}>
-				<strong>Channels</strong>
-				</ListItem>
+			<ListItem id="channels" key="channels" style={styles.listItem} initiallyOpen={true} primaryTogglesNestedList={true}
+			nestedItems={channels}>
+			<strong>Channels</strong>
+			</ListItem>
 			);
 	}
 }
