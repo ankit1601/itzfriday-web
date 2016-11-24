@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import {Link} from 'react-router';
 
 
@@ -22,6 +23,9 @@ import HardwareTv from 'material-ui/svg-icons/hardware/tv';
 import NavigationExpandMore from 'material-ui/svg-icons/navigation/expand-more';
 import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less';
 import ImageTagFaces from 'material-ui/svg-icons/image/tag-faces';
+
+import ChannelList from './../../conversation/ChannelList';
+import MessageList from './../../conversation/MessageList';
 
 //styling
 const styles = {
@@ -105,6 +109,7 @@ export default class LoggedInLayout extends React.Component
 		}
 
 		this.openThisProject(currentProject);
+		this.handleChannelChange = this.handleChannelChange.bind(this);
 		
 	}
 
@@ -155,14 +160,32 @@ export default class LoggedInLayout extends React.Component
 		channels.push(<Divider />);
 
 
-
 		this.setState({appBarTitle: currentProject});
+
+		ReactDOM.unmountComponentAtNode(document.getElementById("channels"));
+		ReactDOM.render(document.getElementById("channels"),<ChannelList channels={groups} changeChannel={this.handleChannelChange}/>);
+		
+		ReactDOM.unmountComponentAtNode(document.getElementById("messages"));
+		ReactDOM.render(document.getElementById("messages"),<MessageList messages={groups} changeMessage={this.handleMessageChange}/>);
+		
 		this.props.router.replace("chat/?name=KickBot&identifier=message");
 	}
 
 	handleChat = (name,identifier) => 
 	{
 		this.props.router.replace('/chat/?name='+name+'&identifier='+identifier);
+		this.closeMainMenu();
+	}
+
+	handleChannelChange(name) 
+	{
+		this.props.router.replace('/chat/?name='+name+'&identifier=channel');
+		this.closeMainMenu();
+	}
+
+	handleMessageChange(name) 
+	{
+		this.props.router.replace('/chat/?name='+name+'&identifier=message');
 		this.closeMainMenu();
 	}
 
@@ -228,14 +251,15 @@ export default class LoggedInLayout extends React.Component
 				<Divider />
 				<Link to={"chat/"+"?name=KickBot&identifier=message"} style={styles.listItem} onTouchTap={this.handleMessages}><ListItem key="friday" id="friday" leftIcon={<ImageTagFaces />} style={styles.listItem}><strong>Friday</strong></ListItem></Link>
 				<Divider />
-				<ListItem id="channels" key="channels" style={styles.listItem} initiallyOpen={true} primaryTogglesNestedList={true}
-				nestedItems={channels}>
-				<strong>Channels</strong>
-				</ListItem>
-				<ListItem id="messages" key="messages" style={styles.listItem} initiallyOpen={false} primaryTogglesNestedList={true}
-				nestedItems={messages}>
-				<strong>Messages</strong>
-				</ListItem>
+
+				<div id="channels">
+				
+				</div>
+
+				<div id="messages">
+				
+				</div>
+
 				<Divider />
 				<ListItem id="accountSettings" key="accountSettings" style={styles.listItem} initiallyOpen={false} primaryTogglesNestedList={true}
 				nestedItems={[
