@@ -122,8 +122,6 @@ export default class LoggedInLayout extends React.Component
 			if(index < lastIndexOfProjects)
 				projectList.push(<Divider />);
 		}
-
-		//this.openThisProject(currentProject);
 		
 	}
 
@@ -256,11 +254,11 @@ export default class LoggedInLayout extends React.Component
 				<Divider />
 
 				<div id="channels">
-					<ChannelList channels={this.state.channels} changeChannel={this.handleChannelChange}/>
+					<ChannelList channels={this.state.channels} changeChannel={this.handleChannelChange} appBarTitle={this.state.appBarTitle}/>
 				</div>
 				
 				<div id="messages">
-					<MessageList messages={this.state.messages} changeMessage={this.handleMessageChange}/>
+					<MessageList messages={this.state.messages} changeMessage={this.handleMessageChange} appBarTitle={this.state.appBarTitle}/>
 				</div>		
 				
 				<Divider />

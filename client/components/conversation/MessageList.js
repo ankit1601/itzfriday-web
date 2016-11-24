@@ -116,6 +116,10 @@ export default class MessageList extends React.Component
 
 	render()
 	{
+		if(this.props.appBarTitle === 'Dashboard')
+		{
+			return (<span />);
+		}
 		return(
 				<ListItem id="messages" key="messages" style={styles.listItem} initiallyOpen={true} primaryTogglesNestedList={true}
 				nestedItems={messages}>

@@ -84,6 +84,7 @@ export default class ChannelList extends React.Component
 
 		groups = this.props.channels;
 		channels=[];
+
 		for( let index in groups)
 		{
 			channels.push(<ListItem style={styles.linkItem} onTouchTap={() => this.displayChannel(groups[index])} leftIcon={<SocialPerson />}>{groups[index]}</ListItem>);
@@ -130,6 +131,10 @@ export default class ChannelList extends React.Component
 
 	render()
 	{
+		if(this.props.appBarTitle === 'Dashboard')
+		{
+			return (<span />);
+		}
 		return(
 			<ListItem id="channels" key="channels" style={styles.listItem} initiallyOpen={true} primaryTogglesNestedList={true}
 			nestedItems={channels}>
