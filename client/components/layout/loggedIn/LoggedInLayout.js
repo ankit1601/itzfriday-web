@@ -113,7 +113,8 @@ export default class LoggedInLayout extends React.Component
 		this.changeLogo = this.changeLogo.bind(this);
 		this.changeChannelState = this.changeChannelState.bind(this);
 		this.changeMessageState = this.changeMessageState.bind(this);
-
+		this.openDashboard = this.openDashboard.bind(this);
+		this.setTitleToDashboard = this.setTitleToDashboard.bind(this);
 
 		let lastIndexOfProjects = projects.length - 1;
 
@@ -124,6 +125,17 @@ export default class LoggedInLayout extends React.Component
 				projectList.push(<Divider />);
 		}
 		
+	}
+
+	openDashboard ()
+	{
+		this.setTitleToDashboard();
+		this.props.router.replace('dashboard/');
+	}
+
+	setTitleToDashboard ()
+	{
+		this.setState({appBarTitle: 'Dashboard'});
 	}
 
 	openThisProject (e)
@@ -244,7 +256,9 @@ export default class LoggedInLayout extends React.Component
 						</IconButton>
 					</span>
 					</span>		
-				}/>
+				}
+				onLeftIconButtonTouchTap={this.openDashboard}
+				iconStyleLeft={{cursor: 'pointer'}}/>
 
 				<Drawer
 				docked={false}
