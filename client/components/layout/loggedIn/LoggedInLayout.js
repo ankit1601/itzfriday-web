@@ -253,9 +253,20 @@ export default class LoggedInLayout extends React.Component
 				onRequestChange={(mainMenuOpen) => this.setState({mainMenuOpen})}
 				>
 				<List>
-				<ListItem id="project" key="project" style={styles.projectNameListItem}>
-				<h3><u>{this.state.appBarTitle}</u></h3>
-				</ListItem>
+				
+				{
+					this.state.appBarTitle === 'Dashboard' ? 
+					(<ListItem id="project" key="project" disabled="true" style={styles.projectNameListItem}>
+						<h3>&nbsp;</h3>
+						</ListItem>
+					) 
+					: 
+					(<ListItem id="project" key="project" style={styles.projectNameListItem}>
+						<h3><u>{this.state.appBarTitle}</u></h3>
+						</ListItem>
+					)
+				}
+				
 				<Divider />
 				<Link to={"chat/"+"?name=KickBot&identifier=message"} style={styles.listItem} onTouchTap={() => this.handleChat('KickBot','message')}><ListItem key="friday" id="friday" leftIcon={<ImageTagFaces />} style={styles.listItem}><strong>Friday</strong></ListItem></Link>
 				<Divider />
