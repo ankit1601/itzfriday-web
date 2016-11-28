@@ -4,7 +4,7 @@ module.exports = {
 	devtool: 'inline-source-map',
 	entry: ['./client/client'],
 	output: {
-		path: path.join('client', 'assets'),
+		path: path.resolve('./client/assets'),
 		filename: 'bundle.js',
 		publicPath: '/' 
 	},
