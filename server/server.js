@@ -10,6 +10,8 @@ var socket = require('./sockets/socket.js');
 var port = process.env.PORT || 3000;
 var auth = require('./routes/auth');
 var expressJWT = require('express-jwt');
+var jwt = require('jsonwebtoken');
+var config = require('./config');
 
 main.use(compression());
 main.use(logger('dev'));
@@ -35,8 +37,28 @@ main.use(express.static(path.join(__dirname, '../client')));
 main.get('/', function(req, res) {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
+
 main.use('/api/auth/',auth);
-main.use(expressJWT({secret:'friday'}));
+main.use('/api',expressJWT({secret:config.jwtSecret}));
+
+io.use(function(sockets, next) {
+  var token = sockets.handshake.query.token,
+              decodedToken;
+
+   try {
+      decodedToken = jwt.verify(token, config.jwtSecret);
+      console.log("token valid for user", decodedToken.user);
+      sockets.connectedUser = decodedToken.user;
+      next();
+    } catch (err) {
+        console.log(err);
+        next(new Error("not valid token"));
+        //socket.disconnect();
+    }
+  });
+
+io.on('connection', socket);
+
 // allow CORS
 main.all('*', function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -48,8 +70,6 @@ main.all('*', function(req, res, next) {
     next();
   }
 });
-
-io.sockets.on('connection', socket);
 
 
 server.listen(port, function() {

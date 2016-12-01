@@ -4,7 +4,7 @@ import ChatToolBar from './ChatToolBar';
 import ChatWindow from './ChatWindow';
 import IO from 'socket.io-client';
 
-const socket = IO.connect();
+var socket = null;
 
 const chatMessages = [];
 class ChatBox extends Component {
@@ -21,7 +21,11 @@ class ChatBox extends Component {
     socket.on('send:message', this._recieveMessage.bind(this));
   }
   componentWillMount() {
-    socket.emit('authenticating', '1234526');
+    socket = IO.connect({'query': 'token=' + localStorage['verifyFriday']});
+    socket.on('error', this._socketConnectionError.bind(this));
+  }
+  _socketConnectionError(err) {
+    console.log(err)
   }
   _initializeConversation(data) {
     console.log("Data"+data);

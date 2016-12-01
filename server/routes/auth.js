@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
 var jwt = require('jsonwebtoken');
+var config = require('../config');
 var authenticateToken = "";
 router.use(bodyParser.json());
 const users = [{
@@ -35,7 +36,7 @@ router.post('/login', function(req, res) {
   for (i; i < users.length; i++) {
     if (users[i].email === email) {
       if (req.body.password === users[i].password) {
-      	authenticateToken=jwt.sign({user:email,sub:'friday',admin:true},"friday")
+      	authenticateToken=jwt.sign({user:email,sub:'friday',admin:true}, config.jwtSecret)
         res.status(200).json({
           message: authenticateToken,
           error: false
