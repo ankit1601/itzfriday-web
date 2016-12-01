@@ -60,14 +60,15 @@ class ChatWindow extends Component {
               <ChatText chatTextMessages = {chats[i]}/>
             </li>);
           }
+           
     return(
         <Paper zDepth={5} style={styles.chatBoxStyle}>
-        <ul style= {styles.messageList}>
+          <ul style= {styles.messageList}>
                 {listView}
-              </ul>
-        <div style={styles.actionBar}>
-          <ChatInput addChat={this.props.addMessage} userName={userName}/>
-        </div>
+          </ul>
+          <div style={styles.actionBar}>
+            <ChatInput addChat={this.props.addMessage} userName={userName}/>
+          </div>
         </Paper>
       )
   }

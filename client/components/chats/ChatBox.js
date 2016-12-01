@@ -20,11 +20,11 @@ class ChatBox extends Component {
     socket.on('init', this._initializeConversation.bind(this))
     socket.on('send:message', this._recieveMessage.bind(this));
   }
-
+  componentWillMount() {
+    socket.emit('authenticating', '1234526');
+  }
   _initializeConversation(data) {
     console.log("Data"+data);
-    var { rooms, chatMessages, participants } = data;
-    this.setState({chatMessages: chatMessages, chatRooms: rooms, participants: participants});
   }
   _recieveMessage(message) {
     chatMessages.push(message);
@@ -46,7 +46,7 @@ class ChatBox extends Component {
         			</Row>
         			<Row>
           				<Col xs={12} sm={12} md={12} lg={12}>
-                    <ChatWindow name={this.props.location.query.name} participants={this.state.participants} chatMessages={this.state.chatMessages} addMessage={this.addChatMessages.bind(this)}/>
+                    <ChatWindow name={this.props.location.query.name} chatMessages={this.state.chatMessages} addMessage={this.addChatMessages.bind(this)}/>
                   </Col>
         			</Row>
       			</Grid>
