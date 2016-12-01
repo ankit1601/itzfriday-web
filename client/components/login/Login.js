@@ -13,27 +13,25 @@ import { Link } from 'react-router';
 import FlatButton from 'material-ui/FlatButton';
 import ChangePassword from './ChangePassword';
 import Dialog from 'material-ui/Dialog';
+import Request from 'superagent';
 
 const errorMessages = {
-  projectName:"Please enter only characters and number",
+  projectName: "Please enter only characters and number",
   emailError: "Please enter valid email",
   numericError: "Please provide a password"
 };
 
 const styles = {
   loginStyle: {
-    marginTop: window.innerHeight/4.5,
+    marginTop: window.innerHeight / 4.5,
     marginLeft: "auto",
     marginRight: "auto"
   },
-  errorStyle:{
-    color:'red'
+  errorStyle: {
+    color: 'red'
   }
 }
-const credentials = {
-  login:'friday@gmail.com',
-  password:'hello'
-}
+var flag = false;
 export default class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -44,7 +42,7 @@ export default class Login extends React.Component {
     this.state = {
       canSubmit: false,
       open: false,
-      err:''
+      err: ''
     };
   }
   enableButton() {
@@ -60,20 +58,25 @@ export default class Login extends React.Component {
   }
 
   submitForm(data) {
-    // if(data.email!==credentials.login){
-    //   this.setState({err:'username/password is incorrect please enter again'});
-    //   return false;
-    // }
-    // else if(data.password!==credentials.password){
-    //   this.setState({err:'username/password is incorrect please enter again'});
-    //   return false;
-    // }
-    // else{
-    //   this.setState({err:''});
-    // console.log(JSON.stringify(data, null, 4));
-    this.props.router.replace('/');
-    this.props.route.checkLoggedIn(true);
-    // }
+    console.log("in login js");
+    Request.post('/api/auth/login')
+      .set('Content-type', 'application/json')
+      .send({
+        email: data.email,
+        password: data.password
+      })
+      .end((err, res) => {
+        console.log(res.body)
+        if (res.status===200) {
+          this.props.router.replace('/');
+          this.props.route.checkLoggedIn(true);
+        } else {
+          this.setState({
+            err: res.body.message
+          });
+          return false;
+        }
+      });
   }
 
   notifyFormError(data) {
@@ -88,67 +91,89 @@ export default class Login extends React.Component {
     };
     return (
       <Grid>
-        <Col xs={12}>
-          <Card zDepth={ 2 } style={styles.loginStyle}>
-            <Row center="xs">
-              <Formsy.Form
-                       onValid={ this.enableButton }
-                       onInvalid={ this.disableButton }
-                       onValidSubmit={ this.submitForm }
-                       onInvalidSubmit={ this.notifyFormError }>
-                <ActionAccountCircle style={ imageSize.mystyle } />
-                <CardText>
+        <Col xs={ 12 }>
+        <Card
+              zDepth={ 2 }
+              style={ styles.loginStyle }>
+          <Row center="xs">
+            <Formsy.Form
+                         onValid={ this.enableButton }
+                         onInvalid={ this.disableButton }
+                         onValidSubmit={ this.submitForm }
+                         onInvalidSubmit={ this.notifyFormError }>
+              <ActionAccountCircle style={ imageSize.mystyle } />
+              <CardText>
                 <Row>
-                  <Col xs={12} sm={12} md={12} lg={12}>
-                    <FormsyText
-                          type="email"
-                          name="email"
-                          validations="isEmail"
-                          validationError={ errorMessages.emailError}
-                          required
-                          hintText="Enter your Email"
-                          floatingLabelText="Email"
-                          updateImmediately />
+                  <Col
+                       xs={ 12 }
+                       sm={ 12 }
+                       md={ 12 }
+                       lg={ 12 }>
+                  <FormsyText
+                              type="email"
+                              name="email"
+                              validations="isEmail"
+                              validationError={ errorMessages.emailError }
+                              required
+                              hintText="Enter your Email"
+                              floatingLabelText="Email"
+                              updateImmediately />
                   </Col>
                 </Row>
                 <Row>
-                  <Col xs={12} sm={12} md={12} lg={12}>
-                    <FormsyText
-                          type="password"
-                          name="password"
-                          required
-                          hintText="Enter Password"
-                          floatingLabelText="Password"
-                          updateImmediately />
+                  <Col
+                       xs={ 12 }
+                       sm={ 12 }
+                       md={ 12 }
+                       lg={ 12 }>
+                  <FormsyText
+                              type="password"
+                              name="password"
+                              required
+                              hintText="Enter Password"
+                              floatingLabelText="Password"
+                              updateImmediately />
                   </Col>
                 </Row>
                 <Row>
-                  <Col  xs={12} sm={12} md={12} lg={12}>
-                        <span style={styles.errorStyle}>{this.state.err}</span>
+                  <Col
+                       xs={ 12 }
+                       sm={ 12 }
+                       md={ 12 }
+                       lg={ 12 }>
+                  <span style={ styles.errorStyle }>{ this.state.err }</span>
                   </Col>
                 </Row>
                 <Row>
-                  <Col xs={12} sm={12} md={12} lg={12}>
-                    <Link to={ "ForgotPassword/" }>
-                      <FlatButton
-                          label="Forgot Password?"
-                          secondary={ true }></FlatButton>
-                    </Link>
+                  <Col
+                       xs={ 12 }
+                       sm={ 12 }
+                       md={ 12 }
+                       lg={ 12 }>
+                  <Link to={ "ForgotPassword/" }>
+                  <FlatButton
+                              label="Forgot Password?"
+                              secondary={ true }></FlatButton>
+                  </Link>
                   </Col>
                 </Row>
                 <Row>
-                  <Col xs={12} sm={12} md={12} lg={12}>
-                    <RaisedButton
-                            type="submit"
-                            label="Login"
-                            primary={ true }
-                            disabled={ !this.state.canSubmit } />
+                  <Col
+                       xs={ 12 }
+                       sm={ 12 }
+                       md={ 12 }
+                       lg={ 12 }>
+                  <RaisedButton
+                                type="submit"
+                                label="Login"
+                                primary={ true }
+                                disabled={ !this.state.canSubmit } />
                   </Col>
                 </Row>
-                </CardText>
-              </Formsy.Form>
-            </Row>
-          </Card>
+              </CardText>
+            </Formsy.Form>
+          </Row>
+        </Card>
         </Col>
       </Grid>
       );

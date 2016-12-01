@@ -8,6 +8,7 @@ var server = require('http').createServer(main);
 var io = require('socket.io')(server);
 var socket = require('./sockets/socket.js');
 var port = process.env.PORT || 3000;
+var auth = require('./routes/auth');
 
 main.use(compression());
 main.use(logger('dev'));
@@ -33,7 +34,7 @@ main.use(express.static(path.join(__dirname, '../client')));
 main.get('/', function(req, res) {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
-
+main.use('/api/auth/',auth);
 // allow CORS
 main.all('*', function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
