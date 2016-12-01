@@ -30,7 +30,7 @@ var pageNewlyRendered = true;
 class ChatToolBar extends Component {
 	constructor(props) {
 		super(props);
-
+		console.log(this.props.participants);
 	}
 
 	showFiles = (which) =>
@@ -44,6 +44,7 @@ class ChatToolBar extends Component {
 	render() {
 		const name = this.props.name;
 		const identifier = this.props.identifier;
+		const participants = this.props.participants;
 		const muteText = "Mute "+name;
 		const leaveText = "Leave "+name;
 		const viewName = "View "+name+ "'s profile";

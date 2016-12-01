@@ -3,7 +3,7 @@ import {Grid, Row, Col} from 'react-flexbox-grid';
 
 
 const styles = {
-	profilePic: {
+  profilePic: {
     display: "table-cell",
     verticalAlign: "top",
     paddingRight: 10
@@ -33,7 +33,8 @@ const styles = {
   },
   timestamp: {
     fontSize: 12,
-    margin: "0 10px"
+    margin: "0 10px",
+    color: "#8cb53f"
   },
   messageBody: {
     fontSize: 14,
@@ -42,33 +43,33 @@ const styles = {
   }
 }
 class ChatText extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			message: this.props.chats
-		}
-	}
-	render() {
-		const messages = this.state.message;
-		return(
+  constructor(props) {
+    super(props);
+    this.state = {
+      message: this.props.chatTextMessages
+    }
+  }
+  render() {
+    const messages = this.state.message;
+    return(
       <div>
-			{ messages !== undefined || messages !== null ?
-			<div>
-				<div style = {styles.profilePic}>
-                	<img src={messages.authorAvtar} style = {styles.imageStyle}/>
-              	</div>
-              	<div style={styles.messageTextDisplay}>
-                	<div style={styles.messageData}>
-                	<span style={styles.author}>{messages.author}</span>
-                	<span style={styles.timestamp}>{messages.chatTime}</span>
+      { messages !== undefined || messages !== null ?
+      <div>
+        <div style = {styles.profilePic}>
+                  <img src={messages.authorAvtar} style = {styles.imageStyle}/>
                 </div>
-                	<p style={styles.messageBody}>{messages.chatText}</p>
-              	</div>
-			</div> : ''
-		}
+                <div style={styles.messageTextDisplay}>
+                  <div style={styles.messageData}>
+                  <span style={styles.author}>{messages.author}</span>
+                  <span style={styles.timestamp}>{messages.chatTime}</span>
+                </div>
+                  <p style={styles.messageBody}>{messages.chatText}</p>
+                </div>
+      </div> : ''
+    }
     </div>
-			)
-	}
+      )
+  }
 }
 
 export default ChatText;

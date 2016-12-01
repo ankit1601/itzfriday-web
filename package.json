@@ -73,5 +73,10 @@
     "webpack-dev-middleware": "^1.8.4",
     "webpack-dev-server": "^1.16.2",
     "webpack-hot-middleware": "^2.13.2"
+  },
+  "dependencies": {
+    "moment": "^2.17.0",
+    "moment-timezone": "^0.5.10",
+    "socket.io": "^1.7.1"
   }
 }
