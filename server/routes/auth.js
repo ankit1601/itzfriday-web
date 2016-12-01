@@ -1,7 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
-
+var jwt = require('jsonwebtoken');
+var authenticateToken = "";
 router.use(bodyParser.json());
 const users = [{
   email: "ankit.agg3@gmail.com",
@@ -28,17 +29,15 @@ const users = [{
     password: "abcdefgh"
   }]
 //router.use(bodyParser.urlencoded({ extended: false }));
-console.log("in auth.js");
 router.post('/login', function(req, res) {
   let email = req.body.email;
   let i = 0;
-  console.log("In router for Auth");
-  console.log(req.body);
   for (i; i < users.length; i++) {
     if (users[i].email === email) {
       if (req.body.password === users[i].password) {
+      	authenticateToken=jwt.sign({user:email,sub:'friday',admin:true},"friday")
         res.status(200).json({
-          message: "You are Authorized",
+          message: authenticateToken,
           error: false
         });
       } else {
