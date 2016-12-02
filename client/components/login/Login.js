@@ -66,8 +66,8 @@ export default class Login extends React.Component {
         password: data.password
       })
       .end((err, res) => {
-        console.log(res.body)
         if (res.status===200) {
+          localStorage['verifyFriday'] = res.body.message;
           this.props.router.replace('/');
           this.props.route.checkLoggedIn(true);
         } else {

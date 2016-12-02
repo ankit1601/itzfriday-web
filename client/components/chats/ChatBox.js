@@ -4,8 +4,8 @@ import ChatToolBar from './ChatToolBar';
 import ChatWindow from './ChatWindow';
 import IO from 'socket.io-client';
 
-const socket = IO.connect();
-
+var socket = null;
+var name = ''; 
 const chatMessages = [];
 class ChatBox extends Component {
   constructor(props) {
@@ -21,7 +21,15 @@ class ChatBox extends Component {
     socket.on('send:message', this._recieveMessage.bind(this));
   }
   componentWillMount() {
-    socket.emit('authenticating', '1234526');
+    socket = IO.connect({'query': 'token=' + localStorage['verifyFriday']});
+    socket.on('error', this._socketConnectionError.bind(this));
+    socket.on('connected', this._getConnectedUser.bind(this));
+  }
+  _getConnectedUser(user) {
+    name = user;
+  }
+  _socketConnectionError(err) {
+    console.log(err)
   }
   _initializeConversation(data) {
     console.log("Data"+data);
@@ -41,12 +49,12 @@ class ChatBox extends Component {
 				<Grid>
         			<Row>
           				<Col xs={12} sm={12} md={12} lg={12}>
-                        <ChatToolBar name={this.props.location.query.name} identifier={this.props.location.query.identifier} participants={this.state.participants}/> 
+                        <ChatToolBar name={name} identifier={this.props.location.query.identifier} participants={this.state.participants}/> 
                   </Col>
         			</Row>
         			<Row>
           				<Col xs={12} sm={12} md={12} lg={12}>
-                    <ChatWindow name={this.props.location.query.name} chatMessages={this.state.chatMessages} addMessage={this.addChatMessages.bind(this)}/>
+                    <ChatWindow name={name} chatMessages={this.state.chatMessages} addMessage={this.addChatMessages.bind(this)}/>
                   </Col>
         			</Row>
       			</Grid>
