@@ -44,11 +44,11 @@ main.use('/api',expressJWT({secret:config.jwtSecret}));
 io.use(function(sockets, next) {
   var token = sockets.handshake.query.token,
               decodedToken;
-
    try {
       decodedToken = jwt.verify(token, config.jwtSecret);
-      console.log("token valid for user", decodedToken.user);
-      sockets.connectedUser = decodedToken.user;
+      console.log("token valid for user", decodedToken.name);
+      sockets.connectedUser = decodedToken.name;
+      sockets.emit('connected', sockets.connectedUser);
       next();
     } catch (err) {
         console.log(err);

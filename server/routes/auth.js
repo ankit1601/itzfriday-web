@@ -6,26 +6,32 @@ var config = require('../config');
 var authenticateToken = "";
 router.use(bodyParser.json());
 const users = [{
+  name: "Ankit",
   email: "ankit.agg3@gmail.com",
   password: "abcdefgh"
 },
   {
+    name: "Vikram",
     email: "vikram.singh24772@gmail.com",
     password: "abcdefgh"
   },
   {
+    name: "Bhutpurv",
     email: "apt.sharp@gmail.com",
     password: "abcdefgh"
   },
   {
+    name: "Cuty Suggi",
     email: "suganyagopal94@gmail.com",
     password: "abcdefgh"
   },
   {
+    name: "Dayan",
     email: "ruchikasaklani07@gmail.com",
     password: "abcdefgh"
   },
   {
+    name: "Gobinda",
     email: "gobinda.thakur@gmail.com",
     password: "abcdefgh"
   }]
@@ -36,7 +42,7 @@ router.post('/login', function(req, res) {
   for (i; i < users.length; i++) {
     if (users[i].email === email) {
       if (req.body.password === users[i].password) {
-      	authenticateToken=jwt.sign({user:email,sub:'friday',admin:true}, config.jwtSecret)
+      	authenticateToken=jwt.sign({user:email, name:users[i].name,sub:'friday',admin:true}, config.jwtSecret)
         res.status(200).json({
           message: authenticateToken,
           error: false
