@@ -12,12 +12,12 @@ var repo = "HTML5";
 var title = "issue of the day";
 var body = "functional call to create issue";
 var labels = ["bug"];
-var authToken = "7f0ed551deb6af4ffe06174d17e3aed0294f98f9";
-var assignees = "aptDroid";
+var authToken = "7632e1812ee65954e05a2917641075cf2c1d95eb";
+var assignees = ["aptDroid","suganya-g"];
 var state = "open";
 var issueNumber = 29;
 var comment = "testing commenT";
-var postData = JSON.stringify({'title': 'title changed','body':body, 'labels': labels, 'assignee': assignees, 'state' : state});
+var postData = JSON.stringify({'title': 'title changed','body':body, 'labels': labels, 'assignees': assignees, 'state' : state});
 var flag=0;
 //create an issue
 app.use("/CreateIssue",function(req,res,next){
@@ -30,8 +30,9 @@ app.use("/CreateIssue",function(req,res,next){
         {
             return res.send(error);
         }
-        var data=response.body;
-        return res.send("New issue has been opened with number "+data.number);
+        //var data=response.body;
+        //return res.send("New issue has been opened with number "+data.number+"<br/>"+data+"hello");
+        return res.send(response.body);
     });
 });
 //edit an issue, use the same to tag and assign
@@ -43,7 +44,8 @@ app.use("/EditIssue",function(req,res,next){
     .end(function(error, response){
         if(error)
             res.send(error);
-        res.send("Issue "+response.body.number+" has been updated successfully!");
+        //res.send("Issue "+response.body.number+" has been updated successfully!");
+        res.send(response.body);
     });
 });
 //close the issue
