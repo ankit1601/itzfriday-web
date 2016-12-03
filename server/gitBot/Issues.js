@@ -12,27 +12,27 @@ var repo = "HTML5";
 var title = "issue of the day";
 var body = "functional call to create issue";
 var labels = ["bug"];
-var authToken = "7632e1812ee65954e05a2917641075cf2c1d95eb";
+var authToken = "3a63416f7e179673fc0900b38db714832b5ec717";
 var assignees = ["aptDroid","suganya-g"];
 var state = "open";
-var issueNumber = 29;
+var issueNumber = 61;
 var comment = "testing commenT";
-var postData = JSON.stringify({'title': 'title changed','body':body, 'labels': labels, 'assignees': assignees, 'state' : state});
+var postData = JSON.stringify({'title': title,'body':body, 'labels': labels, 'assignees': assignees, 'state' : state});
 var flag=0;
 //create an issue
 app.use("/CreateIssue",function(req,res,next){
     request.post('https://api.github.com/repos/'+username+'/'+repo+'/issues?oauth_token='+authToken)
     .set('User-Agent',username)
     .set('Content-Type', 'application/json')
-    .send(postData)
+    .send(JSON.stringify({'title': title,'body':body, 'labels': labels, 'assignees': assignees, 'state' : state}))
     .end(function(error,response){
         if(error)
         {
             return res.send(error);
         }
-        //var data=response.body;
-        //return res.send("New issue has been opened with number "+data.number+"<br/>"+data+"hello");
-        return res.send(response.body);
+        console.log(response.body);
+        return res.send("New issue has been opened with number "+response.body.number+"<br/>");
+        //return res.send(response.body);
     });
 });
 //edit an issue, use the same to tag and assign
@@ -40,12 +40,12 @@ app.use("/EditIssue",function(req,res,next){
     request.patch('https://api.github.com/repos/'+username+'/'+repo+'/issues/'+issueNumber+'?oauth_token='+authToken)
     .set('User-Agent',username)
     .set('Content-Type','application/json')
-    .send(postData)
+    .send(JSON.stringify({'title': title,'body':body, 'labels': labels, 'assignees': assignees, 'state' : state}))
     .end(function(error, response){
         if(error)
             res.send(error);
-        //res.send("Issue "+response.body.number+" has been updated successfully!");
-        res.send(response.body);
+        res.send("Issue "+response.body.number+" has been updated successfully!");
+        //res.send(response.body);
     });
 });
 //close the issue
