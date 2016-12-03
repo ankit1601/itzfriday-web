@@ -79,34 +79,36 @@ export default class MessageList extends React.Component
 
 		this.displayMessage = this.displayMessage.bind(this);
 		this.changeState = this.changeState.bind(this);
+		this.compressName = this.compressName.bind(this);
 
 		groups = this.props.messages;
 		messages=[];
 		for( let index in groups)
 		{
-			messages.push(<ListItem style={styles.linkItem} onTouchTap={() => this.displayMessage(groups[index])} leftIcon={<SocialPerson />}>{groups[index]}</ListItem>);
+			messages.push(<ListItem style={styles.linkItem} onTouchTap={() => this.displayMessage(groups[index])} leftIcon={<SocialPerson />}>{this.compressName(groups[index])}</ListItem>);
 		}
+	}
+
+	compressName(name)
+	{
+		return this.props.nameCompressor(name);
 	}
 
 	componentWillReceiveProps(nextProps) {
 
 		this.changeState(nextProps.messages);
 
-		console.log(this.state.messages);
-		
 		groups = this.state.messages;
 		messages=[];
 		for( let index in groups)
 		{
-			messages.push(<ListItem style={styles.linkItem} onTouchTap={() => this.displayMessage(groups[index])} leftIcon={<SocialPerson />}>{groups[index]}</ListItem>);
+			messages.push(<ListItem style={styles.linkItem} onTouchTap={() => this.displayMessage(groups[index])} leftIcon={<SocialPerson />}>{this.compressName(groups[index])}</ListItem>);
 		}
 	}
 
 	displayMessage(name)
 	{
-		console.log(this.props);
 		this.props.changeMessage(name);
-		this.closeMainMenu();
 	}
 
 	changeState (messages)

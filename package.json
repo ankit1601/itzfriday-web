@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha ./test/.setup.js ./test/**/*.test*.js",
-    "build": "SET NODE_ENV=production webpack --config ./webpack.config.js",
+    "build": "NODE_ENV=production webpack --config ./webpack.config.js",
     "serve": "node node_modules/webpack-dev-server/bin/webpack-dev-server.js --content-base client --inline --hot",
     "lint": "node node_modules/gulp/bin/gulp.js lint",
     "testscript": "echo \"Error: no test specified\" && exit 1",

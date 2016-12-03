@@ -81,36 +81,34 @@ export default class ChannelList extends React.Component
 
 		this.displayChannel = this.displayChannel.bind(this);
 		this.changeState = this.changeState.bind(this);
+		this.compressName = this.compressName.bind(this);
 
 		groups = this.props.channels;
 		channels=[];
 
 		for( let index in groups)
 		{
-			channels.push(<ListItem style={styles.linkItem} onTouchTap={() => this.displayChannel(groups[index])} leftIcon={<SocialPerson />}>{groups[index]}</ListItem>);
+			channels.push(<ListItem style={styles.linkItem} onTouchTap={() => this.displayChannel(groups[index])} leftIcon={<SocialPerson />}>{this.compressName(groups[index])}</ListItem>);
 		}
 		channels.push(<Divider />);
 		channels.push(<Link to={"addChannel/"} style={styles.linkItem} ><ListItem key={-1} leftIcon={<ContentAddCircle />}>Create channel</ListItem></Link>);
 		channels.push(<Divider />);
-
-
 	}
 
-	componentWillMount() {
-		console.log(this.props);
+	compressName(name)
+	{
+		return this.props.nameCompressor(name);
 	}
 
 	componentWillReceiveProps(nextProps) {
 
 		this.changeState(nextProps.channels);
-
-		//console.log(this.state.channels);
-		
+	
 		groups = this.state.channels;
 		channels=[];
 		for( let index in groups)
 		{
-			channels.push(<ListItem style={styles.linkItem} onTouchTap={() => this.displayChannel(groups[index])} leftIcon={<SocialPerson />}>{groups[index]}</ListItem>);
+			channels.push(<ListItem style={styles.linkItem} onTouchTap={() => this.displayChannel(groups[index])} leftIcon={<SocialPerson />}>{this.compressName(groups[index])}</ListItem>);
 		}
 		channels.push(<Divider />);
 		channels.push(<Link to={"addChannel/"} style={styles.linkItem} ><ListItem key={-1} leftIcon={<ContentAddCircle />}>Create channel</ListItem></Link>);
@@ -119,9 +117,7 @@ export default class ChannelList extends React.Component
 
 	displayChannel(name)
 	{
-		console.log(this.props);
 		this.props.changeChannel(name);
-		this.closeMainMenu();
 	}
 
 	changeState (channels)

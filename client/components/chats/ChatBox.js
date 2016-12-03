@@ -15,6 +15,11 @@ class ChatBox extends Component {
       chatRooms: [],
       participants: []
     }
+    this.tokenNameProcessor = this.tokenNameProcessor.bind(this);
+  }
+  tokenNameProcessor(){
+    let name = JSON.parse(atob(localStorage['verifyFriday'].split('.')[1])).name;
+    return name;
   }
   componentDidMount() {
     socket.on('init', this._initializeConversation.bind(this))

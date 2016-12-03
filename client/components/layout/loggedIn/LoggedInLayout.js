@@ -1,20 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Link} from 'react-router';
-
-
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {amber100,green100,orange100,grey50} from 'material-ui/styles/colors';
 import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
 import FlatButton from 'material-ui/FlatButton';
-
 import {List, ListItem} from 'material-ui/List';
 import Paper from 'material-ui/Paper';
 import Drawer from 'material-ui/Drawer';
 import Divider from 'material-ui/Divider';
 import Avatar from 'material-ui/Avatar';
-
 import SocialNotifications from 'material-ui/svg-icons/social/notifications';
 import SocialPerson from 'material-ui/svg-icons/social/person';
 import ImageDehaze from 'material-ui/svg-icons/image/dehaze';
@@ -23,10 +19,8 @@ import HardwareTv from 'material-ui/svg-icons/hardware/tv';
 import NavigationExpandMore from 'material-ui/svg-icons/navigation/expand-more';
 import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less';
 import ImageTagFaces from 'material-ui/svg-icons/image/tag-faces';
-
 import ChannelList from './../../conversation/ChannelList';
 import MessageList from './../../conversation/MessageList';
-
 //styling
 const styles = {
 	rootContainer : {
@@ -105,7 +99,6 @@ export default class LoggedInLayout extends React.Component
 		this.handleChannelChange = this.handleChannelChange.bind(this);
 		this.handleMessageChange = this.handleMessageChange.bind(this);
 		this.openThisProject = this.openThisProject.bind(this);
-		this.handleChat = this.handleChat.bind(this);
 		this.handleAccount = this.handleAccount.bind(this);
 		this.signOut = this.signOut.bind(this);
 		this.toggleMainMenu = this.toggleMainMenu.bind(this);
@@ -115,6 +108,8 @@ export default class LoggedInLayout extends React.Component
 		this.changeMessageState = this.changeMessageState.bind(this);
 		this.openDashboard = this.openDashboard.bind(this);
 		this.setTitleToDashboard = this.setTitleToDashboard.bind(this);
+		this.tokenNameProcessor = this.tokenNameProcessor.bind(this);
+		this.nameCompressor = this.nameCompressor.bind(this);
 
 		let lastIndexOfProjects = projects.length - 1;
 
@@ -124,7 +119,27 @@ export default class LoggedInLayout extends React.Component
 			if(index < lastIndexOfProjects)
 				projectList.push(<Divider />);
 		}
-		
+	}
+
+	tokenNameProcessor(){
+		let name = JSON.parse(atob(localStorage['verifyFriday'].split('.')[1])).name;
+		return name;
+	}
+
+	nameCompressor(name)
+	{
+		let temp = name.split(' ');
+		let compressedName = temp[0] + ' ';
+		for( let index in temp)
+		{
+			if(index > 0)
+				compressedName += temp[index][0] + '.';
+		}
+		return compressedName.trim();
+	}
+
+	componentWillMount() {
+		this.tokenNameProcessor();
 	}
 
 	openDashboard ()
@@ -146,23 +161,23 @@ export default class LoggedInLayout extends React.Component
 
 		if( currentProject === 'Friday')
 		{
-			members=["Gobinda","Apurv","Ruchika","Suganya","Ankit","Vikram"];
+			members=["Gobinda Thakur","Apurv Tiwari","Ruchika Saklani","Suganya Gopal","Ankit Aggarwal","Vikram Marshmallow"];
 			groups=["General","Acolyte"];
 
 		}
 		else if( currentProject === 'Samarth' )
 		{
-			members=["Amol","Ankit","Shinder","Ritesh","Kumari","Hari","Prerna"];
+			members=["Amol Tiwari","Ankit Kumar Vashisht","Shinder Pal Singh","Ritesh","Kumari Devi","Hari Prasad","Prerna Kukreti"];
 			groups=["General","Developers"];	
 		}
 		else if( currentProject === 'Semantic Web' )
 		{
-			members=["Sreenidhi","Toolika","Nanda","Shipra","Bala","Divyanshu"];
+			members=["Sreenidhi","Toolika Srivastava","Nanda","Shipra Joshi","Bala","Divyanshu Sharma"];
 			groups=["General","Designers"];
 		}
 		else
 		{
-			members=["Vishant","Kirti","Dhivya","Lal","Srinivasan","Nitin"];
+			members=["Vishant Sharma","Kirti Jalan","Dhivya Lakshmi","Lal Jose","Srinivasan","Nitin Verma"];
 			groups=["General","Backend"];	
 		}
 
@@ -170,7 +185,7 @@ export default class LoggedInLayout extends React.Component
 		
 		this.changeChannelState(groups);
 		this.changeMessageState(members);
-;
+		;
 		this.props.router.replace("chat/?name=KickBot&identifier=message");
 	}
 
@@ -182,12 +197,6 @@ export default class LoggedInLayout extends React.Component
 	changeMessageState (messages)
 	{
 		this.setState({messages});
-	}
-
-	handleChat (name,identifier) 
-	{
-		this.props.router.replace('/chat/?name='+name+'&identifier='+identifier);
-		this.closeMainMenu();
 	}
 
 	handleChannelChange(name) 
@@ -228,6 +237,8 @@ export default class LoggedInLayout extends React.Component
 		this.setState({mainMenuOpen: false});
 	}
 
+
+
 	render() {
 		
 		return (
@@ -251,9 +262,9 @@ export default class LoggedInLayout extends React.Component
 					<SocialNotifications color={grey50} />
 					</IconButton>
 					<span id="toggleMainMenu">
-						<IconButton onTouchTap={this.toggleMainMenu}>
-						<ImageDehaze color={grey50} />
-						</IconButton>
+					<IconButton onTouchTap={this.toggleMainMenu}>
+					<ImageDehaze color={grey50} />
+					</IconButton>
 					</span>
 					</span>		
 				}
@@ -273,24 +284,24 @@ export default class LoggedInLayout extends React.Component
 					(<ListItem id="project" key="project" disabled="true" style={styles.projectNameListItem}>
 						<h3>&nbsp;</h3>
 						</ListItem>
-					) 
+						) 
 					: 
 					(<ListItem id="project" key="project" style={styles.projectNameListItem}>
 						<h3><u>{this.state.appBarTitle}</u></h3>
 						</ListItem>
-					)
+						)
 				}
 				
 				<Divider />
-				<Link to={"chat/"+"?name=KickBot&identifier=message"} style={styles.listItem} onTouchTap={() => this.handleChat('KickBot','message')}><ListItem key="friday" id="friday" leftIcon={<ImageTagFaces />} style={styles.listItem}><strong>Friday</strong></ListItem></Link>
+				<Link to={"chat/"+"?name=KickBot&identifier=message"} style={styles.listItem} onTouchTap={() => this.handleMessageChange('KickBot','message')}><ListItem key="friday" id="friday" leftIcon={<ImageTagFaces />} style={styles.listItem}><strong>Friday</strong></ListItem></Link>
 				<Divider />
 
 				<div id="channels">
-					<ChannelList channels={this.state.channels} changeChannel={this.handleChannelChange} appBarTitle={this.state.appBarTitle}/>
+				<ChannelList nameCompressor={this.nameCompressor} channels={this.state.channels} changeChannel={this.handleChannelChange} appBarTitle={this.state.appBarTitle}/>
 				</div>
 				
 				<div id="messages">
-					<MessageList messages={this.state.messages} changeMessage={this.handleMessageChange} appBarTitle={this.state.appBarTitle}/>
+				<MessageList nameCompressor={this.nameCompressor} messages={this.state.messages} changeMessage={this.handleMessageChange} appBarTitle={this.state.appBarTitle}/>
 				</div>		
 				
 				<Divider />
