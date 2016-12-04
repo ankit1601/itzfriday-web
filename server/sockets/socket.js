@@ -6,4 +6,8 @@ module.exports = function (socket) {
   socket.on('send:message', function (data) {
       socket.broadcast.emit('send:message', data);
   });
+
+  socket.on('notify', function (user) {
+      socket.broadcast.emit('notify', user);
+  });
 }

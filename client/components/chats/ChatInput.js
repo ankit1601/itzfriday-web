@@ -15,7 +15,8 @@ class ChatInput extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			canSubmit: false
+			canSubmit: false,
+      userTyping: ''
 		}
 	}
 	enableButton() {
@@ -41,7 +42,15 @@ class ChatInput extends Component {
     	this.props.addChat(newMessage);
 		  this.refs.chat.setState({value: ''});
   	}
-
+    notifyTypingUser() {
+      if(this.props.userName !== this.props.userTyped) {
+        console.log(this.props.userTyped);
+        this.props.notifyTyping();
+        this.setState({userTyping: this.props.userTyped});
+      }else{
+        this.setState({userTyping: ''});
+      }
+    }                                         
   	notifyFormError(data) {
     	console.error('Form error:', data);
   	}
@@ -55,6 +64,11 @@ class ChatInput extends Component {
                     onInvalidSubmit={this.notifyFormError.bind(this)}
                   >
             <Grid>
+            {this.state.userTyping !== '' ?
+            <Row>
+              <Col xs={12}><h5>{this.state.userTyping} is typing...</h5></Col>
+            </Row>: ''
+          }
               <Row>
                 <Col xs={12}>
                 <Row center="xs">
@@ -69,6 +83,7 @@ class ChatInput extends Component {
                   autoComplete="off"
                   updateImmediately
                   style = {styles.inputArea}
+                  onChange = {this.notifyTypingUser.bind(this)}
                 />
                 </Col>
                 <Col xs={2} sm={2} md={2} lg={2}>

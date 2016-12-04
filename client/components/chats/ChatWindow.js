@@ -67,7 +67,7 @@ class ChatWindow extends Component {
                 {listView}
           </ul>
           <div style={styles.actionBar}>
-            <ChatInput addChat={this.props.addMessage} userName={userName}/>
+            <ChatInput addChat={this.props.addMessage} userName={userName} notifyTyping={this.props.notifyTypingUser} userTyped={this.props.userTyped}/>
           </div>
         </Paper>
       )
