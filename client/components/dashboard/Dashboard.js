@@ -7,7 +7,7 @@ import { Grid, Row, Col } from 'react-flexbox-grid';
 
 const styles = {
 	paper: {
-		margin: '0px 0px 0px 10px',
+		margin: 'auto',
 		background: "white",
 		width: "100%",
 		textIndent: '20px',	

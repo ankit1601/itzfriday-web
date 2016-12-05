@@ -32,7 +32,7 @@ const styles = {
 	},
 	container : {
 		margin: '0px 0px 0px 0px',
-		padding: '10px',
+		padding: '5px 5px 5px 5px',
 		background: "#e0f2f1",
 	},
 	appBar : {
@@ -85,7 +85,7 @@ export default class LoggedInLayout extends React.Component
 		messages = [];
 		channels = [];
 		projectList = [];
-		projects = ['Friday','Samarth','Semantic Web', 'QuizArt'];
+		projects = ['Friday','Samarth','Semantic Web Inducer', 'QuizArt'];
 		currentProject = 'Friday';
 
 		this.state = {
@@ -249,7 +249,6 @@ export default class LoggedInLayout extends React.Component
 			{projectList}
 			</List>
 			</Paper>
-
 			<AppBar title={this.state.appBarTitle} style={styles.appBar}
 			zDepth={2}
 			iconElementLeft={

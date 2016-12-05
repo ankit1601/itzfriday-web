@@ -12,10 +12,10 @@ var repo = "HTML5";
 var title = "issue of the day";
 var body = "functional call to create issue";
 var labels = ["bug"];
-var authToken = "3a63416f7e179673fc0900b38db714832b5ec717";
+var authToken = "8e6261838f01ae79002286b086c96a87240e7797";
 var assignees = ["aptDroid","suganya-g"];
 var state = "open";
-var issueNumber = 61;
+var issueNumber = 64;
 var comment = "testing commenT";
 var postData = JSON.stringify({'title': title,'body':body, 'labels': labels, 'assignees': assignees, 'state' : state});
 var flag=0;
@@ -40,7 +40,7 @@ app.use("/EditIssue",function(req,res,next){
     request.patch('https://api.github.com/repos/'+username+'/'+repo+'/issues/'+issueNumber+'?oauth_token='+authToken)
     .set('User-Agent',username)
     .set('Content-Type','application/json')
-    .send(JSON.stringify({'title': title,'body':body, 'labels': labels, 'assignees': assignees, 'state' : state}))
+    .send(JSON.stringify({'title': 'edited issue','body':body, 'labels': labels, 'assignees': assignees, 'state' : state}))
     .end(function(error, response){
         if(error)
             res.send(error);
