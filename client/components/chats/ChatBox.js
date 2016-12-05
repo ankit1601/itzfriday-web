@@ -33,7 +33,7 @@ class ChatBox extends Component {
     }
   }
   componentWillMount() {
-    socket = IO.connect({'query': 'token=' + localStorage['verifyFriday']});
+    socket = IO.connect({'query': 'token=' + localStorage.token});
     socket.on('error', this._socketConnectionError.bind(this));
     socket.on('connected', this._getConnectedUser.bind(this));
   }
