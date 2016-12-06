@@ -56,23 +56,23 @@ class App extends Component {
 
 	render() {
 		return (
-			<Router history={hashHistory}>
-				<Route path="/" component={LoggedInLayout}>
-					<IndexRoute component={CreateProject} onEnter={this.authenticatedUser.bind(this)}></IndexRoute>
-					<Route path="login/" component={Login} onEnter={this.authenticatedUser.bind(this)}></Route>
-					<Route path="confirmationCode/" component={ConfirmCode}></Route>
-					<Route path="projectDetails/" component={ProjectCreator}></Route>
-					<Route path="sendInvite/" component={SendInvite}></Route>
-					<Route path="ForgotPassword/" component={ForgotPassword}></Route>
-					<Route path="inviteAccept/" component={InviteAccept}></Route>
-					<Route path="memberDetails/" component={InvitedMemberDetails} onEnter={this.requireAuth.bind(this)}></Route>
-					<Route path="dashboard/" component={Dashboard} onEnter={this.requireAuth.bind(this)}></Route>
-					<Route path="chat/" component={Chat} onEnter={this.requireAuth.bind(this)}></Route>
-					<Route path="addChannel/" component={AddChannel} onEnter={this.requireAuth.bind(this)}></Route>
-					<Route path="profile/" component={Profile} onEnter={this.requireAuth.bind(this)}></Route>
-					<Route path="buddy/" component={BuddyAvatar} onEnter={this.requireAuth.bind(this)}></Route>
-				</Route>
-			</Router>
+				<Router history={hashHistory}>
+					<Route path="/" component={LoggedInLayout}>
+						<IndexRoute component={CreateProject} onEnter={this.authenticatedUser.bind(this)}></IndexRoute>
+						<Route path="login/" component={Login} onEnter={this.authenticatedUser.bind(this)}></Route>
+						<Route path="confirmationCode/" component={ConfirmCode}></Route>
+						<Route path="projectDetails/" component={ProjectCreator}></Route>
+						<Route path="sendInvite/" component={SendInvite}></Route>
+						<Route path="ForgotPassword/" component={ForgotPassword}></Route>
+						<Route path="inviteAccept/" component={InviteAccept}></Route>
+						<Route path="memberDetails/" component={InvitedMemberDetails} onEnter={this.requireAuth.bind(this)}></Route>
+						<Route path="dashboard/" component={Dashboard} onEnter={this.requireAuth.bind(this)}></Route>
+						<Route path="chat/" component={Chat} onEnter={this.requireAuth.bind(this)}></Route>
+						<Route path="addChannel/" component={AddChannel} onEnter={this.requireAuth.bind(this)}></Route>
+						<Route path="profile/" component={Profile} onEnter={this.requireAuth.bind(this)}></Route>
+						<Route path="buddy/" component={BuddyAvatar} onEnter={this.requireAuth.bind(this)}></Route>
+					</Route>
+				</Router>
 			)	
 	}
 }

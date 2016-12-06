@@ -9,7 +9,6 @@ export default {
       return
     }
     authenticate(email, pass, (res) => {
-      console.log(res);
       if (res.authenticated) {
         localStorage.token = res.token
         if (cb) cb(true)
@@ -29,6 +28,11 @@ export default {
     delete localStorage.token
     if (cb) cb()
     this.onChange(false)
+  },
+
+  getNameFromToken() {
+    let name = JSON.parse(atob(localStorage.token.split('.')[1])).name;
+    return name;
   },
 
   loggedIn() {
