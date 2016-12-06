@@ -39,6 +39,14 @@ class App extends Component {
     		})
   		}
 	}
+	authenticatedUser(nextState, replace) {
+  		if (Auth.loggedIn()) {
+    		replace({
+      			pathname: 'dashboard/',
+      			state: { nextPathname: nextState.location.pathname }
+    		})
+  		}
+	}
 	checkInvited(value) {
 		if(value !== undefined) {
 			this.setState({invited: value})
@@ -51,7 +59,7 @@ class App extends Component {
 			<Router history={hashHistory}>
 				<Route path="/" component={LoggedInLayout}>
 					<IndexRoute component={CreateProject}></IndexRoute>
-					<Route path="login/" component={Login}></Route>
+					<Route path="login/" component={Login} onEnter={this.authenticatedUser.bind(this)}></Route>
 					<Route path="confirmationCode/" component={ConfirmCode}></Route>
 					<Route path="projectDetails/" component={ProjectCreator}></Route>
 					<Route path="sendInvite/" component={SendInvite}></Route>
