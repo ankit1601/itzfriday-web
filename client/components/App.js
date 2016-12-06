@@ -58,7 +58,7 @@ class App extends Component {
 		return (
 			<Router history={hashHistory}>
 				<Route path="/" component={LoggedInLayout}>
-					<IndexRoute component={CreateProject}></IndexRoute>
+					<IndexRoute component={CreateProject} onEnter={this.authenticatedUser.bind(this)}></IndexRoute>
 					<Route path="login/" component={Login} onEnter={this.authenticatedUser.bind(this)}></Route>
 					<Route path="confirmationCode/" component={ConfirmCode}></Route>
 					<Route path="projectDetails/" component={ProjectCreator}></Route>

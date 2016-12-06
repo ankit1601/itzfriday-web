@@ -9,6 +9,7 @@ var io = require('socket.io')(server);
 var socket = require('./sockets/socket.js');
 var port = process.env.PORT || 3000;
 var auth = require('./routes/auth');
+var register = require('./routes/register');
 var expressJWT = require('express-jwt');
 var jwt = require('jsonwebtoken');
 var config = require('./config');
@@ -37,7 +38,7 @@ main.use(express.static(path.join(__dirname, '../client')));
 main.get('/', function(req, res) {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
-
+main.use('/db/profile/',register);
 main.use('/api/auth/',auth);
 main.use('/api',expressJWT({secret:config.jwtSecret}));
 

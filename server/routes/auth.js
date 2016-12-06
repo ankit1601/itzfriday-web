@@ -3,6 +3,7 @@ var router = express.Router();
 var bodyParser = require('body-parser');
 var jwt = require('jsonwebtoken');
 var config = require('../config');
+var session = require('./../service/db.session.service.js');
 var authenticateToken = "";
 router.use(bodyParser.json());
 const users = [{
@@ -35,33 +36,55 @@ const users = [{
     email: "gobinda.thakur@gmail.com",
     password: "abcdefgh"
   }]
-//router.use(bodyParser.urlencoded({ extended: false }));
+router.use(bodyParser.urlencoded({ extended: false }));
+// router.post('/login', function(req, res) {
+//   let email = req.body.email;
+//   let i = 0;
+//   for (i; i < users.length; i++) {
+//     if (users[i].email === email) {
+//       if (req.body.password === users[i].password) {
+//       	authenticateToken=jwt.sign({user:email, name:users[i].name,sub:'friday',admin:true}, config.jwtSecret)
+//         res.status(200).json({
+//           message: authenticateToken,
+//           error: false
+//         });
+//       } else {
+//         res.status(401).json({
+//           message: "username/password is incorrect",
+//           error: true
+//         });
+//       }
+//       break;
+//     }
+//   }
+//   if (i === users.length) {
+//     res.status(401).json({
+//       message: "username/password is incorrect",
+//       error: true
+//     });
+//   }
+
+// });
+
 router.post('/login', function(req, res) {
   let email = req.body.email;
-  let i = 0;
-  for (i; i < users.length; i++) {
-    if (users[i].email === email) {
-      if (req.body.password === users[i].password) {
-      	authenticateToken=jwt.sign({user:email, name:users[i].name,sub:'friday',admin:true}, config.jwtSecret)
-        res.status(200).json({
-          message: authenticateToken,
-          error: false
-        });
-      } else {
-        res.status(401).json({
-          message: "username/password is incorrect",
-          error: true
-        });
-      }
-      break;
-    }
-  }
-  if (i === users.length) {
-    res.status(401).json({
-      message: "username/password is incorrect",
-      error: true
-    });
-  }
-
-});
+  let password = req.body.password;
+  var authSession = session.getSession();
+  authSession.run("MATCH (n:Person {name:{name}}) return (n)",{name:"ankit"})
+         .then(function(result){
+             authenticateToken=jwt.sign({user:email,sub:'friday',admin:true}, config.jwtSecret) 
+             res.status(200).json({
+             message:authenticateToken,
+             error:false
+          }); 
+        })
+        .catch(function(err){
+            console.log(err);
+            session.close();
+            res.status(401).json({
+              message:"user/password not found",
+              error:true
+            })
+         }) 
+  });
 module.exports = router;

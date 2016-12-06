@@ -44,8 +44,13 @@ export default class CreateProject extends React.Component
   submitForm(data) 
   {
     localStorage['email']=data.email;
-
-    this.props.router.replace("confirmationCode/");
+      console.log(data);
+    Request.post('/db/profile/register')
+    .send(data)
+    .end((err, res) => {
+      this.props.router.replace("confirmationCode/");
+    });
+    
  }
 
  redirectLogin()

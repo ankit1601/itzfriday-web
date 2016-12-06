@@ -1,3 +1,6 @@
 {
-	"jwtSecret": "friday"
+	"jwtSecret": "friday",
+	"neoDbUrl":"bolt://localhost",
+	"neoDbUser":"neo4j",
+	"neoDbPassword":"itzfriday"
 }

@@ -76,8 +76,10 @@
     "webpack-hot-middleware": "^2.13.2"
   },
   "dependencies": {
+    "babel-polyfill": "^6.16.0",
     "moment": "^2.17.0",
     "moment-timezone": "^0.5.10",
+    "neo4j-driver": "^1.1.0-M03",
     "socket.io": "^1.7.1"
   }
 }
