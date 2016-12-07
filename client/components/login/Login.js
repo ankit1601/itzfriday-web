@@ -14,6 +14,7 @@ import FlatButton from 'material-ui/FlatButton';
 import ChangePassword from './ChangePassword';
 import Dialog from 'material-ui/Dialog';
 import Request from 'superagent';
+import Auth from '../../services/auth.service.js'
 
 const errorMessages = {
   projectName: "Please enter only characters and number",
@@ -59,24 +60,18 @@ export default class Login extends React.Component {
 
   submitForm(data) {
     console.log("in login js");
-    Request.post('/api/auth/login')
-      .set('Content-type', 'application/json')
-      .send({
-        email: data.email,
-        password: data.password
-      })
-      .end((err, res) => {
-        if (res.status===200) {
-          localStorage['verifyFriday'] = res.body.message;
-          this.props.router.replace('/');
-          this.props.route.checkLoggedIn(true);
+    Auth.login(data.email, data.password, (loggedIn) => {
+        if (!loggedIn)
+          this.setState({ err: 'Incorrect username/password' })
+
+        const { location } = this.props
+
+        if (location.state && location.state.nextPathname) {
+          this.props.router.replace(location.state.nextPathname)
         } else {
-          this.setState({
-            err: res.body.message
-          });
-          return false;
+          this.props.router.push('dashboard/')
         }
-      });
+      })
   }
 
   notifyFormError(data) {

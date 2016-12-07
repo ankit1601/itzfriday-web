@@ -1,6 +1,5 @@
 var express = require('express'),
     path = require('path'),
-    logger = require('morgan'),
     bodyParser = require('body-parser'),
     compression = require('compression');
 var main     = express();
@@ -9,22 +8,24 @@ var io = require('socket.io')(server);
 var socket = require('./sockets/socket.js');
 var port = process.env.PORT || 3000;
 var auth = require('./routes/auth');
+var register = require('./routes/register');
 var expressJWT = require('express-jwt');
 var jwt = require('jsonwebtoken');
 var config = require('./config');
 
 main.use(compression());
-main.use(logger('dev'));
 main.use(bodyParser.json());
 main.use(bodyParser.urlencoded({ extended: false }));
 
 if (process.env.NODE_ENV !== 'production') {
+  const logger = require('morgan');
   const webpack = require('webpack')
   const webpackDevMiddleware = require('webpack-dev-middleware')
   const webpackHotMiddleware = require('webpack-hot-middleware')
   const config = require('../webpack.config.js')
   const compiler = webpack(config)
 
+  main.use(logger('dev'));
   main.use(webpackHotMiddleware(compiler))
   main.use(webpackDevMiddleware(compiler, {
     noInfo: true,
@@ -32,28 +33,31 @@ if (process.env.NODE_ENV !== 'production') {
   }))
 }
 
+main.use(express.static(path.join(__dirname, '../client/assets/')));
 main.use(express.static(path.join(__dirname, '../client')));
 
 main.get('/', function(req, res) {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
-
+main.use('/db/profile/',register);
 main.use('/api/auth/',auth);
 main.use('/api',expressJWT({secret:config.jwtSecret}));
 
 io.use(function(sockets, next) {
-  var token = sockets.handshake.query.token,
+  if(sockets) {
+    var token = sockets.handshake.query.token,
               decodedToken;
-   try {
+    try {
       decodedToken = jwt.verify(token, config.jwtSecret);
       console.log("token valid for user", decodedToken.name);
       sockets.connectedUser = decodedToken.name;
       sockets.emit('connected', sockets.connectedUser);
       next();
-    } catch (err) {
+      } catch (err) {
         console.log(err);
         next(new Error("not valid token"));
         //socket.disconnect();
+      }
     }
   });
 

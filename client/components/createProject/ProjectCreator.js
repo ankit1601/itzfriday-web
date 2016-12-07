@@ -24,8 +24,6 @@ import Request from 'superagent';
       	height: window.innerHeight,
     	}
 }
- var postData={};
- var postData2={};
  var pass={};
 var title;
 var email;
@@ -59,20 +57,15 @@ export default class ProjectCreator extends React.Component{
     });
   }
   submitForm(data) {
+console.log(data)
+   	localStorage['projecttitle']=data.ProjectTitle;
+ Request.post('/db/profile/profileDetails')
+    .send(data)
+    .end((err, res) => {
+      console.log(res)
+      this.props.router.replace("sendInvite/");
+    });
 
-  	localStorage['password']=data.Password;
-  	pass['password']=localStorage['password'];
-
-  	localStorage['projecttitle']=data.ProjectTitle;
-  	title=localStorage['projecttitle'];
-
-  	var email=localStorage['email'];
-
-  	console.log(localStorage);
-  	postData[email]=pass;
-
-
-  	this.props.router.replace("sendInvite/");
   }
 
 

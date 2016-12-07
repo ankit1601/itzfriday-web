@@ -19,6 +19,7 @@ import HardwareTv from 'material-ui/svg-icons/hardware/tv';
 import ImageTagFaces from 'material-ui/svg-icons/image/tag-faces';
 import ChannelList from './../../conversation/ChannelList';
 import MessageList from './../../conversation/MessageList';
+import Auth from '../../../services/auth.service.js';
 //styling
 const styles = {
 	rootContainer : {
@@ -92,6 +93,7 @@ export default class LoggedInLayout extends React.Component
 			imageLogoUrl: './../../resources/images/buddy.png',
 			channels: '',
 			messages: '',
+			loggedIn: Auth.loggedIn()
 		};
 
 		this.handleChannelChange = this.handleChannelChange.bind(this);
@@ -106,7 +108,6 @@ export default class LoggedInLayout extends React.Component
 		this.changeMessageState = this.changeMessageState.bind(this);
 		this.openNotificationBoard = this.openNotificationBoard.bind(this);
 		this.setTitleToNotifications = this.setTitleToNotifications.bind(this);
-		this.tokenNameProcessor = this.tokenNameProcessor.bind(this);
 		this.nameCompressor = this.nameCompressor.bind(this);
 
 		let lastIndexOfProjects = projects.length - 1;
@@ -118,11 +119,6 @@ export default class LoggedInLayout extends React.Component
 			if(index < lastIndexOfProjects)
 				projectList.push(<Divider />);
 		}
-	}
-
-	tokenNameProcessor(){
-		let name = JSON.parse(atob(localStorage['verifyFriday'].split('.')[1])).name;
-		return name;
 	}
 
 	nameCompressor(name)
@@ -137,10 +133,6 @@ export default class LoggedInLayout extends React.Component
 		return compressedName.trim();
 	}
 
-	componentWillMount() {
-		this.tokenNameProcessor();
-	}
-
 	openNotificationBoard ()
 	{	
 		console.log("in  openNotificationBoards");
@@ -148,10 +140,14 @@ export default class LoggedInLayout extends React.Component
 		this.props.router.replace('notifications/');
 	}
 
-	setTitleToNotifications ()
-	{
+	setTitleToNotifications () {
 		this.setState({appBarTitle: 'Notifications'});
 	}
+
+	componentWillMount() {
+		this.setState({loggedIn: Auth.loggedIn()})
+	}
+
 
 	openThisProject (e)
 	{
@@ -216,8 +212,8 @@ export default class LoggedInLayout extends React.Component
 
 	signOut (e)
 	{
+		Auth.logout();
 		this.props.router.replace('/login/');
-		this.props.route.checkLoggedIn(false);
 	}
 
 	changeLogo (url)
@@ -238,15 +234,17 @@ export default class LoggedInLayout extends React.Component
 
 
 	render() {
-		
+		const isLogged = Auth.loggedIn();
 		return (
 			<MuiThemeProvider>
 			<div style={styles.rootContainer}>
+			{isLogged ? 
 			<Paper zDepth={2} id="projects" style={styles.projectList}>
 			<List>
 			{projectList}
 			</List>
-			</Paper>
+			</Paper>: ''}
+			{isLogged ? 
 			<AppBar title={this.state.appBarTitle} style={styles.appBar}
 			zDepth={3}
 			iconElementLeft={
@@ -265,9 +263,8 @@ export default class LoggedInLayout extends React.Component
 					</span>
 					</span>		
 				}
-				// onLeftIconButtonTouchTap={this.}
-				iconStyleLeft={{cursor: 'pointer'}}/>
-
+				iconStyleLeft={{cursor: 'pointer'}}/>: ''}
+				{isLogged ? 
 				<Drawer
 				docked={false}
 				open={this.state.mainMenuOpen}
@@ -319,7 +316,7 @@ export default class LoggedInLayout extends React.Component
 					</ListItem>
 					<Divider/>
 					</List>
-					</Drawer>
+					</Drawer> : ''}
 
 					
 					<div id="content" style={styles.container}>
