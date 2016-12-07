@@ -1,5 +1,5 @@
 var request = require('superagent');
-const closeIssue = function (username,owner,repo,authToken,issueNumber,callback)
+const closeIssue = function (owner,repo,authToken,issueNumber,callback)
 {
 	var result = '';
 

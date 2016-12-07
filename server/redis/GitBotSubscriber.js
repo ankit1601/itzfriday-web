@@ -2,16 +2,26 @@ var redis = require("redis");
 var createIssue = require("../gitBot/createIssue");
 var gitBotSubscriber = redis.createClient();
 
+var toDo = ['add','create','open','list','show','display', 'comment','close'];
+var context = {
+	project:'',
+	repo:''
+	};
+
+const getIntent = function(message)
+{
+
+}
+
 gitBotSubscriber.on("message",function( channel, message)
 {
 	let tempMessage = message.trim();
 	let strArr = '';
 
 	var jsonObject = {
-				'username' : 'aptDroid',
 				'owner': '',
 				'repo' : '',
-				'authToken' : '',
+				'authToken' : '14a999ba4ac06d8a9bffce78d6253c53eafb90d4',
 				'title' : '',
 				'body' : '',
 				'labels' : '',
@@ -20,19 +30,17 @@ gitBotSubscriber.on("message",function( channel, message)
 			}
 
 	// FOR CREATE ISSUE
-	if(tempMessage.match(/create/i) && tempMessage.match(/issue/i))
+	if((tempMessage.match(/create/i) ||tempMessage.match(/open/i) ||tempMessage.match(/new/i)) && tempMessage.match(/issue/i))
 	{	
 		strArr = tempMessage.split('"');
 		if(strArr.length % 2 === 0)
 			console.log('error in input string');
 		else
 		{
-			console.log('processing..');
-			
 			//checking number of paramteres
 			for(let index=0; index < strArr.length; index++)
 			{
-				if((strArr[index].match(/issue/i) && strArr[index].match(/create/i)) && !strArr[index].match(/description/i)|| (strArr[index].match(/issue/i) || (strArr[index].match(/title/i)&&strArr[index].match(/issue/i))))
+				if((strArr[index].match(/issue/i) && (strArr[index].match(/create/i) ||tempMessage.match(/open/i) ||tempMessage.match(/new/i))) && !strArr[index].match(/description/i)|| (strArr[index].match(/issue/i) || (strArr[index].match(/title/i)&&strArr[index].match(/issue/i))))
 					jsonObject.title = strArr[++index].trim();		//title
 				else if (strArr[index].match(/project/i))
 				{
@@ -74,7 +82,7 @@ gitBotSubscriber.on("message",function( channel, message)
 					}
 					jsonObject.labels = labelsArr;				//labels
 				}
-				else if(strArr[index].match(/assign/i) || (strArr[index].match(/give/i) && strArr[index].match(/to/i)))
+				else if( strArr[index].match(/assign/i) || strArr[index].match(/give/i))
 				{
 					let assignees = strArr[++index].split(',');
 					let assigneesArr = [];
@@ -84,16 +92,12 @@ gitBotSubscriber.on("message",function( channel, message)
 					}
 					jsonObject.assignees = assigneesArr;		//assignees
 				}
-				else if(strArr[index].match(/token/i) || strArr[index].match(/key/i))
-				{
-					jsonObject.authToken = strArr[++index].trim();	//token
-				}
 			}
 
 
 			console.log(jsonObject);
-
-			createIssue(jsonObject.username, jsonObject.owner, jsonObject.repo, jsonObject.authToken, jsonObject.title, jsonObject.body, jsonObject.labels, jsonObject.assignees, (err, result) => {
+			console.log('processing..');			
+			createIssue( jsonObject.owner, jsonObject.repo, jsonObject.authToken, jsonObject.title, jsonObject.body, jsonObject.labels, jsonObject.assignees, (err, result) => {
 				console.log(result);
 			});
 
@@ -103,24 +107,3 @@ gitBotSubscriber.on("message",function( channel, message)
 });
 
 gitBotSubscriber.subscribe("GitBot");
-
-//publish GitBot 'issue create {"username":"aptDroid","repo":"HTML5","authToken":"4aff7267295cc1c030ee62c13ce82e3ffc205656","title":"new issue","body":"first comment","labels":["bug","help wanted"],"assignees":["aptDroid","suganya-g"],"state":"open"}'
-
-/* Format-1
-publish GitBot 'create issue "title of the issue"
-under project "aptDroid/HTML5" 
-having description "Somebody describe the issue!!" 
-with label "bug, help wanted"
-and assign it to "aptDroid,suganya-g"
-with token "4aff7267295cc1c030ee62c13ce82e3ffc205656"'
-
-*/
-
-/* Format-2
-'in project "aptDroid/HTML5" 
-create issue "my issue" 
-assigned to "aptDroid, suganya-g" 
-with description "content of the issue" 
-and token is "4aff7267295cc1c030ee62c13ce82e3ffc205656" 
-with label "bug, help Wanted" '
-*/

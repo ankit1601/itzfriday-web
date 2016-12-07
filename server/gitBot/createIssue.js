@@ -1,5 +1,5 @@
 var request = require('superagent');
-const createIssue = function (username,owner,repo,authToken,title,body,labels,assignees, callback)
+const createIssue = function (owner,repo,authToken,title,body,labels,assignees, callback)
 {
 	var result = '';
 
@@ -16,7 +16,7 @@ const createIssue = function (username,owner,repo,authToken,title,body,labels,as
         jsonObj.assignees = assignees;
 
 	request.post('https://api.github.com/repos/'+owner+'/'+repo+'/issues?oauth_token='+authToken)
-    .set('User-Agent',username)
+    .set('User-Agent',owner)
     .set('Content-Type', 'application/json')
     .send(JSON.stringify(jsonObj))
     .end(function(error,response){
