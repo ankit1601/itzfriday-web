@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
-var nodemailer = require('nodemailer');
+//var nodemailer = require('nodemailer');
 var session = require('./../service/db.session.service.js');
-var nodemailer = require('nodemailer');
+//var nodemailer = require('nodemailer');
 router.use(bodyParser.json());
 //router.use(bodyParser.urlencoded({ extended: false }));
 

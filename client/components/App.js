@@ -42,7 +42,7 @@ class App extends Component {
 	authenticatedUser(nextState, replace) {
   		if (Auth.loggedIn()) {
     		replace({
-      			pathname: 'dashboard/',
+      			pathname: 'notifications/',
       			state: { nextPathname: nextState.location.pathname }
     		})
   		}
