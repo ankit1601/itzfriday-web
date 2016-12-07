@@ -70,9 +70,10 @@ router.post('/login', function(req, res) {
   let email = req.body.email;
   let password = req.body.password;
   var authSession = session.getSession();
-  authSession.run("MATCH (n:User {username:{name}}) return (n)",{name:"ankit.agg3@gmail.com"})
+  authSession.run("MATCH (n:User {username:{email},password:{password}}) return (n)",{email:email,password:password})
          .then(function(result){
-             authenticateToken=jwt.sign({user:email,sub:'friday',admin:true}, config.jwtSecret) 
+              console.log(result.records[0]._fields[0].properties.fullName);
+             authenticateToken=jwt.sign({user:email,name:result.records[0]._fields[0].properties.fullName,sub:'friday',admin:true}, config.jwtSecret) 
              res.status(200).json({
              message:authenticateToken,
              error:false
