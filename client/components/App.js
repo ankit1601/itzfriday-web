@@ -15,7 +15,7 @@ import InvitedMemberDetails from './createProject/InvitedMemberDetails';
 import InviteAccept from './createProject/InviteAccept';
 import SendInvite from './sendInvite/SendInvite';
 import BuddyAvatar from './buddyAvatar/BuddyAvatar';
-import Dashboard from './dashboard/Dashboard';
+import NotificationsBoard from './notificationsBoard/NotificationsBoard';
 
 class App extends Component {
 	constructor(props)
@@ -57,8 +57,8 @@ class App extends Component {
 			return (
 			<Router key={ 2 } history={hashHistory}>
 				<Route path="/" checkLoggedIn={this.checkLoggedIn}  component={LoggedInLayout}>
-					<IndexRoute component={Dashboard}></IndexRoute>
-					<Route path="dashboard/" component={Dashboard}></Route>
+					<IndexRoute component={NotificationsBoard}></IndexRoute>
+					<Route path="notifications/" component={NotificationsBoard}></Route>
 					<Route path="chat/" component={Chat}></Route>
 					<Route path="addChannel/" component={AddChannel}></Route>
 					<Route path="profile/" component={Profile}></Route>

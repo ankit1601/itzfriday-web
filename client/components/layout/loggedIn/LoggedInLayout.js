@@ -16,8 +16,6 @@ import SocialPerson from 'material-ui/svg-icons/social/person';
 import ImageDehaze from 'material-ui/svg-icons/image/dehaze';
 import ContentAddCircle from 'material-ui/svg-icons/content/add-circle';
 import HardwareTv from 'material-ui/svg-icons/hardware/tv';
-import NavigationExpandMore from 'material-ui/svg-icons/navigation/expand-more';
-import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less';
 import ImageTagFaces from 'material-ui/svg-icons/image/tag-faces';
 import ChannelList from './../../conversation/ChannelList';
 import MessageList from './../../conversation/MessageList';
@@ -38,15 +36,15 @@ const styles = {
 	appBar : {
 		color: 'white',
 		backgroundColor: '#004D40',
-		width: '*',
+		width: '*'
 	},
 	projectList : {
 		color: 'white',
-		float: 'left',
 		width: '150px',
+		float: 'left',
 		height: window.innerHeight,
 		margin: '0px 0px 0px 0px',
-		padding: '2px 2px 2px 2px',
+		padding: '2px 2px 2px 2px'
 	},
 	projectListItem : {
 		marginTop: '2px',
@@ -90,7 +88,7 @@ export default class LoggedInLayout extends React.Component
 
 		this.state = {
 			mainMenuOpen: false,
-			appBarTitle: 'Dashboard',	//last project opened
+			appBarTitle: 'Notifications',
 			imageLogoUrl: './../../resources/images/buddy.png',
 			channels: '',
 			messages: '',
@@ -106,13 +104,14 @@ export default class LoggedInLayout extends React.Component
 		this.changeLogo = this.changeLogo.bind(this);
 		this.changeChannelState = this.changeChannelState.bind(this);
 		this.changeMessageState = this.changeMessageState.bind(this);
-		this.openDashboard = this.openDashboard.bind(this);
-		this.setTitleToDashboard = this.setTitleToDashboard.bind(this);
+		this.openNotificationBoard = this.openNotificationBoard.bind(this);
+		this.setTitleToNotifications = this.setTitleToNotifications.bind(this);
 		this.tokenNameProcessor = this.tokenNameProcessor.bind(this);
 		this.nameCompressor = this.nameCompressor.bind(this);
 
 		let lastIndexOfProjects = projects.length - 1;
-
+		projectList.push(<ListItem disabled><strong style={{ textDecoration: "underline" , color: 'rgb(0, 77 , 64)'}}>PROJECTS</strong></ListItem>);
+		projectList.push(<Divider/>)
 		for( let index in projects)
 		{
 			projectList.push(<ListItem key={index} style={styles.projectListItem} Color={green100} onTouchTap={() => this.openThisProject(projects[index])}>{projects[index]}</ListItem>);
@@ -142,15 +141,16 @@ export default class LoggedInLayout extends React.Component
 		this.tokenNameProcessor();
 	}
 
-	openDashboard ()
-	{
-		this.setTitleToDashboard();
-		this.props.router.replace('dashboard/');
+	openNotificationBoard ()
+	{	
+		console.log("in  openNotificationBoards");
+		this.setTitleToNotifications();
+		this.props.router.replace('notifications/');
 	}
 
-	setTitleToDashboard ()
+	setTitleToNotifications ()
 	{
-		this.setState({appBarTitle: 'Dashboard'});
+		this.setState({appBarTitle: 'Notifications'});
 	}
 
 	openThisProject (e)
@@ -185,10 +185,8 @@ export default class LoggedInLayout extends React.Component
 		
 		this.changeChannelState(groups);
 		this.changeMessageState(members);
-		;
 		this.props.router.replace("chat/?name=KickBot&identifier=message");
 	}
-
 	changeChannelState (channels)
 	{
 		this.setState({channels});
@@ -250,14 +248,14 @@ export default class LoggedInLayout extends React.Component
 			</List>
 			</Paper>
 			<AppBar title={this.state.appBarTitle} style={styles.appBar}
-			zDepth={2}
+			zDepth={3}
 			iconElementLeft={
 				<span>
 				<Avatar backgroundColor={'transparent'} src={this.state.imageLogoUrl} alt="Friday" height="30"/>
 				</span>}
 				iconElementRight={
 					<span>
-					<IconButton>
+					<IconButton onTouchTap={this.openNotificationBoard}>
 					<SocialNotifications color={grey50} />
 					</IconButton>
 					<span id="toggleMainMenu">
@@ -267,7 +265,7 @@ export default class LoggedInLayout extends React.Component
 					</span>
 					</span>		
 				}
-				onLeftIconButtonTouchTap={this.openDashboard}
+				// onLeftIconButtonTouchTap={this.}
 				iconStyleLeft={{cursor: 'pointer'}}/>
 
 				<Drawer
@@ -279,7 +277,7 @@ export default class LoggedInLayout extends React.Component
 				<List>
 				
 				{
-					this.state.appBarTitle === 'Dashboard' ? 
+					this.state.appBarTitle === 'NotificationBoard' ? 
 					(<ListItem id="project" key="project" disabled="true" style={styles.projectNameListItem}>
 						<h3>&nbsp;</h3>
 						</ListItem>

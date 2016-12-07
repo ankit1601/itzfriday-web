@@ -5,6 +5,9 @@ import MenuItem from 'material-ui/MenuItem';
 import Divider from 'material-ui/Divider';
 import IconButton from 'material-ui/IconButton'
 import SettingsIcon from 'material-ui/svg-icons/action/settings';
+import ActionDescription from 'material-ui/svg-icons/action/description';
+import AvLibraryBooks from 'material-ui/svg-icons/av/library-books';
+import ActionHelp from 'material-ui/svg-icons/action/help';
 import ViewList from 'material-ui/svg-icons/action/view-list';
 import IconMenu from 'material-ui/IconMenu';
 import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
@@ -22,9 +25,11 @@ const styles = {
 	},
 	toolbarText: {
 		color: "#004d40"
+	},
+	showIcon: {
+		marginBottom: '5px'
 	}
 }
-
 var pageNewlyRendered = true;
 
 class ChatToolBar extends Component {
@@ -105,10 +110,10 @@ class ChatToolBar extends Component {
     						targetOrigin={{horizontal: 'left', vertical: 'top'}}
   						>
 
-							<MenuItem primaryText="Your Files" leftIcon={<i className="material-icons">description</i>} onTouchTap={() => this.showFiles('Your')}/>
-							<MenuItem primaryText="All Files" leftIcon={<i className="material-icons">library_books</i>} onTouchTap={() => this.showFiles('All')}/>
+							<MenuItem primaryText="Your Files" leftIcon={<ActionDescription/>} onTouchTap={() => this.showFiles('Your')}/>
+							<MenuItem primaryText="All Files" leftIcon={<AvLibraryBooks/>} onTouchTap={() => this.showFiles('All')}/>
 							<Divider />
-							<MenuItem primaryText="Help" leftIcon={<i className="material-icons">help</i>}/>
+							<MenuItem primaryText="Help"  leftIcon={<ActionHelp/>}/>
     					</IconMenu>
 					</ToolbarGroup>
 				</Toolbar>

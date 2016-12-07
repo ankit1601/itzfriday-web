@@ -118,7 +118,7 @@ export default class MessageList extends React.Component
 
 	render()
 	{
-		if(this.props.appBarTitle === 'Dashboard')
+		if(this.props.appBarTitle === 'Notifications')
 		{
 			return (<span />);
 		}
