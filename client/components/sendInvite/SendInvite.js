@@ -120,9 +120,9 @@ export default class SendInvite extends React.Component
 	}
 	sendInvite()
 	{
-		this.props.router.replace('/');
-		this.props.route.checkLoggedIn(true);
-		console.log(this.props.route.checkLoggedIn(true));
+		this.props.router.replace('login/');
+		// this.props.route.checkLoggedIn(true);
+		// console.log(this.props.route.checkLoggedIn(true));
 
 	}
 	render()

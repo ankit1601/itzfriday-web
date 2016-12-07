@@ -48,6 +48,7 @@ export default class CreateProject extends React.Component
     Request.post('/db/profile/register')
     .send(data)
     .end((err, res) => {
+      console.log(res)
       this.props.router.replace("confirmationCode/");
     });
     

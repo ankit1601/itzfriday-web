@@ -70,21 +70,23 @@ router.post('/login', function(req, res) {
   let email = req.body.email;
   let password = req.body.password;
   var authSession = session.getSession();
-  authSession.run("MATCH (n:Person {name:{name}}) return (n)",{name:"ankit"})
+  authSession.run("MATCH (n:User {username:{email},password:{password}}) return (n)",{email:email,password:password})
          .then(function(result){
-             authenticateToken=jwt.sign({user:email,sub:'friday',admin:true}, config.jwtSecret) 
+              console.log(result.records[0]._fields[0].properties.fullName);
+             authenticateToken=jwt.sign({user:email,name:result.records[0]._fields[0].properties.fullName,sub:'friday',admin:true}, config.jwtSecret) 
              res.status(200).json({
              message:authenticateToken,
              error:false
-          }); 
+          });
+          authSession.close(); 
         })
         .catch(function(err){
             console.log(err);
-            session.close();
             res.status(401).json({
               message:"user/password not found",
               error:true
-            })
+            });
+            authSession.close();
          }) 
   });
 module.exports = router;
