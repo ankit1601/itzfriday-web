@@ -4,15 +4,21 @@ var router = express.Router();
 var bodyParser = require('body-parser');
 var nodemailer = require('nodemailer');
 var session = require('./../service/db.session.service.js');
-var nodemailer = require('nodemailer');
 router.use(bodyParser.json());
+var sendMail=require('../service/sendmail');
 //router.use(bodyParser.urlencoded({ extended: false }));
 
+
 router.post('/register', function(req, res) {
+  var code='';
 	console.log(req.body);
 	var regSession = session.getSession();
   var mailId = req.body.email;
-   regSession.run("CREATE (u:User {username:{mailId}}) return u",{mailId:mailId})
+
+  var code=Math.floor((Math.random()*10))+""+Math.floor((Math.random()*10))+""+Math.floor((Math.random()*10))+""+Math.floor((Math.random()*10))+""+Math.floor((Math.random()*10))+""+Math.floor((Math.random()*10));
+  sendMail(mailId,code);
+
+  regSession.run("CREATE (u:User {username:{mailId},confirmationCode:{confirmationCode}}) return u",{mailId:mailId,confirmationCode:code})
    			  .then(function(result){
    			  		console.log("user is created")
    			  })
@@ -37,6 +43,7 @@ let pass=req.body.Password;
           })
       res.send();
 })
+
 
 
  module.exports = router;
