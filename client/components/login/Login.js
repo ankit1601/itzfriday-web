@@ -69,7 +69,7 @@ export default class Login extends React.Component {
         if (location.state && location.state.nextPathname) {
           this.props.router.replace(location.state.nextPathname)
         } else {
-          this.props.router.push('dashboard/')
+          this.props.router.push('notifications/')
         }
       })
   }

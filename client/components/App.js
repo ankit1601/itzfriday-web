@@ -15,7 +15,7 @@ import InvitedMemberDetails from './createProject/InvitedMemberDetails';
 import InviteAccept from './createProject/InviteAccept';
 import SendInvite from './sendInvite/SendInvite';
 import BuddyAvatar from './buddyAvatar/BuddyAvatar';
-import Dashboard from './dashboard/Dashboard';
+import NotificationsBoard from './notificationsBoard/NotificationsBoard';
 import Auth from './../services/auth.service.js'
 
 class App extends Component {
@@ -42,7 +42,7 @@ class App extends Component {
 	authenticatedUser(nextState, replace) {
   		if (Auth.loggedIn()) {
     		replace({
-      			pathname: 'dashboard/',
+      			pathname: 'notifications/',
       			state: { nextPathname: nextState.location.pathname }
     		})
   		}
@@ -55,6 +55,7 @@ class App extends Component {
 	
 
 	render() {
+
 		return (
 				<Router history={hashHistory}>
 					<Route path="/" component={LoggedInLayout}>
@@ -66,7 +67,7 @@ class App extends Component {
 						<Route path="ForgotPassword/" component={ForgotPassword}></Route>
 						<Route path="inviteAccept/" component={InviteAccept}></Route>
 						<Route path="memberDetails/" component={InvitedMemberDetails} onEnter={this.requireAuth.bind(this)}></Route>
-						<Route path="dashboard/" component={Dashboard} onEnter={this.requireAuth.bind(this)}></Route>
+						<Route path="notifications/" component={NotificationsBoard} onEnter={this.requireAuth.bind(this)}></Route>
 						<Route path="chat/" component={Chat} onEnter={this.requireAuth.bind(this)}></Route>
 						<Route path="addChannel/" component={AddChannel} onEnter={this.requireAuth.bind(this)}></Route>
 						<Route path="profile/" component={Profile} onEnter={this.requireAuth.bind(this)}></Route>
@@ -74,6 +75,7 @@ class App extends Component {
 					</Route>
 				</Router>
 			)	
+
 	}
 }
 
