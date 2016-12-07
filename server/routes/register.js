@@ -12,7 +12,7 @@ router.post('/register', function(req, res) {
 	console.log(req.body);
 	var regSession = session.getSession();
   var mailId = req.body.email;
-   regSession.run("CREATE (n:User {username:{mailId}}) return n",{mailId:mailId})
+   regSession.run("CREATE (u:User {username:{mailId}}) return u",{mailId:mailId})
    			  .then(function(result){
    			  		console.log("user is created")
    			  })
@@ -26,9 +26,10 @@ router.post('/profileDetails',function(req,res){
 var regSession = session.getSession();
 let name=req.body.FullName;
 let title=req.body.ProjectTitle;
+let mail=req.body.Email;
 let pass=req.body.Password;
-  regSession.run("CREATE (n:User {Fullname:{name},Title:{title},Password:{pass}}) return n",{name:name,title:title,pass:pass})
-          .then(function(result){
+  regSession.run("Match (u:User {username:{mail}}) set u.fullName={name},u.password={pass},u.title={title}",{mail:mail,name:name,pass:pass,title:title})
+          .then(function(){
               console.log("details is created")
           })
           .catch(function(err){
