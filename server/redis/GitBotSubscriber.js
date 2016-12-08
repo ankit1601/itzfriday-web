@@ -6,30 +6,126 @@ var contextMd = {
 	owner: 100,
 	project: 200,
 	issue: 300
-	};
+};
+
+// priority code XXX --> (Context, similar type, sub functions) ......eg (project, create issue/edit issue/close issue/list issue/comment on issue, assign/label/milestone)
 
 var intentMd = {
+	createProject : 
+	{
+		priority : 101,
+		context : 'owner',				//owner
+		props : 
+		{
+			required : ['repoName'],
+			//optional : ['body', 'labels', 'assignees']
+		},
+		pattern : [['create','project'],['make','project']]
+	}
+	,
 	createIssue : 
 	{
+		priority : 201,
 		context : 'project',				//repo
 		props : 
 		{
 			required : ['title'],
 			optional : ['body', 'labels', 'assignees']
-		}
+		},
+		pattern : [['create','issue'],['open','issue'],['add','issue']]
 	}
+	,
+	assignIssue : 
+	{
+		priority : 211,						// ASSIGN & LABEL have same priority (will be executed in the order received) 
+		context : 'project',				//repo
+		props : 
+		{
+			required : ['number','assignees']	//execute CREATE and fetch the "number" (if assigning with create query)  or get it from user (if user intents to only assign), use that "number" to ASSIGN issue
+		},
+		pattern : [['assign', 'to'],['give','to'],['assign','issue','to'],['give','issue','to']]
+	}
+	,
+	labelIssue : 
+	{
+		priority : 211,						// ASSIGN & LABEL have same priority (will be executed in the order received)
+		context : 'project',				//repo
+		props : 
+		{
+			required : ['number','labels']	//execute CREATE and fetch the "number" (if tagging with create query) or get it from user (if user intents to only add labels), use that "number" to LABEL issue
+		},
+		pattern : [['label'],['tag'],['assign','label']]
+	}
+	,
+	closeIssue : 
+	{
+		priority : 221,						
+		context : 'project',				//repo
+		props : 
+		{
+			required : ['number']	//ask "number" from user, use that "number" to CLOSE the issue
+		},
+		pattern : [['close'],['close', 'issue']]
+	}
+	,
+	listIssues : 
+	{
+		priority : 241,
+		context : 'project',				//repo
+		props : 
+		{
+			optional : ['number']			//issue number
+		},
+		pattern : [['list','issue'],['show','issue'],['display','issue']]
+	}
+	,
+	commentOnIssue : 
+	{
+		priority : 231,					//assigning higher priority to comment over list (first comment then list)
+		context : 'issue',				//repo
+		props : 
+		{
+			required : ['number']	//ask "number" from user, use that "number" to COMMENT on issue #number
+		},
+		pattern : [['comment'],['comment', 'on']] //(comment "xyz" on issue #21),(comment on issue #21 desc "xyz"),
+	}	
 }
 
+var userIntents = [];
+
+/*
+userIntents = [
+{
+	intent : "createProject",
+	priority : 101
+}
+,
+{
+	intent : "assignIssue",
+	priority : 211
+}
+,
+{
+	intent : "createIssue",
+	priority : 201
+}
+]
+
+//now sort priority in ascending order to get the order of execution
+
+//////NOTE: consult with sir
+*/
+
 var jsonObject = {
-				'owner': '',
-				'repo' : '',
-				'authToken' : '14a999ba4ac06d8a9bffce78d6253c53eafb90d4',
-				'title' : '',
-				'body' : '',
-				'labels' : '',
-				'assignees' : '',
-				'state' : 'open'
-			}
+	'owner': '',
+	'repo' : '',
+	'authToken' : '14a999ba4ac06d8a9bffce78d6253c53eafb90d4',
+	'title' : '',
+	'body' : '',
+	'labels' : '',
+	'assignees' : '',
+	'state' : 'open'
+}
 
 var getIntent = function(message)
 {
@@ -104,25 +200,25 @@ var getContext = function ()
 
 gitBotSubscriber.on("message",function( channel, message)
 {
-	let userIntent = '';
+	let intents = '';
 	let intentExecutionOrder = '';
 	let tempMessage = message.trim();
 	let strArr = '';
 
 	console.log(" ");
-	userIntent = getIntent(message);
-	console.log("user intent : "+userIntent+"\n");
+	intents = getIntent(message);
+	console.log("user intent : "+intents+"\n");
 
 	//perform create project query if exists
-	if(userIntent.toString().match(/create project/gi))
+	if(intents.toString().match(/create project/gi))
 	{
 		//steps to execute CREATE PROJECT
 		console.log("CREATE PROJECT COMMAND");
 	}
 	//perform create issue queries
-	for(let index in userIntent)
+	for(let index in intents)
 	{
-		if(userIntent[index].match(/create issue/gi))
+		if(intents[index].match(/create issue/gi))
 		{
 			//steps to execute CREATE ISSUE
 			//data is in (2*index + 1)
@@ -130,9 +226,9 @@ gitBotSubscriber.on("message",function( channel, message)
 		}
 	}
 	//perform assign issue queries
-	for(let index in userIntent)
+	for(let index in intents)
 	{
-		if(userIntent[index].match(/assign issue/gi))
+		if(intents[index].match(/assign issue/gi))
 		{
 			//steps to execute ASSIGN ISSUE
 			//data is in (2*index + 1)
@@ -140,9 +236,9 @@ gitBotSubscriber.on("message",function( channel, message)
 		}
 	}
 	//perform label issue queries
-	for(let index in userIntent)
+	for(let index in intents)
 	{
-		if(userIntent[index].match(/label issue/gi))
+		if(intents[index].match(/label issue/gi))
 		{
 			//steps to execute LABEL ISSUE
 			//data is in (2*index + 1)
@@ -150,9 +246,9 @@ gitBotSubscriber.on("message",function( channel, message)
 		}
 	}
 	//perform comment on an issue queries
-	for(let index in userIntent)
+	for(let index in intents)
 	{
-		if(userIntent[index].match(/comment/gi))
+		if(intents[index].match(/comment/gi))
 		{
 			//steps to execute COMMENT ON ISSUE
 			//data is in (2*index + 1)
@@ -160,16 +256,16 @@ gitBotSubscriber.on("message",function( channel, message)
 		}
 	}
 	//perform list all issues querie
-	if(userIntent.toString().match(/list issues/gi))
+	if(intents.toString().match(/list issues/gi))
 	{
 		//steps to execute LIST ALL ISSUES
 		//data is in (2*index + 1)
 		console.log("LIST ALL ISSUES COMMAND");		
 	}
 	//perform close issue queries
-	for(let index in userIntent)
+	for(let index in intents)
 	{
-		if(userIntent[index].match(/close issue/gi))
+		if(intents[index].match(/close issue/gi))
 		{
 			//steps to execute COMMENT ON ISSUE
 			//data is in (2*index + 1)
@@ -244,15 +340,15 @@ gitBotSubscriber.on("message",function( channel, message)
 	// 			}
 	// 		}
 
-
-	// 		console.log(jsonObject);
-	// 		console.log('processing..');			
-	// 		createIssue( jsonObject.owner, jsonObject.repo, jsonObject.authToken, jsonObject.title, jsonObject.body, jsonObject.labels, jsonObject.assignees, (err, result) => {
-	// 			console.log(result);
-	// 		});
-
+/*
+			console.log(jsonObject);
+			console.log('processing..');			
+			createIssue( jsonObject.owner, jsonObject.repo, jsonObject.authToken, jsonObject.title, jsonObject.body, jsonObject.labels, jsonObject.assignees, (err, result) => {
+				console.log(result);
+			});
+*/
 	//	}
-		
+
 	//}
 });
 
