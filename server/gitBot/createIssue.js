@@ -1,5 +1,5 @@
 var request = require('superagent');
-const createIssue = function (owner,repo,authToken,title,body,labels,assignees, callback)
+const createIssue = function (owner,repo,authToken,title,body,callback)
 {
 	var result = '';
 
@@ -10,10 +10,10 @@ const createIssue = function (owner,repo,authToken,title,body,labels,assignees, 
 
     if(body !== '')
         jsonObj.body = body;
-    if(labels !== '')
-        jsonObj.labels = labels;
-    if(assignees !== '')
-        jsonObj.assignees = assignees;
+    // if(labels !== '')
+    //     jsonObj.labels = labels;
+    // if(assignees !== '')
+    //     jsonObj.assignees = assignees;
 
 	request.post('https://api.github.com/repos/'+owner+'/'+repo+'/issues?oauth_token='+authToken)
     .set('User-Agent',owner)
@@ -23,10 +23,10 @@ const createIssue = function (owner,repo,authToken,title,body,labels,assignees, 
         if(error)
         {
             callback(error);
-            return
+            //return
         }
-        callback(null, "Issue has been created with issue number : "+response.body.number);
+        callback(null, response.body.number);
     });
-    return result;
+    //return result;
 }
 module.exports = createIssue;
