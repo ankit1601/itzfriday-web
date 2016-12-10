@@ -225,10 +225,7 @@ var getIntent = function(message)
 		keyString = keyString.replace(/[~]+/g,'~');
 	}
 	//console-------------------
-	//console.log(keyString+"\n");
-
 	let segments = keyString.split('~');
-	console.log("segments in command : "+segments.length+"\n");
 
 	//check the intent
 	for(let index in segments)
