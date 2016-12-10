@@ -15,10 +15,10 @@ const assignIssue = function (owner,repo,authToken,issueNumber,assignees, callba
         if(error)
         {
             callback(error);
-            //return
+            return
         }
         callback(null, response.body.number);
     });
-    //return result;
+    return result;
 }
 module.exports = assignIssue;

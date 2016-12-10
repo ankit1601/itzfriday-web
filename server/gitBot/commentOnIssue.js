@@ -15,10 +15,10 @@ const commentOnIssue = function (owner,repo,authToken,issueNumber,comment, callb
         if(error)
         {
             callback(error);
-            //return
+            return
         }
         callback(null, response.body.number);
     });
-    //return result;
+    return;
 }
 module.exports = commentOnIssue;

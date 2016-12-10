@@ -22,10 +22,12 @@ const createIssue = function (owner,repo,authToken,title,body,callback)
     .end(function(error,response){
         if(error)
         {
-            callback(error);
+            //callback(error, 'error');
             //return
+            console.log(error);
         }
-        callback(null, response.body.number);
+        //callback(null, response.body.number);
+        console.log(response.body.number);
     });
     //return result;
 }

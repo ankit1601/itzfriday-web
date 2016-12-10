@@ -95,7 +95,8 @@ var intentMD = {
 var userIntents = [];
 var keyString = '';
 var valueString = '';
-
+var commandStatus = [];
+var issueNumber = '';
 /*
 userIntents = [
 {
@@ -122,7 +123,6 @@ userIntents = [
 var jsonObject = {
 	'owner': '',
 	'repo' : '',
-	'authToken' : '14a999ba4ac06d8a9bffce78d6253c53eafb90d4',
 	'number' : '',
 	'title' : '',
 	'body' : '',
@@ -139,6 +139,17 @@ var getProject = function(message)
 
 var fetchJsonObject = function(message)
 {
+	let json = {
+	'owner': '',
+	'repo' : '',
+	'number' : '',
+	'title' : '',
+	'body' : '',
+	'labels' : '',
+	'assignees' : '',
+	'state' : 'open'
+	}
+
 	let project = '';
 	let owner = '';
 	let repo = '';
@@ -163,8 +174,8 @@ var fetchJsonObject = function(message)
 	owner = project[0].replace('@','').trim();
 	repo = project[1].trim();
 
-	jsonObject.owner = owner;
-	jsonObject.repo = repo;
+	json.owner = owner;
+	json.repo = repo;
 
 	// fetch title //
 	temp = valueString[1].match(/\s"[\w-_&@!?,'\/[\]\s(){}]+"/g)
@@ -172,7 +183,7 @@ var fetchJsonObject = function(message)
 	{
 		return ("ERROR: title is not present in the information!");
 	}
-	jsonObject.title = temp.toString().replace(/"+/g,'').trim();
+	json.title = temp.toString().replace(/"+/g,'').trim();
 
 	//FETCH OPTIONAL DETAILS //
 
@@ -180,38 +191,30 @@ var fetchJsonObject = function(message)
 	{
 		//check for description
 		//patterns [description, desc, details, content]
-		if(keyString[index].match(/description/g) || keyString[index].match(/desc/g) || keyString[index].match(/details/g) || keyString[index].match(/content/g))
+		if(keyString[index].match(/description/gi) || keyString[index].match(/desc/gi) || keyString[index].match(/details/gi) || keyString[index].match(/content/gi) && !(keyString[index].match(/create/gi)&&keyString[index].match(/issue/gi)))
 		{
-			jsonObject.body = valueString[index].match(/"[\w-_&@!?,'\/[\]\s(){}]+"/).toString().replace(/"+/g,'').trim();
+			json.body = valueString[index].match(/"[\w-_&@!?,'\/[\]\s(){}]+"/).toString().replace(/"+/g,'').trim();
 		}
 		//check for assignees
 		//patterns [assign, give,]
-		else if((!keyString[index].match(/label/g) && keyString[index].match(/assign/g)) || keyString[index].match(/give/g) && keyString[index].match(/to/g))
+		else if((!keyString[index].match(/label/gi) && keyString[index].match(/assign/gi)) || keyString[index].match(/give/gi) && keyString[index].match(/to/gi))
 		{
-			jsonObject.assignees = valueString[index].match(/[\w-_]+/g);
-		}
-		//check for labels
-		//patterns [label, tag, assign label, add label]
-		else if(keyString[index].match(/label/g) || keyString[index].match(/tag/g) || keyString[index].match(/type/g) || (keyString[index].match(/assign/g) && keyString[index].match(/label/g)) || (keyString[index].match(/add/g) && keyString[index].match(/label/g)))
-		{
-			jsonObject.labels = valueString[index].match(/[\w-_]+/g);
+			json.assignees = valueString[index].match(/[\w-_]+/g);
 		}
 		//check for issue number
 		//patterns [label, tag, assign label, add label]
-		else if(keyString[index].match(/label/g) || keyString[index].match(/tag/g) || keyString[index].match(/type/g) || (keyString[index].match(/assign/g) && keyString[index].match(/label/g)) || (keyString[index].match(/add/g) && keyString[index].match(/label/g)))
+		else if(keyString[index].match(/label/gi) || keyString[index].match(/tag/gi) || keyString[index].match(/type/gi) || (keyString[index].match(/assign/gi) && keyString[index].match(/label/gi)) || (keyString[index].match(/add/gi) && keyString[index].match(/label/gi)))
 		{
-			jsonObject.labels = valueString[index].match(/[\w-_]+/g);
+			json.labels = valueString[index].match(/(help wanted)|([\w-_]+)/g);
 		}
-		else if((keyString[index].match(/in/g) && keyString[index].match(/issue/g)) || (keyString[index].match(/close/g) && keyString[index].match(/issue/g)) || (keyString[index].match(/edit/g) && keyString[index].match(/issue/g)) || (keyString[index].match(/list/g) && keyString[index].match(/issue/g)))
+		else if((keyString[index].match(/in/gi) && keyString[index].match(/issue/gi)) || (keyString[index].match(/close/gi) && keyString[index].match(/issue/gi)) || (keyString[index].match(/edit/gi) && keyString[index].match(/issue/gi)) || (keyString[index].match(/list/gi) && keyString[index].match(/issue/gi)))
 		{
 			temp = valueString[index].match(/#[0-9]+/).toString().replace('#','').trim();
-			jsonObject.number = Number(temp);
+			json.number = Number(temp);
 		}
 	}
 	
-
-	console.log(jsonObject);
-	return "success";
+	return json;
 }
 
 var getIntent = function(message)
@@ -233,39 +236,39 @@ var getIntent = function(message)
 		//create project intent checker
 		if(segments[index].match(/create/gi) && segments[index].match(/project/gi))
 		{
-			intent.push("create project");
+			intent.push("createProject");
 		}
 		//create issue intent checker
 		else if((segments[index].match(/create/gi)||segments[index].match(/open/gi)||segments[index].match(/add/gi)) && segments[index].match(/issue/gi))
 		{
-			intent.push("create issue");
+			intent.push("createIssue");
 		}
 		//list all issues intent checker
 		else if((segments[index].match(/list/gi)||segments[index].match(/show/gi)||segments[index].match(/display/gi)) && segments[index].match(/issue/gi))
 		{
 			//2 options:
 			//if #number is given, fetch the number and list that issue only OTHERWISE list all issues
-			intent.push("list issues");
+			intent.push("listIssues");
 		}
 		//assign issue intent checker
 		else if(segments[index].match(/assign/gi)||segments[index].match(/give/gi))
 		{
-			intent.push("assign issue");
+			intent.push("assignIssue");
 		}
 		//tag/label/type issue intent checker
 		else if(segments[index].match(/label/gi)||segments[index].match(/type/gi)||segments[index].match(/tag/gi))
 		{
-			intent.push("label issue");
+			intent.push("labelIssue");
 		}
 		//close issue intent checker
 		else if(segments[index].match(/close/gi)||segments[index].match(/end/gi))
 		{
-			intent.push("close issue");
+			intent.push("closeIssue");
 		}
 		//comment on an issue intent checker
 		else if((segments[index].match(/create/gi)&&segments[index].match(/comment/gi))||segments[index].match(/comment/gi))
 		{
-			intent.push("comment");
+			intent.push("commentOnIssue");
 		}
 		
 	}
@@ -287,68 +290,110 @@ gitBotSubscriber.on("message",function( channel, message)
 	valueString = '';
 
 	
-	intents = getIntent(message);
+	intents = getIntent(message);	//will generate key string
 	intentString = intents.toString();
 	console.log("user intent : "+intents+"\n");
 
-	//perform create project query if exists
-	if(intentString.match(/create project/gi))
-	{
-		//steps to execute CREATE PROJECT
-		console.log("CREATE PROJECT COMMAND");
-	}
-	//perform create issue queries
-	if(intentString.match(/create issue/gi))
-	{
-		//steps to execute CREATE ISSUE
-		//data is in (2*index + 1)
-		console.log("CREATE ISSUE COMMAND");		
-	}
-	//perform assign issue queries
-	if(intentString.match(/assign issue/gi))
-	{
-		//steps to execute ASSIGN ISSUE
-		//data is in (2*index + 1)
-		console.log("ASSIGN ISSUE COMMAND");
-	}
-	//perform label issue queries
-	if(intentString.match(/label issue/gi))
-	{
-		//steps to execute LABEL ISSUE
-		//data is in (2*index + 1)
-		console.log("LABEL ISSUE COMMAND");
-	}
-	//perform comment on an issue queries
-	if(intentString.match(/comment/gi))
-	{
-		//steps to execute COMMENT ON ISSUE
-		//data is in (2*index + 1)
-		console.log("COMMENT ON ISSUE COMMAND");		
-	}
-	//perform list all issues querie
-	if(intentString.match(/list issues/gi))
-	{
-		//steps to execute LIST ALL ISSUES
-		//data is in (2*index + 1)
-		console.log("LIST ALL ISSUES COMMAND");		
-	}
-	//perform close issue queries
-	if(intentString.match(/close issue/gi))
-	{
-		//steps to execute COMMENT ON ISSUE
-		//data is in (2*index + 1)
-		console.log("COMMENT ON ISSUE COMMAND");		
-	}
-
 	keyString = keyString.split('~');
-	keyString.pop();
+	keyString.pop();	//remove the trailing ~
 
-	console.log(fetchJsonObject(message));
-	console.log("keys : \n");
+	jsonObject = fetchJsonObject(message);
+	jsonObject.authToken = '6cdf232d9333570c24e74ab78d815e30afef399e';
+
+	console.log("\nkeys :");
 	console.log(keyString);
 
-	console.log("values : \n");
+	console.log("\nvalues :");
 	console.log(valueString);
+
+	console.log("\njson :");
+	console.log(jsonObject);
+
+
+	for(let intent in intents)
+	{
+		switch(intents[intent])
+		{
+			case "createProject":
+				console.log("Command to Create Project");
+				break;
+			case "createIssue":
+				createIssue( jsonObject.owner, jsonObject.repo, jsonObject.authToken, jsonObject.title, jsonObject.body, jsonObject.labels, jsonObject.assignees, (err, result) => {
+					console.log(result);
+					if(isNaN(result))
+					{
+						commandStatus.push(result);
+					}
+					else
+						commandStatus.push("Issue has been created with id : "+result);
+				});
+				break;
+			case "assignIssue":
+			console.log("command to assign issue")
+				// assignIssue (jsonObject.owner, jsonObject.repo, jsonObject.authToken, issueNumber, jsonObject.assignees, (err, result) => {
+				// 	if(isNaN(result))
+				// 	{
+				// 		commandStatus.push(result);
+				// 	}
+				// 	else
+				// 		commandStatus.push("Issue has been created with id : "+result);
+				// });
+				break;
+			default:
+				console.log("define "+intents[intent]);
+		}
+	}
+
+	// //perform create project query if exists
+	// if(intentString.match(/createProject/gi))
+	// {
+	// 	//steps to execute CREATE PROJECT
+	// 	console.log("CREATE PROJECT COMMAND");
+	// }
+	// //perform create issue queries
+	// if(intentString.match(/createIssue/gi))
+	// {
+	// 	//steps to execute CREATE ISSUE
+	// 	//data is in (2*index + 1)
+	// 	console.log("CREATE ISSUE COMMAND");		
+	// }
+	// //perform assign issue queries
+	// if(intentString.match(/assignIssue/gi))
+	// {
+	// 	//steps to execute ASSIGN ISSUE
+	// 	//data is in (2*index + 1)
+	// 	console.log("ASSIGN ISSUE COMMAND");
+	// }
+	// //perform label issue queries
+	// if(intentString.match(/labelIssue/gi))
+	// {
+	// 	//steps to execute LABEL ISSUE
+	// 	//data is in (2*index + 1)
+	// 	console.log("LABEL ISSUE COMMAND");
+	// }
+	// //perform comment on an issue queries
+	// if(intentString.match(/commentOnIssue/gi))
+	// {
+	// 	//steps to execute COMMENT ON ISSUE
+	// 	//data is in (2*index + 1)
+	// 	console.log("COMMENT ON ISSUE COMMAND");		
+	// }
+	// //perform list all issues querie
+	// if(intentString.match(/listIssues/gi))
+	// {
+	// 	//steps to execute LIST ALL ISSUES
+	// 	//data is in (2*index + 1)
+	// 	console.log("LIST ALL ISSUES COMMAND");		
+	// }
+	// //perform close issue queries
+	// if(intentString.match(/closeIssue/gi))
+	// {
+	// 	//steps to execute COMMENT ON ISSUE
+	// 	//data is in (2*index + 1)
+	// 	console.log("COMMENT ON ISSUE COMMAND");		
+	// }
+
+	//--------------------------------
 
 	//gitBotSubscriber.publish("reply", "publish back");	//not working...ERROR : reply error
 
