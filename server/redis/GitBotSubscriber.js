@@ -97,6 +97,19 @@ var keyString = '';
 var valueString = '';
 var commandStatus = [];
 var issueNumber = '';
+
+function asyncDataHandler (error,response)
+{
+	if(error)
+	{
+		console.error(response,error);
+	}
+	else
+	{
+		console.log(response);
+	}
+}
+
 /*
 userIntents = [
 {
@@ -121,33 +134,28 @@ userIntents = [
 */
 
 var jsonObject = {
-	'owner': '',
-	'repo' : '',
-	'number' : '',
-	'title' : '',
-	'body' : '',
-	'labels' : '',
-	'assignees' : '',
-	'state' : 'open'
+	"owner": "",
+	"repo" : "",
+	"number" : "",
+	"title" : "",
+	"body" : "",
+	"labels" : "",
+	"assignees" : "",
+	"state" : "open"
 }
 
-var getProject = function(message)
-{
-	// let project = 
-	return '';
-}
 
 var fetchJsonObject = function(message)
 {
 	let json = {
-	'owner': '',
-	'repo' : '',
-	'number' : '',
-	'title' : '',
-	'body' : '',
-	'labels' : '',
-	'assignees' : '',
-	'state' : 'open'
+	"owner": "",
+	"repo" : "",
+	"number" : "",
+	"title" : "",
+	"body" : "",
+	"labels" : "",
+	"assignees" : "",
+	"state" : "open"
 	}
 
 	let project = '';
@@ -292,13 +300,19 @@ gitBotSubscriber.on("message",function( channel, message)
 	
 	intents = getIntent(message);	//will generate key string
 	intentString = intents.toString();
-	console.log("user intent : "+intents+"\n");
+
+	//// IMPLEMENT SEQUENCE  ////
+	//if create && (assign || label)  ==> create
+	//if(intentString.match(/create/gi) && intentString.match())
+	//if (assign || label)  ==> assign || label
+
+	console.log("user intent : "+intentString+"\n");
 
 	keyString = keyString.split('~');
 	keyString.pop();	//remove the trailing ~
 
 	jsonObject = fetchJsonObject(message);
-	jsonObject.authToken = '6cdf232d9333570c24e74ab78d815e30afef399e';
+	jsonObject.authToken = 'd978507e04169c55c4e1758f4a4ffb9f4eb41164';
 
 	console.log("\nkeys :");
 	console.log(keyString);
@@ -319,13 +333,13 @@ gitBotSubscriber.on("message",function( channel, message)
 				break;
 			case "createIssue":
 				createIssue( jsonObject.owner, jsonObject.repo, jsonObject.authToken, jsonObject.title, jsonObject.body, jsonObject.labels, jsonObject.assignees, (err, result) => {
-					console.log(result);
-					if(isNaN(result))
-					{
-						commandStatus.push(result);
-					}
-					else
-						commandStatus.push("Issue has been created with id : "+result);
+					console.log("Issue has been created with id : "+result);
+					// if(isNaN(result))
+					// {
+					// 	commandStatus.push(result);
+					// }
+					// else
+					// 	commandStatus.push("Issue has been created with id : "+result);
 				});
 				break;
 			case "assignIssue":
