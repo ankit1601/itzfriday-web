@@ -92,23 +92,11 @@ var intentMD = {
 	}	
 }
 
-var userIntents = [];
+var intents = [];
 var keyString = '';
 var valueString = '';
 var commandStatus = [];
 var issueNumber = '';
-
-function asyncDataHandler (error,response)
-{
-	if(error)
-	{
-		console.error(response,error);
-	}
-	else
-	{
-		console.log(response);
-	}
-}
 
 /*
 userIntents = [
@@ -145,8 +133,10 @@ var jsonObject = {
 }
 
 
-var fetchJsonObject = function(message)
+function fetchJsonObject(message)
 {
+	processFurther = true;
+
 	let json = {
 	"owner": "",
 	"repo" : "",
@@ -163,69 +153,97 @@ var fetchJsonObject = function(message)
 	let repo = '';
 	let temp = '';
 
-	//fetch the values
-	valueString = message.match(/(\s"[\w-_&@!?,'\/[\]\s(){}]+")|((\s*@[\w-_/,]+)+)|(\s#[0-9]+)/gi);
-
-	if(valueString.length !== keyString.length)
-		return ("ERROR: mismatch parameter variable count!");
-
-	// FETCH MANDATORY DETAILS //
-
-	// fetch project details //
-	project = valueString[0].match(/\s@[\w]{2}[\w-_/]+/);
-	if(project === null)	//if project not present
+	if(keyString.length === 0)
 	{
-		return ("ERROR: project not present in the information!");
+		intents.push("call GitBot");
+		return "Invalid string";
 	}
-	project = project.toString().split('/');
-	
-	owner = project[0].replace('@','').trim();
-	repo = project[1].trim();
-
-	json.owner = owner;
-	json.repo = repo;
-
-	// fetch title //
-	temp = valueString[1].match(/\s"[\w-_&@!?,'\/[\]\s(){}]+"/g)
-	if(temp === null)		//if title not present
+	else if(keyString.length === 1 && valueString === null)	//atleast one intent (list all issues)
 	{
-		return ("ERROR: title is not present in the information!");
+		return "List all issues";
 	}
-	json.title = temp.toString().replace(/"+/g,'').trim();
+	else
+	{	
+		//fetch the values
+		valueString = message.match(/(\s"[\w-_&@!?,'\/[\]\s(){}]+")|((\s*@[\w-_/,]+)+)|(\s#[0-9]+)/gi);
 
-	//FETCH OPTIONAL DETAILS //
+		// FETCH MANDATORY DETAILS //
 
-	for(let index=2; index<keyString.length; index++)
-	{
-		//check for description
-		//patterns [description, desc, details, content]
-		if(keyString[index].match(/description/gi) || keyString[index].match(/desc/gi) || keyString[index].match(/details/gi) || keyString[index].match(/content/gi) && !(keyString[index].match(/create/gi)&&keyString[index].match(/issue/gi)))
+		// fetch project details if creating project //
+		project = valueString[0].match(/\s@[\w]{2}[\w-_/]+/);
+		if( project !== null)
 		{
-			json.body = valueString[index].match(/"[\w-_&@!?,'\/[\]\s(){}]+"/).toString().replace(/"+/g,'').trim();
+			project = project.toString().split('/');
+			owner = project[0].replace('@','').trim();
+			repo = project[1].trim();
 		}
-		//check for assignees
-		//patterns [assign, give,]
-		else if((!keyString[index].match(/label/gi) && keyString[index].match(/assign/gi)) || keyString[index].match(/give/gi) && keyString[index].match(/to/gi))
+
+		json.owner = owner;
+		json.repo = repo;
+
+		// fetch title //
+		// temp = valueString[1].match(/\s"[\w-_&@!?,'\/[\]\s(){}]+"/g)
+		// if(temp !== null)
+		// 	json.title = temp.toString().replace(/"+/g,'').trim();
+		
+		//FETCH OPTIONAL DETAILS //
+
+		for(let index in keyString)
 		{
-			json.assignees = valueString[index].match(/[\w-_]+/g);
+			//check for project if it already exists
+			//patterns [in, under, in project, under project]
+			if((keyString[index].match(/in/gi) || keyString[index].match(/under/gi)) && keyString[index].match(/project/gi))
+			{
+				console.log("......inside project fetch...");
+				project = valueString[index].match(/\s@[\w]{2}[\w-_/]+/);
+				if( project !== null)
+				{
+				project = project.toString().trim().split('/');
+				owner = project[0].replace('@','').trim();
+				repo = project[1].trim();
+				json.owner = owner;
+				json.repo = repo;
+
+				}
+			}
+			//check for title
+			//patterns [create issue, open issue, add issue]
+			else if((keyString[index].match(/create/gi) || keyString[index].match(/open/gi) || keyString[index].match(/add/gi)) && keyString[index].match(/issue/gi))
+			{
+				json.title = valueString[index].match(/\s"[\w-_&@!?,'\/[\]\s(){}]+"/).toString().replace(/"+/g,'').trim();
+			}
+			//check for description
+			//patterns [description, desc, details, content, comment]
+			if((keyString[index].match(/comment/gi) && !keyString[index].match(/on/gi)) || (keyString[index].match(/description/gi) || keyString[index].match(/desc/gi) || keyString[index].match(/detail/gi) || keyString[index].match(/content/gi) && !(keyString[index].match(/create/gi)&&keyString[index].match(/issue/gi))))
+			{
+				json.body = valueString[index].match(/"[\w-_&@!?,'\/[\]\s(){}]+"/).toString().replace(/"+/g,'').trim();
+			}
+			//check for assignees
+			//patterns [to, assign to, give to,]	//eg. [assign issue to, assign to, give issue to, give to]
+			else if(!keyString[index].match(/label/gi) && keyString[index].match(/to/gi))// || keyString[index].match(/give/gi)) && keyString[index].match(/to/gi))
+			{
+				json.assignees = valueString[index].match(/[\w-_]+/g);
+			}
+			//check for labels
+			//patterns [label, with, tag, assign label, add label, assign tag, add tag]
+			else if(!keyString[index].match(/issue/gi) && keyString[index].match(/label/gi) || keyString[index].match(/with/gi) || keyString[index].match(/tag/gi) || (keyString[index].match(/assign/gi) && keyString[index].match(/label/gi)) || (keyString[index].match(/add/gi) && keyString[index].match(/label/gi)))
+			{
+				json.labels = valueString[index].match(/(help wanted)|([\w-_]+)/g);
+			}
+			//check for issue number
+			//patterns [assign issue #number, give issue #number, label issue #number, tag issue #number, list issue #number, edit issue #number, close issue #number, on issue #number, comment on #number]
+			else if(((keyString[index].match(/assign/gi) || keyString[index].match(/give/gi) || keyString[index].match(/label/gi) || keyString[index].match(/tag/gi) || keyString[index].match(/close/gi) || keyString[index].match(/list/gi) || keyString[index].match(/show/gi) || keyString[index].match(/display	/gi) || keyString[index].match(/edit/gi)) && keyString[index].match(/issue/gi)) || keyString[index].match(/close/gi) ||(keyString[index].match(/comment/gi) && (keyString[index].match(/on/gi) || keyString[index].match(/issue/gi))))
+			{
+				temp = valueString[index].match(/#[0-9]+/).toString().replace('#','').trim();
+				json.number = Number(temp);
+			}
 		}
-		//check for issue number
-		//patterns [label, tag, assign label, add label]
-		else if(keyString[index].match(/label/gi) || keyString[index].match(/tag/gi) || keyString[index].match(/type/gi) || (keyString[index].match(/assign/gi) && keyString[index].match(/label/gi)) || (keyString[index].match(/add/gi) && keyString[index].match(/label/gi)))
-		{
-			json.labels = valueString[index].match(/(help wanted)|([\w-_]+)/g);
-		}
-		else if((keyString[index].match(/in/gi) && keyString[index].match(/issue/gi)) || (keyString[index].match(/close/gi) && keyString[index].match(/issue/gi)) || (keyString[index].match(/edit/gi) && keyString[index].match(/issue/gi)) || (keyString[index].match(/list/gi) && keyString[index].match(/issue/gi)))
-		{
-			temp = valueString[index].match(/#[0-9]+/).toString().replace('#','').trim();
-			json.number = Number(temp);
-		}
+		
+		return json;
 	}
-	
-	return json;
 }
 
-var getIntent = function(message)
+function getIntent(message)
 {
 	let intent = [];
 
@@ -237,7 +255,7 @@ var getIntent = function(message)
 	}
 	//console-------------------
 	let segments = keyString.split('~');
-
+	console.log(keyString);
 	//check the intent
 	for(let index in segments)
 	{
@@ -264,7 +282,7 @@ var getIntent = function(message)
 			intent.push("assignIssue");
 		}
 		//tag/label/type issue intent checker
-		else if(segments[index].match(/label/gi)||segments[index].match(/type/gi)||segments[index].match(/tag/gi))
+		else if(segments[index].match(/label/gi)||segments[index].match(/type/gi)||segments[index].match(/tag/gi))//|| (segments[index].match(/assign/gi) && (segments[index].match(/tag/gi) || segments[index].match(/label/gi) || segments[index].match(/type/gi))))
 		{
 			intent.push("labelIssue");
 		}
@@ -283,81 +301,162 @@ var getIntent = function(message)
 	return intent;
 }
 
-// var getContext = function ()
-// {
+function generateExecutionSequence(intents)
+{
+	let tempIntentString = intents.toString();
+	let executionSequence = [];
 
-// }
+	//create project owner/repo
+	//create project "repo" under "owner"
+
+	//create issue "title" in/under project @owner/repo with desc/detail/description "description" assign/give to @aptDroid, @ruchika with type "bug, help wanted, duplicate"
+	//add issue "title" with desc/detail/description "description" in/under project @owner/repo assign/give to @aptDroid, @ruchika with type "bug, help wanted, duplicate"
+	//open issue "title" with desc/detail/description "description" in/under project @owner/repo  with type "bug, help wanted, duplicate" assign/give to @aptDroid, @ruchika
+
+	//assign issue #101 to @qwerty
+	//give issue #101 to @qwerty
+
+	//label issue #101 with labels "help wanted, bug, duplicate, wontfix"
+	//label issue #101 with "help wanted, bug, duplicate, wontfix"
+	//tag issue #101 with labels/tags "help wanted, bug, duplicate, wontfix"
+
+	//edit issue #number
+
+	//close issue #number
+
+	//list issues
+	//list issue #number
+	//show issue #number
+	//display issue #number
+
+	//comment on issue #number comment "my comment"
+	//on issue #number comment "my comment"
+
+
+	if(tempIntentString.match(/createIssue/gi) && (tempIntentString.match(/assignIssue/gi) || tempIntentString.match(/labelIssue/gi)))
+	{
+		executionSequence.push("createIssue");
+	}
+	else 	//either createIssue is present OR assignIssue OR labeIssue OR (assignIssue AND labelIssue) 
+	{
+		for (let intent in intents)
+		{
+			executionSequence.push(intents[intent]);
+		}
+	}
+
+	return executionSequence;
+}
 
 gitBotSubscriber.on("message",function( channel, message)
 {
-	let intents = '';
+	intents = '';
 	let intentExecutionOrder = '';
-	let tempMessage = message.trim();
+	//let tempMessage = message.trim();
 	let strArr = '';
 	keyString = '';
 	valueString = '';
 
-	
-	intents = getIntent(message);	//will generate key string
+	//FETCH USER INTENT
+	intents = getIntent(message);	//will generate keyString
 	intentString = intents.toString();
-
-	//// IMPLEMENT SEQUENCE  ////
-	//if create && (assign || label)  ==> create
-	//if(intentString.match(/create/gi) && intentString.match())
-	//if (assign || label)  ==> assign || label
-
-	console.log("user intent : "+intentString+"\n");
-
 	keyString = keyString.split('~');
 	keyString.pop();	//remove the trailing ~
 
-	jsonObject = fetchJsonObject(message);
-	jsonObject.authToken = 'd978507e04169c55c4e1758f4a4ffb9f4eb41164';
+	//FETCH JSON DATA
+	jsonObject = fetchJsonObject(message);	//set processFurther to false on error
 
-	console.log("\nkeys :");
-	console.log(keyString);
+	
+		jsonObject.authToken = 'db446eb7eab3c61fefc7951b70c1c1dd38e07c50';
 
-	console.log("\nvalues :");
-	console.log(valueString);
+		//GENERATE EXECUTION SEQUENCE
+		intentExecutionOrder = generateExecutionSequence(intents);
+		console.log("Sequence :");
+		console.log(intentExecutionOrder);
 
-	console.log("\njson :");
-	console.log(jsonObject);
+		//check all the data
+		console.log("user intent : ");
+		console.log(intents);
 
+		console.log("\nkeys :");
+		console.log(keyString);
 
-	for(let intent in intents)
-	{
-		switch(intents[intent])
+		console.log("\nvalues :");
+		console.log(valueString);
+
+		if(!jsonObject.toString().match(/(invalid)|(list all)/gi))
 		{
-			case "createProject":
-				console.log("Command to Create Project");
-				break;
-			case "createIssue":
-				createIssue( jsonObject.owner, jsonObject.repo, jsonObject.authToken, jsonObject.title, jsonObject.body, jsonObject.labels, jsonObject.assignees, (err, result) => {
-					console.log("Issue has been created with id : "+result);
-					// if(isNaN(result))
-					// {
-					// 	commandStatus.push(result);
-					// }
-					// else
-					// 	commandStatus.push("Issue has been created with id : "+result);
-				});
-				break;
-			case "assignIssue":
-			console.log("command to assign issue")
-				// assignIssue (jsonObject.owner, jsonObject.repo, jsonObject.authToken, issueNumber, jsonObject.assignees, (err, result) => {
-				// 	if(isNaN(result))
-				// 	{
-				// 		commandStatus.push(result);
-				// 	}
-				// 	else
-				// 		commandStatus.push("Issue has been created with id : "+result);
-				// });
-				break;
-			default:
-				console.log("define "+intents[intent]);
+			console.log("\njson :");
+			console.log(jsonObject);
 		}
-	}
-
+		for(let intent in intents)
+		{
+			switch(intents[intent])
+			{
+				case "assignIssue":
+					console.log("command to assign issue ");//NOTE:	//not working cuz of asyn
+					break;
+				case "commentOnIssue":
+					console.log("command to comment on issue ");
+					break;
+				case "closeIssue":
+					console.log("command to close issue ");
+					break;
+				case "createIssue":
+				let result = createIssue( jsonObject.owner, jsonObject.repo, jsonObject.authToken, jsonObject.title, jsonObject.body, jsonObject.labels, jsonObject.assignees, (err, res) => {
+						if(isNaN(res))
+						{
+							if(res.toString().match(/not found/gi))
+							{
+								console.log("Error : Project not found!");
+								return "Error : Project not found!"
+							}
+							else if(res.toString.match(/unprocessable entity/gi))
+							{	
+								console.log("Error : Input string is not in the correct format!");
+								return "Error : Input string is not in the correct format!";
+							}
+							else
+							{
+								console.log(res.toString());
+								return res.toString();
+							}
+						}
+						else
+						{	
+							console.log("Issue has been created with id : "+res);
+							return "Issue has been created with id : "+res;
+						}
+						
+					});
+				if(result !== undefined && result!== "no values for this query")
+					console.log(result);
+					
+					break;
+				case "createProject":
+					if(jsonObject.owner === '' )
+						console.log("Error : Owner name invalid/not present");
+					else if(jsonObject.repo === '' )
+						console.log("Error : Project information not present");
+					else
+					{
+						console.log("Command to Create Project");
+					}	
+					break;
+				case "labelIssue":
+					console.log("command to label issue ");
+					break;
+				case "listIssues":
+					console.log("command to list issues ");
+					break;
+				case "call GitBot":
+					console.log("Hello! How can I help you?");
+					break;
+				default:
+					console.log(jsonObject);
+			}
+		}
+	
 	// //perform create project query if exists
 	// if(intentString.match(/createProject/gi))
 	// {

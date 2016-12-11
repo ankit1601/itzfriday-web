@@ -4,9 +4,24 @@ const createIssue = function (owner,repo,authToken,title,body,labels,assignees,c
 	var result = '';
 
     var jsonObj = {
-        "title" : title,
+        "title" : "",
         "state": "open"
     };
+
+    if(owner === '' || owner.length<2)
+    {
+        return "Error: Invalid syntax in project name!";
+    }
+    if(title === '')
+    {
+        return "Error: Invalid syntax in project name!";
+    }
+    if(title === '')
+    {
+        return "Error: Title not present in the information!";
+    }
+
+    jsonObj.title = title;
 
     if(body !== '')
         jsonObj.body = body;
@@ -15,6 +30,7 @@ const createIssue = function (owner,repo,authToken,title,body,labels,assignees,c
     if(assignees !== '')
         jsonObj.assignees = assignees;
 
+    console.log("Sending the following JSON");
     console.log(jsonObj);
 
 	request.post('https://api.github.com/repos/'+owner+'/'+repo+'/issues?oauth_token='+authToken)
