@@ -1,9 +1,7 @@
 var request = require('superagent');
 const createIssue = function (owner,repo,authToken,title,body,labels,assignees,callback)
 {
-	var result = '';
-
-    var jsonObj = {
+	var jsonObj = {
         "title" : "",
         "state": "open"
     };

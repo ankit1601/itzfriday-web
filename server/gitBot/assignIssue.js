@@ -1,8 +1,6 @@
 var request = require('superagent');
 const assignIssue = function (owner,repo,authToken,issueNumber,assignees, callback)
 {
-	var result = '';
-
     var jsonObj = {
         'assignees' : assignees
     };
@@ -14,11 +12,11 @@ const assignIssue = function (owner,repo,authToken,issueNumber,assignees, callba
     .end(function(error,response){
         if(error)
         {
-            callback(error);
+            callback(error,error);
             return
         }
         callback(null, response.body.number);
     });
-    return result;
+    return
 }
 module.exports = assignIssue;

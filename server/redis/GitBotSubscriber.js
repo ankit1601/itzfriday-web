@@ -153,8 +153,16 @@ function fetchJsonObject(message)
 
 	if(keyString.length === 0)
 	{
-		intents.push("call GitBot");
-		return "Invalid string";
+		if(message === "")
+		{
+			intents.push("call GitBot");
+			return "Invalid string";
+		}
+		else
+		{
+			intents.push("random input");	//default
+			return "Invalid string";	
+		}
 	}
 	else if(keyString.length === 1 && valueString === null)	//atleast one intent (list all issues)
 	{
@@ -231,8 +239,12 @@ function fetchJsonObject(message)
 			//patterns [assign issue #number, give issue #number, label issue #number, tag issue #number, list issue #number, edit issue #number, close issue #number, on issue #number, comment on #number]
 			else if(((keyString[index].match(/assign/gi) || keyString[index].match(/give/gi) || keyString[index].match(/label/gi) || keyString[index].match(/tag/gi) || keyString[index].match(/close/gi) || keyString[index].match(/list/gi) || keyString[index].match(/show/gi) || keyString[index].match(/display	/gi) || keyString[index].match(/edit/gi)) && keyString[index].match(/issue/gi)) || keyString[index].match(/close/gi) ||(keyString[index].match(/comment/gi) && (keyString[index].match(/on/gi) || keyString[index].match(/issue/gi))))
 			{
-				temp = valueString[index].match(/#[0-9]+/).toString().replace('#','').trim();
-				json.number = Number(temp);
+				temp = valueString[index].match(/#[0-9]+/)
+				if(temp !== null)
+				{
+					temp = temp.toString().replace('#','').trim();
+					json.number = Number(temp);
+				}
 			}
 		}
 		
@@ -365,7 +377,7 @@ gitBotSubscriber.on("message",function( channel, message)
 
 	//FETCH JSON DATA
 	jsonObject = fetchJsonObject(message);	//set processFurther to false on error
-		jsonObject.authToken = 'cc7d50a6d9b4b2088a59e97edf806e81cc2a2904';
+		jsonObject.authToken = '421c994920b89fd35cbf346b7ef169a70bf6dc31';
 
 		//GENERATE EXECUTION SEQUENCE
 		intentExecutionOrder = generateExecutionSequence(intents);
@@ -387,49 +399,157 @@ gitBotSubscriber.on("message",function( channel, message)
 			console.log("\njson :");
 			console.log(jsonObject);
 		}
+
+		if(intentExecutionOrder.length <= 0 )
+		{
+			intentExecutionOrder.push("random");
+		}
 		for(let intent in intentExecutionOrder)
 		{
 			switch(intentExecutionOrder[intent])
 			{
 				case "assignIssue":
 					console.log("\ncommand to assign issue ");//NOTE:	//not working cuz of asyn
-					break;
+					if(jsonObject.owner === '' || jsonObject.owner.length<2)
+				    {
+				    	console.log("Error: Project owner invalid/not specified!");
+				        // return "Error: Project owner invalid/not specified!";
+				    }
+				    else if(jsonObject.repo === '')
+				    {
+				    	console.log("Error: Repository name not specified!");
+				        // return "Error: Repository name not specified!";
+				    }
+			    	else if(jsonObject.number === '')
+					{
+						console.log("\nError : Issue number not specified!");
+					}
+					else if(jsonObject.assignees === '')
+					{
+						console.log("\nError : Assignees not specified!");
+					}
+					else
+					{
+						assignIssue(jsonObject.owner,jsonObject.repo,jsonObject.authToken,jsonObject.number,jsonObject.assignees, (err, res) => {
+						if(isNaN(res))
+						{
+							if(res.toString().match(/not found/gi))
+							{
+								console.log("Error : Project or issue not found!");
+								return "Error : Project or issue not found!"
+							}
+							else if(res.toString().match(/unprocessable entity/gi))
+							{	
+								console.log("Error : Input string is not in the correct format or assignees list is invalid!");
+								return "Error : Input string is not in the correct format or assignees list is invalid!";
+							}
+							else
+							{
+								console.log(err.toString());
+								return res.toString();
+							}
+						}
+						else
+						{
+							console.log("Issue "+jsonObject.number +" has been assigned to : "+jsonObject.assignees);
+							return "Issue "+jsonObject.number +" has been assigned to : "+jsonObject.assignees;
+						}
+					});
+					}
+				break;
+
 				case "commentOnIssue":
 					console.log("\ncommand to comment on issue ");
-					break;
+				break;
+
 				case "closeIssue":
 					console.log("\ncommand to close issue ");
-					break;
+					if(jsonObject.owner === '' || jsonObject.owner.length<2)
+				    {
+				    	console.log("Error: Project owner invalid/not specified!");
+				        // return "Error: Project owner invalid/not specified!";
+				    }
+				    else if(jsonObject.repo === '')
+				    {
+				    	console.log("Error: Repository name not specified!");
+				        // return "Error: Repository name not specified!";
+				    }
+			    	else if(jsonObject.number === '')
+					{
+						console.log("\nError : Issue number not specified!");
+					}
+					else
+					{
+						closeIssue(jsonObject.owner,jsonObject.repo,jsonObject.authToken,jsonObject.number, (err, res) => {
+						if(isNaN(res))
+						{
+							if(res.toString().match(/not found/gi))
+							{
+								console.log("Error : Project or issue not found!");
+								// return "Error : Project or issue not found!"
+							}
+							else
+							{
+								console.log(err.toString());
+								// return res.toString();
+							}
+						}
+						else
+						{
+							console.log("Issue "+jsonObject.number +" has been closed!");
+							// return "Issue "+jsonObject.number +" has been closed!";
+						}
+					});
+					}
+				break;
+
 				case "createIssue":
-				let result = createIssue( jsonObject.owner, jsonObject.repo, jsonObject.authToken, jsonObject.title, jsonObject.body, jsonObject.labels, jsonObject.assignees, (err, res) => {
+				console.log("\ncommand to create issue ");
+				if(jsonObject.owner === '' || jsonObject.owner.length<2)
+			    {
+			    	console.log("Error: Project owner invalid/not specified!");
+			        // return "Error: Project owner invalid/not specified!";
+			    }
+			    else if(jsonObject.repo === '')
+			    {
+			    	console.log("Error: Repository name not specified!");
+			        // return "Error: Repository name not specified!";
+			    }
+			    else if(jsonObject.title === '')
+			    {
+			    	console.log("Error: Title not present in the information!")
+			        // return "Error: Title not present in the information!";
+			    }
+			    else
+			    {
+					createIssue( jsonObject.owner, jsonObject.repo, jsonObject.authToken, jsonObject.title, jsonObject.body, jsonObject.labels, jsonObject.assignees, (err, res) => {
 						if(isNaN(res))
 						{
 							if(res.toString().match(/not found/gi))
 							{
 								console.log("Error : Project not found!");
-								return "Error : Project not found!"
+								// return "Error : Project not found!"
 							}
 							else if(res.toString().match(/unprocessable entity/gi))
 							{	
 								console.log("Error : Input string is not in the correct format!");
-								return "Error : Input string is not in the correct format!";
+								// return "Error : Input string is not in the correct format!";
 							}
 							else
 							{
-								console.log(res.toString());
-								return res.toString();
+								console.log(err.toString());
+								// return res.toString();
 							}
 						}
 						else
-						{	
-							console.log("\ncommand to create issue ");
+						{
 							console.log("Issue has been created with id : "+res);
-							return "Issue has been created with id : "+res;
+							// return "Issue has been created with id : "+res;
 						}
 					});
-				if(result !== undefined && result!== "no values for this query")
-					console.log(result);
-					break;
+				}	
+				break;
+
 				case "createProject":
 					if(jsonObject.owner === '' )
 						console.log("Error : Owner name invalid/not present");
@@ -439,18 +559,101 @@ gitBotSubscriber.on("message",function( channel, message)
 					{
 						console.log("\nCommand to Create Project");
 					}	
-					break;
+				break;
+
 				case "labelIssue":
 					console.log("\ncommand to label issue ");
-					break;
+					if(jsonObject.owner === '' || jsonObject.owner.length<2)
+				    {
+				    	console.log("Error: Project owner invalid/not specified!");
+				        // return "Error: Project owner invalid/not specified!";
+				    }
+				    else if(jsonObject.repo === '')
+				    {
+				    	console.log("Error: Repository name not specified!");
+				        // return "Error: Repository name not specified!";
+				    }
+			    	else if(jsonObject.number === '')
+					{
+						console.log("\nError : Issue number not specified!");
+					}
+					else if(jsonObject.labels === '')
+					{
+						console.log("\nError : Labels not specified!");
+					}
+					else
+					{
+						labelIssue(jsonObject.owner,jsonObject.repo,jsonObject.authToken,jsonObject.number,jsonObject.labels, (err, res) => {
+						if(isNaN(res))
+						{
+							if(res.toString().match(/not found/gi))
+							{
+								console.log("Error : Project or issue not found!");
+								// return "Error : Project or issue not found!"
+							}
+							else if(res.toString().match(/unprocessable entity/gi))
+							{	
+								console.log("Error : Input string is not in the correct format or labels list is invalid!");
+								// return "Error : Input string is not in the correct format or labels list is invalid!";
+							}
+							else
+							{
+								console.log(err.toString());
+								// return res.toString();
+							}
+						}
+						else
+						{
+							console.log("Issue "+jsonObject.number +" has been labelled as : "+jsonObject.labels);
+							// return "Issue "+jsonObject.number +" has been labelled as : "+jsonObject.labels;
+						}
+					});
+					}
+				break;
+				
 				case "listIssues":
 					console.log("\ncommand to list issues ");
-					break;
+					if(jsonObject.owner === '' || jsonObject.owner.length<2)
+				    {
+				    	console.log("Error: Project owner invalid/not specified!");
+				        // return "Error: Project owner invalid/not specified!";
+				    }
+				    else if(jsonObject.repo === '')
+				    {
+				    	console.log("Error: Repository name not specified!");
+				        // return "Error: Repository name not specified!";
+				    }
+					else
+					{
+						listIssues(jsonObject.owner,jsonObject.repo,jsonObject.authToken,jsonObject.number, (err, res) => {
+						if(err)
+						{
+							if(res.toString().match(/not found/gi))
+							{
+								console.log("Error : Project or issue not found!");
+								// return "Error : Project or issue not found!"
+							}
+							else
+							{
+								console.log(err);
+								// return res.toString();
+							}
+						}
+						else
+						{
+							console.log(res);
+							// return "Issue "+jsonObject.number +" has been closed!";
+						}
+					});
+					}
+				break;
+			
 				case "call GitBot":
 					console.log("\nHello! How can I help you?");
-					break;
-				default:
-					console.log(jsonObject);
+				break;
+		
+				case "random":
+					console.log("\nSorry, but I am unable to understand you.");
 			}
 		}
 	

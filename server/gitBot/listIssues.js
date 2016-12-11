@@ -1,15 +1,18 @@
 var request = require('superagent');
-const listIssues = function (owner,repo,authToken,callback)
+const listIssues = function (owner,repo,authToken,issueNumber,callback)
 {
-	var result = '';
+    console.log(issueNumber);
+    var uri = 'https://api.github.com/repos/'+owner+'/'+repo+'/issues';
+    if(issueNumber !== '')
+        uri = uri + '/'+issueNumber;
 
-	request.get('https://api.github.com/repos/'+owner+'/'+repo+'/issues?oauth_token='+authToken)
+	request.get(uri + '?oauth_token='+authToken)
     .set('User-Agent',owner)
     .set('Content-Type', 'application/json')
     .end(function(error,response){
         if(error)
         {
-            callback(error);
+            callback(error, error);
             //return
         }
         callback(null, response.body);

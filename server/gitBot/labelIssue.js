@@ -1,8 +1,6 @@
 var request = require('superagent');
 const labelIssue = function (owner,repo,authToken,issueNumber,labels, callback)
 {
-    var result = '';
-
     var jsonObj = {
         'labels' : labels
     };
@@ -14,11 +12,11 @@ const labelIssue = function (owner,repo,authToken,issueNumber,labels, callback)
     .end(function(error,response){
         if(error)
         {
-            callback(error);
-            //return
+            callback(error,error);
+            return
         }
         callback(null, response.body.number);
     });
-    //return result;
+    return
 }
 module.exports = labelIssue;
