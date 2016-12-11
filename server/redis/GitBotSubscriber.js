@@ -135,8 +135,6 @@ var jsonObject = {
 
 function fetchJsonObject(message)
 {
-	processFurther = true;
-
 	let json = {
 	"owner": "",
 	"repo" : "",
@@ -194,7 +192,6 @@ function fetchJsonObject(message)
 			//patterns [in, under, in project, under project]
 			if((keyString[index].match(/in/gi) || keyString[index].match(/under/gi)) && keyString[index].match(/project/gi))
 			{
-				console.log("......inside project fetch...");
 				project = valueString[index].match(/\s@[\w]{2}[\w-_/]+/);
 				if( project !== null)
 				{
@@ -226,7 +223,7 @@ function fetchJsonObject(message)
 			}
 			//check for labels
 			//patterns [label, with, tag, assign label, add label, assign tag, add tag]
-			else if(!keyString[index].match(/issue/gi) && keyString[index].match(/label/gi) || keyString[index].match(/with/gi) || keyString[index].match(/tag/gi) || (keyString[index].match(/assign/gi) && keyString[index].match(/label/gi)) || (keyString[index].match(/add/gi) && keyString[index].match(/label/gi)))
+			else if(!keyString[index].match(/issue/gi) && (keyString[index].match(/label/gi) || keyString[index].match(/with/gi) || keyString[index].match(/tag/gi) || (keyString[index].match(/assign/gi) && keyString[index].match(/label/gi)) || (keyString[index].match(/add/gi) && keyString[index].match(/label/gi))))
 			{
 				json.labels = valueString[index].match(/(help wanted)|([\w-_]+)/g);
 			}
@@ -281,8 +278,8 @@ function getIntent(message)
 		{
 			intent.push("assignIssue");
 		}
-		//tag/label/type issue intent checker
-		else if(segments[index].match(/label/gi)||segments[index].match(/type/gi)||segments[index].match(/tag/gi))//|| (segments[index].match(/assign/gi) && (segments[index].match(/tag/gi) || segments[index].match(/label/gi) || segments[index].match(/type/gi))))
+		//label issue intent checker
+		else if(((segments[index].match(/label/gi)||segments[index].match(/tag/gi))&& keyString.match(/issue/gi)) || ((keyString.match(/create/gi)||keyString.match(/open/gi)||keyString.match(/add/gi)) && keyString.match(/issue/gi) && !(segments[index].match(/desc/gi)||segments[index].match(/description/gi)||segments[index].match(/content/gi)||segments[index].match(/detail/gi)) && (segments[index].match(/with/gi) || segments[index].match(/label/gi) || segments[index].match(/tag/gi))))//||(segments[index].match(/with/gi) && !keyString.match(/issue/gi)&&!(segments[index].match(/desc/gi)||segments[index].match(/description/gi)||segments[index].match(/content/gi)||segments[index].match(/detail/gi))))//|| (segments[index].match(/assign/gi) && (segments[index].match(/tag/gi) || segments[index].match(/label/gi) || segments[index].match(/type/gi))))
 		{
 			intent.push("labelIssue");
 		}
@@ -309,16 +306,16 @@ function generateExecutionSequence(intents)
 	//create project owner/repo
 	//create project "repo" under "owner"
 
-	//create issue "title" in/under project @owner/repo with desc/detail/description "description" assign/give to @aptDroid, @ruchika with type "bug, help wanted, duplicate"
-	//add issue "title" with desc/detail/description "description" in/under project @owner/repo assign/give to @aptDroid, @ruchika with type "bug, help wanted, duplicate"
-	//open issue "title" with desc/detail/description "description" in/under project @owner/repo  with type "bug, help wanted, duplicate" assign/give to @aptDroid, @ruchika
-
-	//assign issue #101 to @qwerty
-	//give issue #101 to @qwerty
+	//create issue "title" in/under project @owner/repo with desc/detail/description "description" assign/give to @aptDroid, @ruchika with labels "bug, help wanted, duplicate"
+	//add issue "title" with desc/detail/description "description" in/under project @owner/repo  with labels "bug, help wanted, duplicate" assign/give to @aptDroid, @ruchika
+	//open issue "title" with desc/detail/description "description" in/under project @owner/repo  with tags "bug, help wanted, duplicate" assign/give to @aptDroid, @ruchika
 
 	//label issue #101 with labels "help wanted, bug, duplicate, wontfix"
 	//label issue #101 with "help wanted, bug, duplicate, wontfix"
 	//tag issue #101 with labels/tags "help wanted, bug, duplicate, wontfix"
+
+	//assign issue #101 to @qwerty
+	//give issue #101 to @qwerty
 
 	//edit issue #number
 
@@ -332,7 +329,10 @@ function generateExecutionSequence(intents)
 	//comment on issue #number comment "my comment"
 	//on issue #number comment "my comment"
 
-
+	if(tempIntentString.match(/createProject/gi))
+	{
+		executionSequence.push("createProject");
+	}
 	if(tempIntentString.match(/createIssue/gi) && (tempIntentString.match(/assignIssue/gi) || tempIntentString.match(/labelIssue/gi)))
 	{
 		executionSequence.push("createIssue");
@@ -341,10 +341,10 @@ function generateExecutionSequence(intents)
 	{
 		for (let intent in intents)
 		{
-			executionSequence.push(intents[intent]);
+			if(!intents[intent].match(/createProject/gi))	//neglect createProject
+				executionSequence.push(intents[intent]);
 		}
 	}
-
 	return executionSequence;
 }
 
@@ -365,9 +365,7 @@ gitBotSubscriber.on("message",function( channel, message)
 
 	//FETCH JSON DATA
 	jsonObject = fetchJsonObject(message);	//set processFurther to false on error
-
-	
-		jsonObject.authToken = 'db446eb7eab3c61fefc7951b70c1c1dd38e07c50';
+		jsonObject.authToken = '0523e987fa405f83cf06fb46bf8419d488652606';
 
 		//GENERATE EXECUTION SEQUENCE
 		intentExecutionOrder = generateExecutionSequence(intents);
@@ -389,18 +387,18 @@ gitBotSubscriber.on("message",function( channel, message)
 			console.log("\njson :");
 			console.log(jsonObject);
 		}
-		for(let intent in intents)
+		for(let intent in intentExecutionOrder)
 		{
-			switch(intents[intent])
+			switch(intentExecutionOrder[intent])
 			{
 				case "assignIssue":
-					console.log("command to assign issue ");//NOTE:	//not working cuz of asyn
+					console.log("\ncommand to assign issue ");//NOTE:	//not working cuz of asyn
 					break;
 				case "commentOnIssue":
-					console.log("command to comment on issue ");
+					console.log("\ncommand to comment on issue ");
 					break;
 				case "closeIssue":
-					console.log("command to close issue ");
+					console.log("\ncommand to close issue ");
 					break;
 				case "createIssue":
 				let result = createIssue( jsonObject.owner, jsonObject.repo, jsonObject.authToken, jsonObject.title, jsonObject.body, jsonObject.labels, jsonObject.assignees, (err, res) => {
@@ -411,7 +409,7 @@ gitBotSubscriber.on("message",function( channel, message)
 								console.log("Error : Project not found!");
 								return "Error : Project not found!"
 							}
-							else if(res.toString.match(/unprocessable entity/gi))
+							else if(res.toString().match(/unprocessable entity/gi))
 							{	
 								console.log("Error : Input string is not in the correct format!");
 								return "Error : Input string is not in the correct format!";
@@ -424,14 +422,13 @@ gitBotSubscriber.on("message",function( channel, message)
 						}
 						else
 						{	
+							console.log("\ncommand to create issue ");
 							console.log("Issue has been created with id : "+res);
 							return "Issue has been created with id : "+res;
 						}
-						
 					});
 				if(result !== undefined && result!== "no values for this query")
 					console.log(result);
-					
 					break;
 				case "createProject":
 					if(jsonObject.owner === '' )
@@ -440,17 +437,17 @@ gitBotSubscriber.on("message",function( channel, message)
 						console.log("Error : Project information not present");
 					else
 					{
-						console.log("Command to Create Project");
+						console.log("\nCommand to Create Project");
 					}	
 					break;
 				case "labelIssue":
-					console.log("command to label issue ");
+					console.log("\ncommand to label issue ");
 					break;
 				case "listIssues":
-					console.log("command to list issues ");
+					console.log("\ncommand to list issues ");
 					break;
 				case "call GitBot":
-					console.log("Hello! How can I help you?");
+					console.log("\nHello! How can I help you?");
 					break;
 				default:
 					console.log(jsonObject);
