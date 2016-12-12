@@ -13,10 +13,8 @@ const listIssues = function (owner,repo,authToken,issueNumber,callback)
         if(error)
         {
             callback(error, error);
-            //return
         }
         callback(null, response.body);
     });
-    //return result;
 }
 module.exports = listIssues;

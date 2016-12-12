@@ -1,9 +1,7 @@
 var request = require('superagent');
 const commentOnIssue = function (owner,repo,authToken,issueNumber,comment, callback)
 {
-	var result = '';
-
-    var jsonObj = {
+	var jsonObj = {
         'body' : comment
     };
 
@@ -14,10 +12,10 @@ const commentOnIssue = function (owner,repo,authToken,issueNumber,comment, callb
     .end(function(error,response){
         if(error)
         {
-            callback(error);
+            callback(error,response);
             return
         }
-        callback(null, response.body.number);
+        callback(null, response);
     });
     return;
 }

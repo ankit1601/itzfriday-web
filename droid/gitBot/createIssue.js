@@ -6,19 +6,6 @@ const createIssue = function (owner,repo,authToken,title,body,labels,assignees,c
         "state": "open"
     };
 
-    if(owner === '' || owner.length<2)
-    {
-        return "Error: Invalid syntax in project name!";
-    }
-    if(title === '')
-    {
-        return "Error: Invalid syntax in project name!";
-    }
-    if(title === '')
-    {
-        return "Error: Title not present in the information!";
-    }
-
     jsonObj.title = title;
 
     if(body !== '')
@@ -38,14 +25,10 @@ const createIssue = function (owner,repo,authToken,title,body,labels,assignees,c
     .end(function(error,response){
         if(error)
         {
-            callback(error,error);
-            //console.log(callback);
+            callback(error,response);
             return
-            //console.log(error);
         }
          callback(null, response.body.number);
-          //  console.log(callback);
-        //console.log(response.body.number);
     });
     return 
 }

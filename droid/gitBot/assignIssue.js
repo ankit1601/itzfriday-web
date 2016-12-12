@@ -1,8 +1,8 @@
 var request = require('superagent');
-const closeIssue = function (owner,repo,authToken,issueNumber,callback)
+const assignIssue = function (owner,repo,authToken,issueNumber,assignees, callback)
 {
-	var jsonObj = {
-        'state' : 'closed'
+    var jsonObj = {
+        'assignees' : assignees
     };
 
 	request.patch('https://api.github.com/repos/'+owner+'/'+repo+'/issues/'+issueNumber+'?oauth_token='+authToken)
@@ -12,11 +12,11 @@ const closeIssue = function (owner,repo,authToken,issueNumber,callback)
     .end(function(error,response){
         if(error)
         {
-            callback(error, error);
+            callback(error,response);
             return
         }
-        callback(null, response.body.number);
-        return
+        callback(null, response);
     });
+    return
 }
-module.exports = closeIssue;
+module.exports = assignIssue;

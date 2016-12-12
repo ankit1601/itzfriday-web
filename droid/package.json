@@ -1,0 +1,25 @@
+{
+  "name": "bob",
+  "version": "0.1.0",
+  "description": "App for managing project and team collaboration",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./redis/droidSubscriber.js"
+  },
+  "contributors": [
+    {
+      "name": "Apurv Tiwari",
+      "email": "apt.sharp@gmail.com",
+      "url": "www.gobindathakur.com"
+    }
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "redis": "^2.6.3"
+  },
+  "dependencies": {
+    "redis": "^2.6.3",
+    "socket.io": "^1.7.1",
+    "superagent": "^3.0.0"
+  }
+}
