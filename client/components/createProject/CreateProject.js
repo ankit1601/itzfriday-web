@@ -19,7 +19,7 @@ const styles ={
     width:"100%"
   },
 };
-  
+
 export default class CreateProject extends React.Component
 {
   constructor(props)
@@ -32,16 +32,16 @@ export default class CreateProject extends React.Component
     this.redirectLogin=this.redirectLogin.bind(this);
   }
 
-  enableButton() 
+  enableButton()
   {
    this.setState({canSubmit: true});
  }
-   disableButton() 
+   disableButton()
   {
     this.setState({canSubmit: false});
   }
 
-  submitForm(data) 
+  submitForm(data)
   {
     localStorage['email']=data.email;
       console.log(data);
@@ -49,30 +49,26 @@ export default class CreateProject extends React.Component
     .send(data)
     .end((err, res) => {
       console.log(res)
-      this.props.router.replace("confirmationCode/");
+      this.props.router.push("confirmationCode/");
     });
-    
+
  }
 
  redirectLogin()
  {
-  this.props.router.replace("login/");
+  this.props.router.push("login/");
  }
 
   render()
-  { 
+  {
      return(
       <Grid>
       <Paper style={styles.paperStyle}>
-        <RaisedButton label="Sign In"
-            labelPosition="before"
-            primary={true}
-            onClick={this.redirectLogin}
-            icon={<ActionAccountCircle />}/>
+
         <Row>
           <span style={{marginTop:100,margin:'auto'}}>
           <Avatar style={{backgroundColor:"#004D40"}} src="./../../resources/images/buddy.png" alt="qwerty" size={150}/>
-          </span> 
+          </span>
         </Row>
         <Row center="xs">
           <h1>A messaging app for teams who see through the Earth</h1>
@@ -97,13 +93,21 @@ export default class CreateProject extends React.Component
              updateImmediately
              floatingLabelText="Email" />
             <div>
-         <RaisedButton 
+         <RaisedButton
               type="submit"
               style={{marginTop:20}}
             label="Create Project"
             disabled={!this.state.canSubmit}
             primary={true}/>
 </div>
+<h5 style={{color:'grey'}}>- OR -</h5>
+<div>
+<RaisedButton label="Sign In"
+    labelPosition="before"
+    primary={true}
+    onClick={this.redirectLogin}
+    icon={<ActionAccountCircle />}/>
+    </div>
           </Formsy.Form>
 
         </Col>
