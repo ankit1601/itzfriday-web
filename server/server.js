@@ -7,11 +7,11 @@ var server = require('http').createServer(main);
 var io = require('socket.io')(server);
 var socket = require('./sockets/socket.js');
 var port = process.env.PORT || 3000;
-var auth = require('./routes/auth');
-var register = require('./routes/register');
+var userAccount = require('./routes/user/user.router.js');
 var expressJWT = require('express-jwt');
 var jwt = require('jsonwebtoken');
-var config = require('./config');
+var appConst = require('./config/config.js');
+var db = require('./service/db.mongo.js')
 
 main.use(compression());
 main.use(bodyParser.json());
@@ -39,10 +39,19 @@ main.use(express.static(path.join(__dirname, '../client')));
 main.get('/', function(req, res) {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
-main.use('/db/profile/',register);
-main.use('/api/auth/',auth);
-main.use('/api',expressJWT({secret:config.jwtSecret}));
 
+//Routing
+main.use('/api/auth/',userAccount);
+main.use('/api',expressJWT({secret:appConst.jwtSecret}));
+
+//Mongo connection
+var appDB = db.getDBConnection();
+appDB.on('error', console.error.bind(console, 'connection error:'));
+appDB.once('open', function() {
+    console.log("connnected with mongo");
+});
+
+//Socket middleware to authenticate socket connection
 io.use(function(sockets, next) {
   if(sockets) {
     var token = sockets.handshake.query.token,
