@@ -25,7 +25,7 @@ class App extends Component {
 		this.state={invited: false};
 		this.checkInvited = this.checkInvited.bind(this);
 	}
-	
+
 	checkLoggedIn(value) {
 		if(value !== undefined) {
 			this.setState({loggedIn: value})
@@ -52,7 +52,7 @@ class App extends Component {
 			this.setState({invited: value})
 		}
 	}
-	
+
 
 	render() {
 
@@ -74,7 +74,7 @@ class App extends Component {
 						<Route path="buddy/" component={BuddyAvatar} onEnter={this.requireAuth.bind(this)}></Route>
 					</Route>
 				</Router>
-			)	
+			)
 
 	}
 }
