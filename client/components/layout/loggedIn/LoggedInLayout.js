@@ -1,10 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Accordion, AccordionItem } from 'react-sanfona';
 import {Link} from 'react-router';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {amber100,green100,orange100,grey50} from 'material-ui/styles/colors';
 import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
+import SettingsIcon from 'material-ui/svg-icons/action/settings';
 import FlatButton from 'material-ui/FlatButton';
 import {List, ListItem} from 'material-ui/List';
 import Paper from 'material-ui/Paper';
@@ -16,6 +20,7 @@ import SocialPerson from 'material-ui/svg-icons/social/person';
 import ImageDehaze from 'material-ui/svg-icons/image/dehaze';
 import ContentAddCircle from 'material-ui/svg-icons/content/add-circle';
 import HardwareTv from 'material-ui/svg-icons/hardware/tv';
+import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less';
 import ImageTagFaces from 'material-ui/svg-icons/image/tag-faces';
 import ChannelList from './../../conversation/ChannelList';
 import MessageList from './../../conversation/MessageList';
@@ -33,9 +38,11 @@ const styles = {
 		margin: '0px 0px 0px 0px',
 		padding: '5px 5px 5px 5px',
 		background: "#e0f2f1",
+		marginLeft:'85px'
 	},
 	appBar : {
 		color: 'white',
+		paddingLeft:'340px',
 		backgroundColor: '#004D40',
 		width: '*'
 	},
@@ -48,11 +55,12 @@ const styles = {
 		padding: '2px 2px 2px 2px'
 	},
 	projectListItem : {
-		marginTop: '2px',
+		marginTop: '20px',
 		color: '#424242',
 	},
 	listItem : {
-		color: '#607D8B',
+		color: '#004D40',
+		backgroundColor:'white',
 		textDecoration: 'none',
 	},
 	linkItem : {
@@ -84,6 +92,7 @@ export default class LoggedInLayout extends React.Component
 		messages = [];
 		channels = [];
 		projectList = [];
+
 		projects = ['Friday','Samarth','Semantic Web Inducer', 'QuizArt'];
 		currentProject = 'Friday';
 
@@ -93,12 +102,14 @@ export default class LoggedInLayout extends React.Component
 			imageLogoUrl: './../../resources/images/buddy.png',
 			channels: '',
 			messages: '',
+			open: true,
 			loggedIn: Auth.loggedIn()
 		};
 
 		this.handleChannelChange = this.handleChannelChange.bind(this);
 		this.handleMessageChange = this.handleMessageChange.bind(this);
 		this.openThisProject = this.openThisProject.bind(this);
+		this.handleState=this.handleState.bind(this);
 		this.handleAccount = this.handleAccount.bind(this);
 		this.signOut = this.signOut.bind(this);
 		this.toggleMainMenu = this.toggleMainMenu.bind(this);
@@ -109,13 +120,14 @@ export default class LoggedInLayout extends React.Component
 		this.openNotificationBoard = this.openNotificationBoard.bind(this);
 		this.setTitleToNotifications = this.setTitleToNotifications.bind(this);
 		this.nameCompressor = this.nameCompressor.bind(this);
-
 		let lastIndexOfProjects = projects.length - 1;
-		projectList.push(<ListItem disabled><strong style={{ textDecoration: "underline" , color: 'rgb(0, 77 , 64)'}}>PROJECTS</strong></ListItem>);
-		projectList.push(<Divider/>)
 		for( let index in projects)
 		{
-			projectList.push(<ListItem key={index} style={styles.projectListItem} Color={green100} onTouchTap={() => this.openThisProject(projects[index])}>{projects[index]}</ListItem>);
+			projectList.push(
+			<div triggerText={projects[index]}>
+			<p>This is one of our project</p>
+
+			</div>);
 			if(index < lastIndexOfProjects)
 				projectList.push(<Divider />);
 		}
@@ -134,7 +146,7 @@ export default class LoggedInLayout extends React.Component
 	}
 
 	openNotificationBoard ()
-	{	
+	{
 		console.log("in  openNotificationBoards");
 		this.setTitleToNotifications();
 		this.props.router.replace('notifications/');
@@ -147,11 +159,16 @@ export default class LoggedInLayout extends React.Component
 	componentWillMount() {
 		this.setState({loggedIn: Auth.loggedIn()})
 	}
-
+  handleState(newState)
+	{
+		console.log(newState.activeItems);
+	}
 
 	openThisProject (e)
 	{
-		currentProject = e;
+		//console.log(e.activeItems);
+		currentProject = e.target.innerText;
+		console.log(currentProject);
 		messages = [];
 		channels = [];
 
@@ -159,14 +176,13 @@ export default class LoggedInLayout extends React.Component
 		{
 			members=["Gobinda Thakur","Apurv Tiwari","Ruchika Saklani","Suganya Gopal","Ankit Aggarwal","Vikram Marshmallow"];
 			groups=["General","Acolyte"];
-
 		}
 		else if( currentProject === 'Samarth' )
 		{
 			members=["Amol Tiwari","Ankit Kumar Vashisht","Shinder Pal Singh","Ritesh","Kumari Devi","Hari Prasad","Prerna Kukreti"];
-			groups=["General","Developers"];	
+			groups=["General","Developers"];
 		}
-		else if( currentProject === 'Semantic Web' )
+		else if( currentProject === 'Semantic Web Inducer' )
 		{
 			members=["Sreenidhi","Toolika Srivastava","Nanda","Shipra Joshi","Bala","Divyanshu Sharma"];
 			groups=["General","Designers"];
@@ -174,11 +190,11 @@ export default class LoggedInLayout extends React.Component
 		else
 		{
 			members=["Vishant Sharma","Kirti Jalan","Dhivya Lakshmi","Lal Jose","Srinivasan","Nitin Verma"];
-			groups=["General","Backend"];	
+			groups=["General","Backend"];
 		}
 
 		this.setState({appBarTitle: currentProject});
-		
+
 		this.changeChannelState(groups);
 		this.changeMessageState(members);
 		this.props.router.replace("chat/?name=KickBot&identifier=message");
@@ -187,25 +203,25 @@ export default class LoggedInLayout extends React.Component
 	{
 		this.setState({channels});
 	}
-	
+
 	changeMessageState (messages)
 	{
 		this.setState({messages});
 	}
 
-	handleChannelChange(name) 
+	handleChannelChange(name)
 	{
 		this.props.router.replace('/chat/?name='+name+'&identifier=channel');
 		this.closeMainMenu();
 	}
 
-	handleMessageChange(name) 
+	handleMessageChange(name)
 	{
 		this.props.router.replace('/chat/?name='+name+'&identifier=message');
 		this.closeMainMenu();
 	}
 
-	handleAccount (e) 
+	handleAccount (e)
 	{
 		this.closeMainMenu();
 	}
@@ -221,12 +237,12 @@ export default class LoggedInLayout extends React.Component
 		this.setState({imageLogoUrl : url});
 	}
 
-	toggleMainMenu () 
-	{ 
+	toggleMainMenu ()
+	{
 		this.setState({mainMenuOpen: !this.state.mainMenuOpen});
 	}
 
-	closeMainMenu ()  
+	closeMainMenu ()
 	{
 		this.setState({mainMenuOpen: false});
 	}
@@ -238,13 +254,40 @@ export default class LoggedInLayout extends React.Component
 		return (
 			<MuiThemeProvider>
 			<div style={styles.rootContainer}>
-			{isLogged ? 
-			<Paper zDepth={2} id="projects" style={styles.projectList}>
-			<List>
-			{projectList}
-			</List>
-			</Paper>: ''}
-			{isLogged ? 
+			{isLogged ?
+			<Drawer
+          docked={true}
+          width={230}
+					containerStyle={{backgroundColor: "#004D40"}}
+          open={this.state.open}
+          onRequestChange={(open) => this.setState({open})}
+        >
+      <div style={{marginTop:"10px",textAlign:"center"}}><strong style={{textDecoration: "underline" , color: "white"}}>PROJECTS</strong></div>
+      <br/>
+			<Accordion>
+                {projects.map(function(item){
+									const title = (
+      <h2>
+        <span style={{color:"white",fontSize:"16px",paddingLeft:"10px"}} onClick={(evt) => {
+          this.openThisProject(evt) // don't trigger AccordionItemTitle onClick
+        }}>{ item }</span>
+        <span ><NavigationExpandLess style={{color:"white",fontSize:"16px",float: 'right'}}/></span>
+      </h2>
+    )
+                    return (
+                        <AccordionItem title={title} key={item} titleColor="white" bodyClassName="activeProject" >
+                            <div style={{backgroundColor : "white"}}>
+														<Link to={"chat/"+"?name=KickBot&identifier=message"} style={styles.listItem} onTouchTap={() => this.handleChat('KickBot','message')}><List><ListItem key="friday" id="friday" leftIcon={<ImageTagFaces />} style={styles.listItem}><strong>BOB</strong></ListItem></List></Link>
+														<Divider />
+														<ChannelList nameCompressor={this.nameCompressor} channels={this.state.channels} changeChannel={this.handleChannelChange} appBarTitle={this.state.appBarTitle}/>
+														<MessageList nameCompressor={this.nameCompressor} messages={this.state.messages} changeMessage={this.handleMessageChange} appBarTitle={this.state.appBarTitle}/>
+														</div>
+                        </AccordionItem>
+                    );
+                },this)}
+            </Accordion>
+			</Drawer>: ''}
+			{isLogged ?
 			<AppBar title={this.state.appBarTitle} style={styles.appBar}
 			zDepth={3}
 			iconElementLeft={
@@ -257,78 +300,31 @@ export default class LoggedInLayout extends React.Component
 					<SocialNotifications color={grey50} />
 					</IconButton>
 					<span id="toggleMainMenu">
-					<IconButton onTouchTap={this.toggleMainMenu}>
-					<ImageDehaze color={grey50} />
-					</IconButton>
+					<IconMenu
+      iconButtonElement={<IconButton onTouchTap={this.toggleMainMenu}>	<SettingsIcon color={grey50} /></IconButton>}
+      anchorOrigin={{horizontal: 'left', vertical: 'top'}}
+      targetOrigin={{horizontal: 'left', vertical: 'top'}}>
+
+			<MenuItem id="accountSettings" key="accountSettings" style={styles.listItem}>
+				<strong>Account settings</strong>
+				</MenuItem>
+				<MenuItem id="notificationSettings" key="notificationSettings" style={styles.listItem} onTouchTap={this.closeMainMenu}>
+				<strong>Notification settings</strong>
+				</MenuItem>
+				<MenuItem id="signOut" key="signOut" style={styles.listItem} onTouchTap={this.signOut}>
+				<strong>Sign out</strong>
+				</MenuItem>
+					</IconMenu>
 					</span>
-					</span>		
+					</span>
 				}
 				iconStyleLeft={{cursor: 'pointer'}}/>: ''}
-				{isLogged ? 
-				<Drawer
-				docked={false}
-				open={this.state.mainMenuOpen}
-				openSecondary={true}
-				onRequestChange={(mainMenuOpen) => this.setState({mainMenuOpen})}
-				>
-				<List>
-				
-				{
-					this.state.appBarTitle === 'NotificationBoard' ? 
-					(<ListItem id="project" key="project" disabled="true" style={styles.projectNameListItem}>
-						<h3>&nbsp;</h3>
-						</ListItem>
-						) 
-					: 
-					(<ListItem id="project" key="project" style={styles.projectNameListItem}>
-						<h3><u>{this.state.appBarTitle}</u></h3>
-						</ListItem>
-						)
-				}
-				
-				<Divider />
-				<Link to={"chat/"+"?name=KickBot&identifier=message"} style={styles.listItem} onTouchTap={() => this.handleMessageChange('KickBot','message')}><ListItem key="friday" id="friday" leftIcon={<ImageTagFaces />} style={styles.listItem}><strong>Friday</strong></ListItem></Link>
-				<Divider />
 
-				<div id="channels">
-				<ChannelList nameCompressor={this.nameCompressor} channels={this.state.channels} changeChannel={this.handleChannelChange} appBarTitle={this.state.appBarTitle}/>
-				</div>
-				
-				<div id="messages">
-				<MessageList nameCompressor={this.nameCompressor} messages={this.state.messages} changeMessage={this.handleMessageChange} appBarTitle={this.state.appBarTitle}/>
-				</div>		
-				
-				<Divider />
-				<ListItem id="accountSettings" key="accountSettings" style={styles.listItem} initiallyOpen={false} primaryTogglesNestedList={true}
-				nestedItems={[
-					<Link to={"profile/"} style={styles.linkItem} onTouchTap={this.handleAccount}><ListItem leftIcon={<SocialPerson />} key="profile" >Profile</ListItem></Link>,
-					<Link to={"buddy/"} style={styles.linkItem} onTouchTap={this.handleAccount}><ListItem leftIcon={<ImageTagFaces />} key="buddy" >Buddy</ListItem></Link>,
-					<Divider />
-					]}>
-					<strong>Account settings</strong>
-					</ListItem>
-					<ListItem id="notificationSettings" key="notificationSettings" style={styles.listItem} onTouchTap={this.closeMainMenu}>
-					<strong>Notification settings</strong>
-					</ListItem>
-					<Divider />
-					<ListItem id="signOut" key="signOut" style={styles.listItem} onTouchTap={this.signOut}>
-					<strong>Sign out</strong>
-					</ListItem>
-					<Divider/>
-					</List>
-					</Drawer> : ''}
-
-					
 					<div id="content" style={styles.container}>
-
 					{this.props.children}
-					
 					</div>
-
 					</div>
-
 					</MuiThemeProvider>
 					);
 }
-
 }
