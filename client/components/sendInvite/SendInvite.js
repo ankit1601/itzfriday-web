@@ -1,3 +1,4 @@
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -44,9 +45,9 @@ export default class SendInvite extends React.Component
 		this.handleAddClick=this.handleAddClick.bind(this);
 		this.state={email:'',addIconState:true,addbuttonState:true,errorMsg:'',chipData:[]}
 		this.sendInvite=this.sendInvite.bind(this);
-	}	
+	}
 	handleAdd(event)
-	{	
+	{
 		this.setState({email:event.target.value})
 		if(event.target.value!='')
 			this.setState({addIconState:false})
@@ -56,7 +57,7 @@ export default class SendInvite extends React.Component
 			this.setState({errorMsg:''})
 		}
 	}
-	handleRequestDelete = (key) => 
+	handleRequestDelete = (key) =>
 	{
 	    this.chipData = this.state.chipData;
 	    const chipToDelete = this.chipData.map((chip) => chip.key).indexOf(key);
@@ -71,7 +72,7 @@ export default class SendInvite extends React.Component
 							</div>
 						</MuiThemeProvider>,document.getElementById('chipArea'));
 	};
-	renderChip=(data)=> 
+	renderChip=(data)=>
 	{
 	    return (
 	  	<Chip
@@ -86,7 +87,7 @@ export default class SendInvite extends React.Component
 	{
 		var exists=false;
 		if(validExpre.test(this.state.email))
-	    {	
+	    {
 	    	for(var j=0;j<this.state.chipData.length;j++)
 	    	{
 	    		if(this.state.chipData[j].label==this.state.email)
@@ -109,7 +110,7 @@ export default class SendInvite extends React.Component
       						</MuiThemeProvider>,document.getElementById('chipArea'));
       		}
       		 else
-      		{ 	
+      		{
       			this.setState({errorMsg:"Email already Entered"});
       		}
 	    }
@@ -126,7 +127,7 @@ export default class SendInvite extends React.Component
 
 	}
 	render()
-	{	
+	{
 		return(<Grid>
 		<Paper style={styles.paperStyle}>
 			<Row center="xs">
@@ -149,14 +150,14 @@ export default class SendInvite extends React.Component
 			<div id="chipArea" style={{marginLeft:90,paddingTop:25,paddingBottom:50}}></div>
 			</Row>
 			<Row center="xs">
-			<RaisedButton 
+			<RaisedButton
                           label="Skip"
                           backgroundColor='#D32F2F'
    						style={{marginRight:20}}
    						labelColor="white"
    						onClick={this.sendInvite}/>
-        
-            <RaisedButton 
+
+            <RaisedButton
                           label="Send Invite"
                           backgroundColor='#4CAF50'
                           labelColor="white"

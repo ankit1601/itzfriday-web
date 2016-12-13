@@ -56,12 +56,14 @@ const styles = {
 		color: '#424242',
 	},
 	listItem : {
-		color: '#607D8B',
+		color: '#004D40',
+		backgroundColor:'white',
 		textDecoration: 'none',
 	},
 	linkItem : {
 		textDecoration: 'none',
-		color: '#424242'
+		backgroundColor:'white',
+		color: '#004D40'
 	},
 	projectNameListItem : {
 		color: '#607D8B'
@@ -104,6 +106,7 @@ export default class MessageList extends React.Component
 		{
 			messages.push(<ListItem style={styles.linkItem} onTouchTap={() => this.displayMessage(groups[index])} leftIcon={<SocialPerson />}>{this.compressName(groups[index])}</ListItem>);
 		}
+		messages.push(<Divider/>);
 	}
 
 	displayMessage(name)
@@ -118,14 +121,14 @@ export default class MessageList extends React.Component
 
 	render()
 	{
-		if(this.props.appBarTitle === 'Notifications')
+		if(this.props.appBarTitle === 'Dashboard')
 		{
 			return (<span />);
 		}
 		return(
 				<ListItem id="messages" key="messages" style={styles.listItem} initiallyOpen={true} primaryTogglesNestedList={true}
 				nestedItems={messages}>
-				<strong>messages</strong>
+				<strong>Messages</strong>
 				</ListItem>
 			);
 	}
