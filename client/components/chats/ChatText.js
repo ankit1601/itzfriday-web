@@ -51,19 +51,20 @@ class ChatText extends Component {
   }
   render() {
     const messages = this.state.message;
+    const avtar = "https://twitter.com/@"+messages.user+"/profile_image?size=original";
     return(
       <div>
       { messages !== undefined || messages !== null ?
       <div>
         <div style = {styles.profilePic}>
-                  <img src={messages.authorAvtar} style = {styles.imageStyle}/>
+                  <img src={avtar} style = {styles.imageStyle}/>
                 </div>
                 <div style={styles.messageTextDisplay}>
                   <div style={styles.messageData}>
                   <span style={styles.author}>{messages.author}</span>
-                  <span style={styles.timestamp}>{messages.chatTime}</span>
+                  <span style={styles.timestamp}>{messages.timeStamp}</span>
                 </div>
-                  <p style={styles.messageBody}>{messages.chatText}</p>
+                  <p style={styles.messageBody}>{messages.message}</p>
                 </div>
       </div> : ''
     }

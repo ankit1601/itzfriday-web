@@ -7,7 +7,7 @@ import Auth from './../../services/auth.service.js'
 
 var name = ''; 
 const chatMessages = [];
-var socket = null;
+var socket = '';
 class ChatBox extends Component {
   constructor(props) {
     super(props);
@@ -19,13 +19,27 @@ class ChatBox extends Component {
     }
   }
   componentDidMount() {
-    socket = sockets.getSocketConnection();
+    var userJoined = '';
+    if(this.props.location.query.identifier === "message") {
+      userJoined = {
+        user: Auth.getNameFromToken(),
+        destination: 'Friday@'+this.props.location.query.name
+      }
+    }else if(this.props.location.query.identifier === "channel") {
+      userJoined = {
+        user: Auth.getNameFromToken(),
+        destination: 'Friday#'+this.props.location.query.name
+      }
+    }
+    socket = sockets.getSocketConnection(userJoined);
     socket.on('error', this._socketConnectionError.bind(this));
     socket.on('connected', this._getConnectedUser.bind(this));
-
-    socket.on('init', this._initializeConversation.bind(this))
+    socket.on('user:join',this._getJoinedUser.bind(this));
     socket.on('send:message', this._recieveMessage.bind(this));
     socket.on('notify', this._notifyUser.bind(this));
+  }
+  componentWillMount() {
+    
   }
 	render() {
 		return (
@@ -46,27 +60,44 @@ class ChatBox extends Component {
 
   _notifyUser(user) {
     if(user !== undefined) {
-      setTimeout(this.setState({userTyping: user}),1000);
+      this.setState({userTyping: user});
     }
   }
-  _initializeConversation(data) {
-    console.log("Data"+data);
-  }
   _recieveMessage(message) {
+    console.log(message);
     chatMessages.push(message);
     this.setState({chatMessages});
   }
   notifyTyping() {
-    console.log(name);
-    socket.emit('notify', name);
+    console.log(Auth.getNameFromToken());
+    socket.emit('notify', Auth.getNameFromToken());
   }
   addChatMessages(message) {
-    chatMessages.push(message);
+    if(this.props.location.query.identifier === "message") {
+      var sendingMessage = {
+        author: Auth.getNameFromToken(),
+        message: message.chatText,
+        timeStamp: message.chatTime,
+        destination: 'Friday@'+this.props.location.query.name
+      }
+    }else if(this.props.location.query.identifier === "channel") {
+      var sendingMessage = {
+        author: Auth.getNameFromToken(),
+        message: message.chatText,
+        timeStamp: message.chatTime,
+        destination: 'Friday#'+this.props.location.query.name
+      }
+    }
+    socket.emit('send:message', sendingMessage);
+    chatMessages.push(sendingMessage);
     this.setState({chatMessages});
-    socket.emit('send:message', message);
   }
   _getConnectedUser(user) {
-    name = user;
+    //socket.emit('user:join', userJoined);
+    console.log(user);
+  }
+  _getJoinedUser(userJoined) {
+    console.log(userJoined.user+' has subscibed to '+userJoined.destination);
   }
   _socketConnectionError(err) {
     console.log(err)
