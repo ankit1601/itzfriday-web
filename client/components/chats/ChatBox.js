@@ -31,7 +31,7 @@ class ChatBox extends Component {
         destination: 'Friday#'+this.props.location.query.name
       }
     }
-    socket = sockets.getSocketConnection(userJoined);
+    socket = sockets.getSocketConnection();
     socket.on('error', this._socketConnectionError.bind(this));
     socket.on('connected', this._getConnectedUser.bind(this));
     socket.on('user:join',this._getJoinedUser.bind(this));
@@ -39,7 +39,7 @@ class ChatBox extends Component {
     socket.on('notify', this._notifyUser.bind(this));
   }
   componentWillMount() {
-    
+
   }
 	render() {
 		return (
