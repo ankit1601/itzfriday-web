@@ -56,12 +56,14 @@ const styles = {
 		color: '#424242',
 	},
 	listItem : {
-		color: '#607D8B',
+		color: '#004D40',
+		backgroundColor:'white',
 		textDecoration: 'none',
 	},
 	linkItem : {
+		backgroundColor:'white',
 		textDecoration: 'none',
-		color: '#424242'
+		color: '#004D40'
 	},
 	projectNameListItem : {
 		color: '#607D8B'
@@ -95,7 +97,7 @@ export default class ChannelList extends React.Component
 		return this.props.nameCompressor(name);
 	}
 
-	componentWillReceiveProps(nextProps) 
+	componentWillReceiveProps(nextProps)
 	{
 		this.changeState(nextProps.channels);
 		groups = this.state.channels;
@@ -105,7 +107,7 @@ export default class ChannelList extends React.Component
 			channels.push(<ListItem style={styles.linkItem} onTouchTap={() => this.displayChannel(groups[index])} leftIcon={<SocialPerson />}>{this.compressName(groups[index])}</ListItem>);
 		}
 		channels.push(<Divider />);
-		channels.push(<Link to={"addChannel/"} style={styles.linkItem} ><ListItem key={-1} leftIcon={<ContentAddCircle />}>Create channel</ListItem></Link>);
+		channels.push(<Link to={"addChannel/"} style={styles.linkItem} ><ListItem key={-1} style={styles.linkItem} leftIcon={<ContentAddCircle />}>Create channel</ListItem></Link>);
 		channels.push(<Divider />);
 	}
 
