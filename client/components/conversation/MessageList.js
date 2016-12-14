@@ -126,9 +126,8 @@ export default class MessageList extends React.Component
 			return (<span />);
 		}
 		return(
-				<ListItem id="messages" key="messages" style={styles.listItem} initiallyOpen={true} primaryTogglesNestedList={true}
+				<ListItem primaryText="Messages" id="messages" key="messages" style={styles.listItem} initiallyOpen={false} primaryTogglesNestedList={true}
 				nestedItems={messages}>
-				<strong>Messages</strong>
 				</ListItem>
 			);
 	}
