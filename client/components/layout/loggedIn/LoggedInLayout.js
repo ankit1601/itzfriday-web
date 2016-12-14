@@ -42,7 +42,7 @@ const styles = {
 	},
 	appBar : {
 		color: 'white',
-		paddingLeft:'340px',
+		paddingLeft:'200px',
 		backgroundColor: '#004D40',
 		width: '*'
 	},
@@ -103,12 +103,13 @@ export default class LoggedInLayout extends React.Component
 			channels: '',
 			messages: '',
 			open: true,
+			openIndex:0,
 			loggedIn: Auth.loggedIn()
 		};
 
 		this.handleChannelChange = this.handleChannelChange.bind(this);
 		this.handleMessageChange = this.handleMessageChange.bind(this);
-		this.openThisProject = this.openThisProject.bind(this);
+		this.openThisProject=this.openThisProject.bind(this);
 		this.handleState=this.handleState.bind(this);
 		this.handleAccount = this.handleAccount.bind(this);
 		this.signOut = this.signOut.bind(this);
@@ -120,17 +121,6 @@ export default class LoggedInLayout extends React.Component
 		this.openNotificationBoard = this.openNotificationBoard.bind(this);
 		this.setTitleToNotifications = this.setTitleToNotifications.bind(this);
 		this.nameCompressor = this.nameCompressor.bind(this);
-		let lastIndexOfProjects = projects.length - 1;
-		for( let index in projects)
-		{
-			projectList.push(
-			<div triggerText={projects[index]}>
-			<p>This is one of our project</p>
-
-			</div>);
-			if(index < lastIndexOfProjects)
-				projectList.push(<Divider />);
-		}
 	}
 
 	nameCompressor(name)
@@ -145,6 +135,10 @@ export default class LoggedInLayout extends React.Component
 		return compressedName.trim();
 	}
 
+  handleNestedListToggle(index)
+	{
+		this.setState({openIndex:index});
+	}
 	openNotificationBoard ()
 	{
 		console.log("in  openNotificationBoards");
@@ -164,10 +158,10 @@ export default class LoggedInLayout extends React.Component
 		console.log(newState.activeItems);
 	}
 
-	openThisProject (e)
+	openThisProject (event)
 	{
-		//console.log(e.activeItems);
-		currentProject = e.target.innerText;
+
+		currentProject = event.target.innerText ;
 		console.log(currentProject);
 		messages = [];
 		channels = [];
@@ -194,11 +188,10 @@ export default class LoggedInLayout extends React.Component
 		}
 
 		this.setState({appBarTitle: currentProject});
-
 		this.changeChannelState(groups);
 		this.changeMessageState(members);
 		this.props.router.replace("chat/?name=KickBot&identifier=message");
-	}
+	};
 	changeChannelState (channels)
 	{
 		this.setState({channels});
@@ -251,6 +244,25 @@ export default class LoggedInLayout extends React.Component
 
 	render() {
 		const isLogged = Auth.loggedIn();
+		projectList =[];
+		for (let index in projects)
+		 {
+			 projectList.push(<ListItem style={{color:'white'}} primaryText={projects[index]}
+							 onNestedListToggle={this.handleNestedListToggle.bind(this,index)}
+							 open={this.state.openIndex===index}
+							 primaryTogglesNestedList={true}
+							 onClick={()=>this.openThisProject(event)}
+							 nestedItems={[
+								 <div style={{backgroundColor:'white'}}>
+								 <Link to={"chat/"+"?name=KickBot&identifier=message"} style={styles.listItem} onTouchTap={() => this.handleChat('KickBot','message')}><ListItem key="friday" id="friday" style={styles.listItem} leftAvatar={<Avatar style={{height:'30', backgroundColor:'transparent'}} src={this.state.imageLogoUrl} alt="Friday" />}><strong>ItzfridayBot</strong></ListItem></Link>
+								 <Divider />
+								<ChannelList nameCompressor={this.nameCompressor} channels={this.state.channels} changeChannel={this.handleChannelChange} appBarTitle={this.state.appBarTitle}/>
+								<Divider />
+								 <MessageList nameCompressor={this.nameCompressor} messages={this.state.messages} changeMessage={this.handleMessageChange} appBarTitle={this.state.appBarTitle}/>
+							 <Divider />
+							 </div>
+						 ]} />);
+		}
 		return (
 			<MuiThemeProvider>
 			<div style={styles.rootContainer}>
@@ -264,41 +276,14 @@ export default class LoggedInLayout extends React.Component
         >
       <div style={{marginTop:"10px",textAlign:"center"}}><strong style={{textDecoration: "underline" , color: "white"}}>PROJECTS</strong></div>
       <br/>
-			<Accordion>
-                {projects.map(function(item){
-									const title = (
-      <h2>
-        <span style={{color:"white",fontSize:"16px",paddingLeft:"10px"}} onClick={(evt) => {
-          this.openThisProject(evt) // don't trigger AccordionItemTitle onClick
-        }}>{ item }</span>
-        <span ><NavigationExpandLess style={{color:"white",fontSize:"16px",float: 'right'}}/></span>
-      </h2>
-    )
-                    return (
-                        <AccordionItem title={title} key={item} titleColor="white" bodyClassName="activeProject" >
-                            <div style={{backgroundColor : "white"}}>
-														<Link to={"chat/"+"?name=KickBot&identifier=message"} style={styles.listItem} onTouchTap={() => this.handleChat('KickBot','message')}><List><ListItem key="friday" id="friday" leftIcon={<ImageTagFaces />} style={styles.listItem}><strong>BOB</strong></ListItem></List></Link>
-														<Divider />
-														<ChannelList nameCompressor={this.nameCompressor} channels={this.state.channels} changeChannel={this.handleChannelChange} appBarTitle={this.state.appBarTitle}/>
-														<MessageList nameCompressor={this.nameCompressor} messages={this.state.messages} changeMessage={this.handleMessageChange} appBarTitle={this.state.appBarTitle}/>
-														</div>
-                        </AccordionItem>
-                    );
-                },this)}
-            </Accordion>
+		  <List>
+			{projectList}
+			</List>
 			</Drawer>: ''}
 			{isLogged ?
 			<AppBar title={this.state.appBarTitle} style={styles.appBar}
 			zDepth={3}
-			iconElementLeft={
-				<span>
-				<Avatar backgroundColor={'transparent'} src={this.state.imageLogoUrl} alt="Friday" height="30"/>
-				</span>}
 				iconElementRight={
-					<span>
-					<IconButton onTouchTap={this.openNotificationBoard}>
-					<SocialNotifications color={grey50} />
-					</IconButton>
 					<span id="toggleMainMenu">
 					<IconMenu
       iconButtonElement={<IconButton onTouchTap={this.toggleMainMenu}>	<SettingsIcon color={grey50} /></IconButton>}
@@ -315,7 +300,6 @@ export default class LoggedInLayout extends React.Component
 				<strong>Sign out</strong>
 				</MenuItem>
 					</IconMenu>
-					</span>
 					</span>
 				}
 				iconStyleLeft={{cursor: 'pointer'}}/>: ''}
