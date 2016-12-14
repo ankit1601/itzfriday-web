@@ -456,7 +456,7 @@ gitBotSubscriber.on("message",function( channel, message)
 
 	//FETCH JSON DATA
 	jsonObject = fetchJsonObject(message);	//set processFurther to false on error
-	jsonObject.authToken = 'b9d3485e5a06fde37a267a77dfdba6536151ad35';
+	jsonObject.authToken = '046d5f647b08c04f3099e650532d2b8246925ae0';
 
 	//SORT EXECUTION SEQUENCE IN THE ORDER OF CONTEXT
 	intents.sort(function(a,b){
