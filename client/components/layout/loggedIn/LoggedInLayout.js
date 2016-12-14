@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Accordion, AccordionItem } from 'react-sanfona';
 import {Link} from 'react-router';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {amber100,green100,orange100,grey50} from 'material-ui/styles/colors';
