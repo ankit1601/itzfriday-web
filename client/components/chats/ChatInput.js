@@ -34,7 +34,6 @@ class ChatInput extends Component {
   	submitForm(data) {
       var localTime  = moment.utc(new Date()).toDate();
     	var newMessage = {
-    		  author: this.props.userName,
       		chatTime: moment(localTime).format('llll'),
       		chatText: data.messages,
       		authorAvtar: "https://twitter.com/@"+this.props.userName+"/profile_image?size=original"

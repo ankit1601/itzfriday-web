@@ -20,7 +20,7 @@ userRouter.post('/login', function(req, res) {
   	console.log(user);
   	if(user) {
   		if(user.checkPassword(password)){
-  			authenticateToken=jwt.sign({user:email,name:user.firstName,sub:'friday',admin:true}, appConst.jwtSecret);
+  			authenticateToken=jwt.sign({user:email,name:user.fullName,sub:'friday',admin:true}, appConst.jwtSecret);
   			res.status(200).json({
              	message:authenticateToken
         		});
@@ -28,19 +28,22 @@ userRouter.post('/login', function(req, res) {
   		}else {
   		// create a user a new user
 			var testUser = new userAccount({
-    			username: 'gobinda.thakur@gmail.com',
+          fullName: 'Gobinda',
+    			username: 'gobinda@gmail.com',
     			password: 'abcdefgh',
     			role: 'Admin'
 			});
 			testUser.save(function(err, user) {
 				if(err){
 					res.status(401).json({
-            		message:"user/password not found"
+            		message:"user/password not found",
+                error: true
         		  });
 				}
-				authenticateToken=jwt.sign({user:email,name:user.firstName,sub:'friday',admin:true}, appConst.jwtSecret);
+				authenticateToken=jwt.sign({user:email,name:user.fullName,sub:'friday',admin:true}, appConst.jwtSecret);
   				res.status(200).json({
-             	message:authenticateToken
+             	message:authenticateToken,
+              error: false
         		});
 			});
   		}

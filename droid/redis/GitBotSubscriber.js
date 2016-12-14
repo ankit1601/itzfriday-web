@@ -6,6 +6,7 @@ var closeIssue = require("../gitBot/closeIssue");
 var listIssues = require("../gitBot/listIssues");
 var commentOnIssue = require("../gitBot/commentOnIssue");
 var gitBotSubscriber = redis.createClient();
+var gitBotPublisher = redis.createClient();
 /*
 droid:
     image: droid:0.1.0
@@ -310,7 +311,7 @@ function fetchJsonObject(message)
 	else
 	{	
 		//fetch the values
-		valueString = message.match(/(\s"[\w-_&@!?,'\/[\]\s(){}]+")|((\s*@[\w-_/,]+)+)|(\s#[0-9]+)/gi);
+		valueString = message.match(/(\s"[.\w-_&@!?,'\/[\]\s(){}]+")|((\s*@[\w-_/,]+)+)|(\s#[0-9]+)/gi);
 
 		// FETCH MANDATORY DETAILS //
 
@@ -348,13 +349,13 @@ function fetchJsonObject(message)
 			//patterns [create issue, open issue, add issue]
 			else if((keyString[index].match(/create/gi) || keyString[index].match(/open/gi) || keyString[index].match(/add/gi)) && keyString[index].match(/issue/gi))
 			{
-				json.title = valueString[index].match(/\s"[\w-_&@!?,'\/[\]\s(){}]+"/).toString().replace(/"+/g,'').trim();
+				json.title = valueString[index].match(/\s"[.\w-_&@!?,'\/[\]\s(){}]+"/).toString().replace(/"+/g,'').trim();
 			}
 			//check for description
 			//patterns [description, desc, details, content, comment]
 			if((keyString[index].match(/comment/gi) && !keyString[index].match(/on/gi)) || (keyString[index].match(/description/gi) || keyString[index].match(/desc/gi) || keyString[index].match(/detail/gi) || keyString[index].match(/content/gi) && !(keyString[index].match(/create/gi)&&keyString[index].match(/issue/gi))))
 			{
-				json.body = valueString[index].match(/"[\w-_&@!?,'\/[\]\s(){}]+"/).toString().replace(/"+/g,'').trim();
+				json.body = valueString[index].match(/"[.\w-_&@!?,'\/[\]\s(){}]+"/).toString().replace(/"+/g,'').trim();
 			}
 			//check for assignees
 			//patterns [to, assign to, give to,]	//eg. [assign issue to, assign to, give issue to, give to]
@@ -388,7 +389,7 @@ function getUserIntent(message)
 {
 	let intent = [];
 
-	keyString = message.replace(/(\s"[\w-_&@!?,'\/[\]\s(){}]+")|((\s*@[\w-_/,]+)+)|(\s#[0-9]+)/gi,'~').trim();
+	keyString = message.replace(/(\s"[.\w-_&@!?,'\/[\]\s(){}]+")|((\s*@[\w-_/,]+)+)|(\s#[0-9]+)/gi,'~').trim();
 	
 	if(keyString.search(/[~]+/g) > 0)
 	{
@@ -399,6 +400,9 @@ function getUserIntent(message)
 	console.log(" ");
 	console.log("Dynamic check for intents");
 	console.log(" ");
+
+	console.log("segments :")
+	console.log(segments);
 
 	for(let indexSegment in segments)
 	{
@@ -412,6 +416,8 @@ function getUserIntent(message)
 					{
 						if(segments[indexSegment].match(new RegExp(intentMD[indexIntentMD].pattern.required[indexPatternRequired],'gi')) && segments[indexSegment].match(new RegExp(intentMD[indexIntentMD].pattern.oneOfThese[indexPatternOneOfThese],'gi')))
 						{
+							console.log('defined');
+							console.log(segments[indexSegment]);
 							intent.push({
 								"intent":indexIntentMD,
 								"priority":contextMD[intentMD[indexIntentMD].context]
@@ -423,6 +429,7 @@ function getUserIntent(message)
 				{
 					if(segments[indexSegment].match(new RegExp(intentMD[indexIntentMD].pattern.required[indexPatternRequired],'gi')))
 					{
+						console.log('undefined');
 						intent.push({
 							"intent":indexIntentMD,
 							"priority":contextMD[intentMD[indexIntentMD].context]
@@ -449,7 +456,7 @@ gitBotSubscriber.on("message",function( channel, message)
 
 	//FETCH JSON DATA
 	jsonObject = fetchJsonObject(message);	//set processFurther to false on error
-	jsonObject.authToken = 'c8ca0f503b10037934dd7b05f7a498c8f4745c49';
+	jsonObject.authToken = 'b9d3485e5a06fde37a267a77dfdba6536151ad35';
 
 	//SORT EXECUTION SEQUENCE IN THE ORDER OF CONTEXT
 	intents.sort(function(a,b){
@@ -604,6 +611,7 @@ gitBotSubscriber.on("message",function( channel, message)
 					else
 					{
 						console.log("Issue has been created with id : "+res);
+						gitBotPublisher.publish("delivery","Issue has been created with id : "+res);
 					}
 				});
 			}	
@@ -661,7 +669,7 @@ gitBotSubscriber.on("message",function( channel, message)
 			    }
 			    else if(jsonObject.repo === '')
 			    {
-			    	console.log("Error: Repository name not specified!");
+			    	console.log("Error: Repository name not specified!");r
 			    }
 				else
 				{

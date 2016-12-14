@@ -4,14 +4,15 @@ var express = require('express'),
     compression = require('compression');
 var main     = express();
 var server = require('http').createServer(main);
-var io = require('socket.io')(server);
+var io = require('socket.io')(server, {'transports': ['websocket', 'polling']});
 var socket = require('./sockets/socket.js');
 var port = process.env.PORT || 3000;
 var userAccount = require('./routes/user/user.router.js');
 var expressJWT = require('express-jwt');
 var jwt = require('jsonwebtoken');
 var appConst = require('./config/config.js');
-var db = require('./service/db.mongo.js')
+var db = require('./service/db.mongo.js');
+
 
 main.use(compression());
 main.use(bodyParser.json());
@@ -57,7 +58,7 @@ io.use(function(sockets, next) {
     var token = sockets.handshake.query.token,
               decodedToken;
     try {
-      decodedToken = jwt.verify(token, config.jwtSecret);
+      decodedToken = jwt.verify(token, appConst.jwtSecret);
       console.log("token valid for user", decodedToken.name);
       sockets.connectedUser = decodedToken.name;
       sockets.emit('connected', sockets.connectedUser);
