@@ -1,22 +1,44 @@
 var request = require('superagent');
-const labelIssue = function (owner,repo,authToken,issueNumber,labels, callback)
+const labelIssue = function (repo,authToken,number,labels,callback)
 {
     var jsonObj = {
         'labels' : labels
     };
 
-    request.patch('https://api.github.com/repos/'+owner+'/'+repo+'/issues/'+issueNumber+'?oauth_token='+authToken)
+    if(!repo)
+    {
+        callback({ofType:"string", withContent: "Error: Repository Not Present"}, null);
+        return
+    }
+    else if(!number)
+    {
+        callback({ofType:"string", withContent: "Error: Issue Number Not Present"}, null);
+        return
+    }
+    else if(!labels)
+    {
+        callback({ofType:"string", withContent: "Error: Labels Not Present"}, null);
+        return
+    }
+
+    let owner = repo.split('/');
+    if(owner[0] !== undefined)
+    {
+        owner = owner[0].trim();
+    }
+
+    request.patch('https://api.github.com/repos/'+repo+'/issues/'+number+'?oauth_token='+authToken)
     .set('User-Agent',owner)
     .set('Content-Type', 'application/json')
     .send(JSON.stringify(jsonObj))
     .end(function(error,response){
         if(error)
         {
-            callback(error,response);
+            callback({ofType:"string", withContent: error.toString()}, null);
             return
         }
-        callback(null, response.body.number);
+        callback(null, {ofType:"string", withContent: "Issue "+response.body.number+" has been tagged the following : "+labels});
+        return
     });
-    return
 }
 module.exports = labelIssue;
